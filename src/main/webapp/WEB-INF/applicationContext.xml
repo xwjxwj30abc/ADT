@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.2.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd"
+	default-lazy-init="true">
+
+	<context:component-scan base-package="zx.soft.readwrite.controller" />
+	<context:component-scan base-package="zx.soft.readwrite.service" />
+
+	<!-- mapper -->
+	<bean id="baseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean"
+		abstract="true" lazy-init="true">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="userDao" parent="baseMapper">
+		<property name="mapperInterface" value="zx.soft.readwrite.dao.UserDao"></property>
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+			<property name="mapperLocations" value="classpath*:zx/soft/readwrite/dao/*.xml" />
+	</bean>
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=utf-8" />
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+		<property name="validationQuery" value="select 1" />
+	</bean>
+
+	<bean id="writerRedis" class="zx.soft.weibo.mapred.readwrite.WriterRedis">
+	</bean>
+	<bean id="writerSolr" class="zx.soft.weibo.mapred.readwrite.WriterSolr">
+	</bean>
+	<bean id="writerMySQL" class="zx.soft.weibo.mapred.readwrite.WriterMySQL">
+	</bean>
+	<bean id="writerCDH5" class="zx.soft.weibo.mapred.readwrite.WriterCDH5">
+		<property name="string" value="/user/hdfs/sina/user" />
+	</bean>
+
+	<!-- 自定义JSON对象映射 -->
+	<bean id="customObjectMapper" class="zx.soft.readwrite.util.CustomObjectMapper" />
+
+	<!-- JSON配置 -->
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter" />
+			<bean
+				class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper" ref="customObjectMapper" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+
+	<context:property-placeholder location="classpath:cache-config.properties" />
+	<context:property-placeholder location="classpath:solr.properties" />
+	<context:property-placeholder location="classpath:db.properties" />
+</beans>

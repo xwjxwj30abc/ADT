@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zx.soft.readwrite.dao.UserDao">
+
+	<!-- 插入微信公共帐号信息 -->
+	<insert id="insertUser" parameterType="zx.soft.readwrite.domain.SimpleUser"
+		useGeneratedKeys="true" keyProperty="id" flushCache="true"
+		statementType="PREPARED">
+		INSERT INTO `user`
+		(`uid`,`idstr`,`name`,`created_at`,`time`)
+		VALUES
+		(#{id},#{idstr},#{name},#{created_at},NOW());
+	</insert>
+	
+</mapper>
