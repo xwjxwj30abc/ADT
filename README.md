@@ -27,6 +27,9 @@ http://xhadoop1:8983/solr/#/~cloud查看创建的Collection
 solrctl instancedir --update solrtest $HOME/solrtest   
 solrctl collection --reload solrtest  
 
+写数据到HBase中：
+
+
  
  
 
