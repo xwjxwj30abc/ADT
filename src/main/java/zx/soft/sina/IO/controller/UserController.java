@@ -1,33 +1,21 @@
 package zx.soft.sina.IO.controller;
 
 import java.sql.SQLException;
-import java.util.List;
-
-import javax.inject.Inject;
-import javax.ws.rs.core.MediaType;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import zx.soft.sina.IO.domain.SimpleUser;
 import zx.soft.sina.IO.query.ImpalaQuery;
-import zx.soft.sina.IO.service.UserToCDH5Service;
-import zx.soft.sina.IO.service.UserToHBaseService;
-import zx.soft.sina.IO.service.UserToMySQLService;
-import zx.soft.sina.IO.service.UserToRedisService;
-import zx.soft.sina.IO.service.UserToSolrService;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
 
-	@Inject
+	/*@Inject
 	private UserToHBaseService userToHBaseService;
 	@Inject
 	private UserToRedisService userToRedisService;
@@ -84,6 +72,13 @@ public class UserController {
 	public @ResponseBody List<String> getTopNActiveUser(@PathVariable int num) throws SQLException {
 		List<String> topN = ImpalaQuery.getTopNActiveUser(num);
 		return topN;
+	}*/
+
+	@RequestMapping(value = "/active/maxid", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public @ResponseBody String getMaxId() throws SQLException {
+		String maxId = ImpalaQuery.getMaxId();
+		return maxId;
 	}
 
 }
