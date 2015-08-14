@@ -9,18 +9,10 @@ public class UserController {
 
 	/*
 	@Inject
-	private UserToSolrService userToSolrService;
-	@Inject
 	private UserToMySQLService userToMySQLService;
 	@Inject
 	private UserToCDH5Service userToCDH5Service;
 
-	@RequestMapping(value = "/solr", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
-	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody void insertUserToSolr(@RequestBody SimpleUser user) {
-		userToSolrService.insertUser(user);
-		userToSolrService.close();
-	}
 
 	@RequestMapping(value = "/mysql", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)

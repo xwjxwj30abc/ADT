@@ -37,7 +37,6 @@
 		<property name="password" value="${user.db.password}" />
 		<property name="validationQuery" value="select 1" />
 	</bean>
-	<bean id="writerSolr" class="zx.soft.sina.IO.mapred.WriterSolr"/>
 	<bean id="writerMySQL" class="zx.soft.sina.IO.mapred.WriterMySQL"/>
 	<bean id="writerCDH5" class="zx.soft.sina.IO.mapred.WriterCDH5"/>
 	
