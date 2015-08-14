@@ -12,10 +12,6 @@ public class SinaFactory {
 		return new WriterMySQL();
 	};
 
-	public static SinaWriter createRedisWriter() {
-		return new WriterRedis();
-	};
-
 	public static SinaWriter createSolrWriter() throws MalformedURLException {
 		return new WriterSolr();
 	};

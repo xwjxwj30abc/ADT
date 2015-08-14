@@ -43,6 +43,7 @@
 	
 	<bean id="iORedis" class="zx.soft.sina.IO.core.IORedis"/>
 	<bean id="iOHBase" class="zx.soft.sina.IO.core.IOHBase"/>
+	<bean id="iOSolr" class="zx.soft.sina.IO.core.IOSolr"/>
 	<!-- 自定义JSON对象映射 -->
 	 <bean id="customObjectMapper" class="zx.soft.sina.IO.util.CustomObjectMapper" /> 
 
