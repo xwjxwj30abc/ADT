@@ -56,7 +56,7 @@ public class WriterHBase implements SinaWriter {
 
 	public static void main(String[] args) throws IOException, ServiceException {
 		WriterHBase writerHBase = new WriterHBase();
-		Builder builder = new Builder(115L, new Date().getTime());
+		Builder builder = new Builder(116L, new Date().getTime());
 		SimpleUser user = new SimpleUser(builder);
 		writerHBase.write(user.getIdstr(), user);
 		writerHBase.close();

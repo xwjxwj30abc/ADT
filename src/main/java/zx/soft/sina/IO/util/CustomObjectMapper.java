@@ -18,7 +18,7 @@ public class CustomObjectMapper extends ObjectMapper {
 
 	private static final long serialVersionUID = -3341366863221844412L;
 
-	public static DateFormat sinaDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+	public static DateFormat sinaDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
 
 	public CustomObjectMapper() {
 		super();

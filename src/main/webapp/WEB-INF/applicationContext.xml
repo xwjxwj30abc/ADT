@@ -40,13 +40,13 @@
 	<bean id="writerRedis" class="zx.soft.sina.IO.mapred.WriterRedis"/>
 	<bean id="writerSolr" class="zx.soft.sina.IO.mapred.WriterSolr"/>
 	<bean id="writerMySQL" class="zx.soft.sina.IO.mapred.WriterMySQL"/>
-	<bean id="writerCDH5" class="zx.soft.sina.IO.mapred.WriterCDH5">
-		<!-- <property name="path" value="/user/hdfs/sina/user" /> -->
-	</bean>
+	<bean id="writerCDH5" class="zx.soft.sina.IO.mapred.WriterCDH5"/>
 	<bean id="writerHBase" class="zx.soft.sina.IO.mapred.WriterHBase"/>
-
+	
+	<bean id="iORedis" class="zx.soft.sina.IO.core.IORedis"/>
+	<bean id="iOHBase" class="zx.soft.sina.IO.core.IOHBase"/>
 	<!-- 自定义JSON对象映射 -->
-	<bean id="customObjectMapper" class="zx.soft.sina.IO.util.CustomObjectMapper" />
+	 <bean id="customObjectMapper" class="zx.soft.sina.IO.util.CustomObjectMapper" /> 
 
 	<!-- JSON配置 -->
 	<mvc:annotation-driven>
@@ -56,7 +56,7 @@
 				class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
 			<bean
 				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-				<property name="objectMapper" ref="customObjectMapper" />
+				 <property name="objectMapper" ref="customObjectMapper" /> 
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
