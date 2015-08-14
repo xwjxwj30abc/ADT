@@ -7,24 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/users")
 public class UserController {
 
-	/*@Inject
-	private UserToHBaseService userToHBaseService;
-
-	@Inject
-	private UserToRedisService userToRedisService;
+	/*
 	@Inject
 	private UserToSolrService userToSolrService;
 	@Inject
 	private UserToMySQLService userToMySQLService;
 	@Inject
 	private UserToCDH5Service userToCDH5Service;
-
-	@RequestMapping(value = "/redis", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
-	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody void insertUserToRedis(@RequestBody SimpleUser user) {
-		userToRedisService.insertUser(user);
-		userToRedisService.close();
-	}
 
 	@RequestMapping(value = "/solr", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)
@@ -53,12 +42,6 @@ public class UserController {
 		userToRedisService.close();
 	}
 
-	@RequestMapping(value = "/HBase", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
-	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody void insertUserToHBase(@RequestBody SimpleUser user) {
-		userToHBaseService.insertUser(user);
-		userToHBaseService.close();
-	}
 
 	@RequestMapping(value = "/active/{num}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
