@@ -13,12 +13,11 @@ import org.slf4j.LoggerFactory;
 
 import zx.soft.sina.IO.domain.User;
 import zx.soft.sina.IO.domain.Weibo;
-import zx.soft.sina.IO.mapred.WriterSolr;
 import zx.soft.utils.config.ConfigUtil;
 
 public class IOSolr implements SinaIO {
 
-	private static Logger logger = LoggerFactory.getLogger(WriterSolr.class);
+	private static Logger logger = LoggerFactory.getLogger(IOSolr.class);
 	private final CloudSolrServer cloudSolrServerUser;
 	private final CloudSolrServer cloudSolrServerWeibo;
 

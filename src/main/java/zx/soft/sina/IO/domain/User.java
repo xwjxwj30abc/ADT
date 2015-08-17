@@ -1,7 +1,11 @@
 package zx.soft.sina.IO.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import zx.soft.sina.IO.util.JsonUtils;
 
 /**
  * 新浪用户基础信息数据模型
@@ -953,4 +957,11 @@ public class User implements Serializable {
 		this.urank = urank;
 	}
 
+	public static void main(String[] args) {
+		Builder builder = new Builder(111, "111", "screen_name", "name", new Date());
+		User user = builder.build();
+		List<User> users = new ArrayList<>();
+		users.add(user);
+		System.out.println(JsonUtils.toJsonWithoutPretty(users));
+	}
 }

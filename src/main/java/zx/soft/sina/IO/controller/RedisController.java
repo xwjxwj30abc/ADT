@@ -31,7 +31,6 @@ public class RedisController {
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		redisService.close();
 	}
 
 	@RequestMapping(value = "/weibos", method = RequestMethod.POST, headers = "content-type=application/json")
@@ -42,7 +41,6 @@ public class RedisController {
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		redisService.close();
 	}
 
 }

@@ -3,3 +3,6 @@ curl -XPOST --header 'Content-Type:application/json' http://192.168.6.126:8888/s
 
 #write weibo to solr
 curl -XPOST --header 'Content-Type:application/json' http://192.168.6.126:8888/solr/weibos --data '[{"created_at":"Fri Aug 14 14:28:30 CST 2015","id":"weibo","mid":"weibo","idstr":"weibo","text":"","source_allowclick":0,"source_type":0,"source":"","favorited":false,"truncated":false,"in_reply_to_status_id":"","in_reply_to_user_id":"","in_reply_to_screen_name":"","pic_urls":null,"geo":"","user":null,"reposts_count":0,"comments_count":0,"attitudes_count":0,"mlevel":0,"visible":null,"darwin_tags":null,"owid":0,"ousername":0}]'
+
+#write weibo to redis
+curl -XPOST --header 'Content-Type:application/json' http://192.168.6.126:8888/redis/weibos --data '[{"created_at":"Mon Aug 17 16:25:54 CST 2015","id":"weibo3","mid":"weibo4","idstr":"weibo4","text":"","source_allowclick":0,"source_type":0,"source":"","favorited":false,"truncated":false,"in_reply_to_status_id":"","in_reply_to_user_id":"","in_reply_to_screen_name":"","pic_urls":null,"geo":"","user":null,"reposts_count":0,"comments_count":0,"attitudes_count":0,"mlevel":0,"visible":null,"darwin_tags":null,"owid":0,"ousername":0}]'

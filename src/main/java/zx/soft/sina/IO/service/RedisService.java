@@ -1,7 +1,6 @@
 package zx.soft.sina.IO.service;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -9,6 +8,8 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import zx.soft.sina.IO.core.IORedis;
+import zx.soft.sina.IO.domain.User;
+import zx.soft.sina.IO.domain.Weibo;
 
 @Service
 public class RedisService {
@@ -18,10 +19,18 @@ public class RedisService {
 
 	public <T> void insert(List<T> objects) throws NoSuchFieldException, SecurityException, IllegalArgumentException,
 			IllegalAccessException {
-		for (T object : objects) {
-			Field field = object.getClass().getDeclaredField("id");
-			field.setAccessible(true);
-			iORedis.write(field.get(object).toString(), object.toString());
+		if (objects.size() > 0) {
+			if (objects.get(0) instanceof User) {
+				for (T object : objects) {
+					iORedis.write("sina_user", object);
+				}
+
+			}
+			if (objects.get(0) instanceof Weibo) {
+				for (T object : objects) {
+					iORedis.write("sina_weibo", object);
+				}
+			}
 		}
 	}
 

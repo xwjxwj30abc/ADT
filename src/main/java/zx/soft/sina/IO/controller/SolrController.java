@@ -26,17 +26,15 @@ public class SolrController {
 	@RequestMapping(value = "/users", method = RequestMethod.POST, headers = "content-type=application/json")
 	@ResponseStatus(HttpStatus.OK)
 	public void insertUsers(@RequestBody List<User> users) throws IOException, NoSuchFieldException, SecurityException,
-			IllegalArgumentException, IllegalAccessException {
+	IllegalArgumentException, IllegalAccessException {
 		solrService.insert(users);
-		solrService.close();
 	}
 
 	@RequestMapping(value = "/weibos", method = RequestMethod.POST, headers = "content-type=application/json")
 	@ResponseStatus(HttpStatus.OK)
 	public void insertWeibos(@RequestBody List<Weibo> weibos) throws IOException, NoSuchFieldException,
-	SecurityException, IllegalArgumentException, IllegalAccessException {
+			SecurityException, IllegalArgumentException, IllegalAccessException {
 		solrService.insert(weibos);
-		solrService.close();
 	}
 
 }

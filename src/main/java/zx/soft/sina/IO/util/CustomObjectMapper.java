@@ -1,9 +1,7 @@
 package zx.soft.sina.IO.util;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,13 +21,6 @@ public class CustomObjectMapper extends ObjectMapper {
 	public CustomObjectMapper() {
 		super();
 		setDateFormat(sinaDateFormat);
-	}
-
-	/**
-	 * 测试函数
-	 */
-	public static void main(String[] args) throws ParseException {
-		System.out.println(sinaDateFormat.format(new Date()));
 	}
 
 }

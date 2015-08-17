@@ -1,8 +1,12 @@
 package zx.soft.sina.IO.domain;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import zx.soft.sina.IO.util.JsonUtils;
 
 /**
  * 新浪单条微博信息
@@ -438,4 +442,11 @@ public class Weibo implements Serializable {
 		this.ousername = ousername;
 	}
 
+	public static void main(String[] args) throws IOException {
+		Builder builder1 = new Builder("weibo3", "weibo3", "weibo3", new Date());
+		Weibo weibo = builder1.build();
+		List<Weibo> weibos = new ArrayList<>();
+		weibos.add(weibo);
+		System.out.println(JsonUtils.toJsonWithoutPretty(weibos));
+	}
 }

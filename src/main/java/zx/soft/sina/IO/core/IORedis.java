@@ -2,25 +2,22 @@ package zx.soft.sina.IO.core;
 
 import java.io.IOException;
 
-import zx.soft.redis.client.cache.Cache;
-import zx.soft.redis.client.cache.CacheFactory;
-
 public class IORedis implements SinaIO {
 
-	private static Cache cache;
+	private RedisMQ redisMQ;
 
 	public IORedis() {
-		cache = CacheFactory.getInstance();
+		redisMQ = new RedisMQ();
 	}
 
 	@Override
 	public <T> void write(String key, T value) {
-		cache.sadd(key, value.toString());
+		redisMQ.addRecord(key, value.toString());
 	}
 
 	@Override
 	public void close() throws IOException {
-		cache.close();
+		redisMQ.close();
 	}
 
 }
