@@ -15,6 +15,11 @@ import zx.soft.sina.IO.query.ImpalaQuery;
 @RequestMapping("/weibos")
 public class WeiboController {
 
+	/**
+	 * 获取循环爬取的活跃用户微博中最大的微博id号，供循环爬取时传递since_id,用于去重
+	 * @return
+	 * @throws SQLException
+	 */
 	@RequestMapping(value = "/active/maxid", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody String getMaxId() throws SQLException {

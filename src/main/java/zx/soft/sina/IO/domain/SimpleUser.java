@@ -1,5 +1,10 @@
 package zx.soft.sina.IO.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import zx.soft.sina.IO.util.JsonUtils;
+
 public class SimpleUser {
 
 	private long id;
@@ -76,5 +81,13 @@ public class SimpleUser {
 			return new SimpleUser(this);
 		}
 
+	}
+
+	public static void main(String[] args) {
+		Builder builder = new Builder(13, 1345);
+		SimpleUser user = builder.build();
+		List<SimpleUser> users = new ArrayList<>();
+		users.add(user);
+		System.out.println(JsonUtils.toJsonWithoutPretty(users));
 	}
 }

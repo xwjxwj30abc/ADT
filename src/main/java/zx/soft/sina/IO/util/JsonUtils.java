@@ -19,8 +19,7 @@ public class JsonUtils {
 
 	private static final ObjectMapper mapper = new ObjectMapper();
 
-	private static DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);//yyyy-MM-dd HH:mm:ss
-
+	private static DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
 	static {
 		mapper.setDateFormat(dateFormat);
 	}
