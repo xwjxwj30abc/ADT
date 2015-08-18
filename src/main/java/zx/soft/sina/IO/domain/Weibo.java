@@ -443,7 +443,10 @@ public class Weibo implements Serializable {
 	}
 
 	public static void main(String[] args) throws IOException {
-		Builder builder1 = new Builder("weibo3", "weibo3", "weibo3", new Date());
+		zx.soft.sina.IO.domain.User.Builder user = new zx.soft.sina.IO.domain.User.Builder(123, "123", "screen_name",
+				"name", new Date());
+		Builder builder1 = new Builder("weibo3", "weibo3", "weibo3", new Date()).setUser(user.build())
+				.setPic_urls(new ArrayList<String>()).setDarwin_tags(new ArrayList<String>()).setVisible(new Visible());
 		Weibo weibo = builder1.build();
 		List<Weibo> weibos = new ArrayList<>();
 		weibos.add(weibo);
