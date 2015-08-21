@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import zx.soft.sina.IO.domain.SimpleUser;
 import zx.soft.sina.IO.domain.User;
 import zx.soft.sina.IO.domain.Weibo;
 import zx.soft.sina.IO.service.MySQLService;
@@ -23,12 +22,6 @@ import zx.soft.sina.IO.service.MySQLService;
 public class MySQLController {
 	@Inject
 	private MySQLService mySQLService;
-
-	@RequestMapping(value = "/simpleusers", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
-	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody void insertSimpleUserToMySQL(@RequestBody List<SimpleUser> values) {
-		mySQLService.insert(values);
-	}
 
 	@RequestMapping(value = "/users", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)

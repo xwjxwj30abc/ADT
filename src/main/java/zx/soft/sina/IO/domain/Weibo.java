@@ -445,8 +445,13 @@ public class Weibo implements Serializable {
 	public static void main(String[] args) throws IOException {
 		zx.soft.sina.IO.domain.User.Builder user = new zx.soft.sina.IO.domain.User.Builder(123, "123", "screen_name",
 				"name", new Date());
-		Builder builder1 = new Builder("weibo3", "weibo3", "weibo3", new Date()).setUser(user.build())
-				.setPic_urls(new ArrayList<String>()).setDarwin_tags(new ArrayList<String>()).setVisible(new Visible());
+		List<String> pic_urls = new ArrayList<>();
+		pic_urls.add("pic_urls");
+		List<String> darwin_tags = new ArrayList<>();
+		darwin_tags.add("tags1");
+		darwin_tags.add("tags2");
+		Builder builder1 = new Builder("weibo4", "weibo3", "weibo3", new Date()).setUser(user.build())
+				.setVisible(new Visible(2, 1)).setPic_urls(pic_urls).setDarwin_tags(darwin_tags);
 		Weibo weibo = builder1.build();
 		List<Weibo> weibos = new ArrayList<>();
 		weibos.add(weibo);

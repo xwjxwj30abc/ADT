@@ -2,15 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="zx.soft.sina.IO.dao.UserMapper">
 
-	<!-- 插入简单用户信息 -->
-	<insert id="insertSimpleUser" parameterType="zx.soft.sina.IO.domain.SimpleUser"
-		useGeneratedKeys="true" keyProperty="id" flushCache="true"
-		statementType="PREPARED">
-		INSERT INTO `simpleuser`
-		(`uid`,`idstr`,`name`,`create_at`,`time`)
-		VALUES
-		(#{id},#{idstr},#{name},#{create_at},NOW());
-	</insert>
 	<!-- 插入完整用户信息 -->
 	<insert id="insertUser" parameterType="zx.soft.sina.IO.domain.User"
 		useGeneratedKeys="true" keyProperty="id" flushCache="true"
@@ -48,21 +39,37 @@
 		(`uid`,`created_at`,`mid`,`idstr`,`text`,`source_allowclick`,`source_type`,
 		`source`,`favorited`,`truncated`,`in_reply_to_status_id`,
 		`in_reply_to_user_id`,`in_reply_to_screen_name`,`geo`,`reposts_count`,
-		`comments_count`,`attitudes_count`,`mlevel`,`owid`,`ousername`,`lasttime`)
+		`comments_count`,`attitudes_count`,`mlevel`,`owid`,`ousername`,`user`,
+		`visible_type`,`visible_list_id`,`pic_urls`,`darwin_tags`,`lasttime`)
 		VALUES
 		(#{id},#{created_at},#{mid},#{idstr},#{text},#{source_allowclick},#{source_type},
 		#{source},#{favorited},#{truncated},#{in_reply_to_status_id},
 		#{in_reply_to_user_id},#{in_reply_to_screen_name},#{geo},#{reposts_count},
-		#{comments_count},#{attitudes_count},#{mlevel},#{owid},#{ousername},NOW());
+		#{comments_count},#{attitudes_count},#{mlevel},#{owid},#{ousername},#{user.idstr},
+		#{visible.type},#{visible.list_id},#{pic_urls,typeHandler=zx.soft.sina.IO.dao.ListTypeHandler},
+		#{darwin_tags,typeHandler=zx.soft.sina.IO.dao.ListTypeHandler},NOW());
 	</insert>
-	<!-- 插入特殊字段微博信息 -->
-	<!-- <update id="insertSpecial" >
-		UPDATE `weibo` SET 
-		pic_urls=#{pic_urls},
-		user=#{user},
-		visible=#{visible},
-		darwin_tags=#{darwin_tags}
-		WHERE uid=#{id};
-	</update> -->
 
+
+	<!-- <resultMap id="weiboResultMap" type="zx.soft.sina.IO.domain.Weibo"> 
+		<id property="id" column="uid" /> <association property="user" javaType="zx.soft.sina.IO.domain.User"> 
+		<result property="idstr" column="user" /> </association> <association property="visible" 
+		javaType="zx.soft.sina.IO.domain.Visible"> <result property="type" column="visible_type" 
+		/> <result property="list_id" column="visible_list_id" /> </association> 
+		<collection property="pic_urls" javaType="java.util.ArrayList" column="pic_urls" 
+		ofType="java.lang.String" /> <collection property="darwin_tags" javaType="java.util.ArrayList" 
+		column="darwin_tags" ofType="java.lang.String" /> <result property="created_at" 
+		column="created_at" /> <result property="mid" column="mid" /> <result property="idstr" 
+		column="idstr" /> <result property="text" column="text" /> <result property="source_allowclick" 
+		column="source_allowclick" /> <result property="source_type" column="source_type" 
+		/> <result property="source" column="source" /> <result property="favorited" 
+		column="favorited" /> <result property="truncated" column="truncated" /> 
+		<result property="in_reply_to_status_id" column="in_reply_to_status_id" /> 
+		<result property="in_reply_to_user_id" column="in_reply_to_user_id" /> <result 
+		property="in_reply_to_screen_name" column="in_reply_to_screen_name" /> <result 
+		property="geo" column="geo" /> <result property="reposts_count" column="reposts_count" 
+		/> <result property="comments_count" column="comments_count" /> <result property="attitudes_count" 
+		column="attitudes_count" /> <result property="mlevel" column="mlevel" /> 
+		<result property="owid" column="owid" /> <result property="ousername" column="ousername" 
+		/> </resultMap> -->
 </mapper>

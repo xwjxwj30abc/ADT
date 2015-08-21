@@ -34,6 +34,12 @@ public class RedisService {
 		}
 	}
 
+	public void insertnum(List<String> nums) {
+		for (String num : nums) {
+			iORedis.write("httpclient", num);
+		}
+	}
+
 	public void close() throws IOException {
 		iORedis.close();
 	}
