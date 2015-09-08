@@ -18,7 +18,7 @@ public class RedisService {
 	private IORedis iORedis;
 
 	public <T> void insert(List<T> objects) throws NoSuchFieldException, SecurityException, IllegalArgumentException,
-			IllegalAccessException {
+	IllegalAccessException {
 		if (objects.size() > 0) {
 			if (objects.get(0) instanceof User) {
 				for (T object : objects) {
@@ -31,12 +31,6 @@ public class RedisService {
 					iORedis.write("sina_weibo", object);
 				}
 			}
-		}
-	}
-
-	public void insertnum(List<String> nums) {
-		for (String num : nums) {
-			iORedis.write("httpclient", num);
 		}
 	}
 

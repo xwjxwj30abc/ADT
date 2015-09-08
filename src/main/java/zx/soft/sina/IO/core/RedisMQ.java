@@ -1,7 +1,6 @@
 package zx.soft.sina.IO.core;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -12,12 +11,10 @@ import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
-import zx.soft.sina.IO.domain.User;
-import zx.soft.sina.IO.domain.User.Builder;
 import zx.soft.sina.IO.domain.Weibo;
+import zx.soft.sina.IO.util.ConfigUtil;
 import zx.soft.sina.IO.util.JsonUtils;
-import zx.soft.utils.config.ConfigUtil;
-import zx.soft.utils.log.LogbackUtil;
+import zx.soft.sina.IO.util.LogbackUtil;
 
 public class RedisMQ {
 
@@ -173,24 +170,5 @@ public class RedisMQ {
 	public void close() {
 		// 程序关闭时，需要调用关闭方法
 		pool.destroy();
-	}
-
-	public static void main(String[] args) {
-		//		Builder builder1 = new Builder("weibo1", "weibo1", "weibo1", new Date());
-		//		Weibo weibo1 = builder1.build();
-		//		Builder builder2 = new Builder("weibo2", "weibo2", "weibo2", new Date());
-		//		Weibo weibo2 = builder2.build();
-		//		List<String> weibos = new ArrayList<>();
-		//		weibos.add(JsonUtils.toJsonWithoutPretty(weibo1));
-		//		weibos.add(JsonUtils.toJsonWithoutPretty(weibo2));
-		RedisMQ redisMQ = new RedisMQ();
-		Builder builder = new Builder(111, "111", "screen_name", "name", new Date());
-		User user = builder.build();
-		redisMQ.addRecord("sina_user", user.toString());
-		//redisMQ.addRecord("sina_weibo", weibos.toArray(new String[weibos.size()]));
-		//		List<Weibo> wei = redisMQ.mapper(redisMQ.getRecords("sina_weibo"));
-		//		System.out.println(wei.get(0).toString());
-		//System.out.println(wei.get(1).toString());
-		redisMQ.close();
 	}
 }

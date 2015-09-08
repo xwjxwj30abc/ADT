@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
-import zx.soft.utils.config.ConfigUtil;
+import zx.soft.sina.IO.util.ConfigUtil;
 
 public class ClouderaImpalaJdbc {
 

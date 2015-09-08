@@ -25,7 +25,7 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/active/{num}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody List<String> getTopNActiveUser(@PathVariable int num) throws SQLException {
+	public @ResponseBody List<String> getTopNActiveUser(@PathVariable("num") int num) throws SQLException {
 		List<String> topN = ImpalaQuery.getTopNActiveUser(num);
 		return topN;
 	}

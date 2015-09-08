@@ -4,8 +4,7 @@ import java.io.Serializable;
 
 public class Visible implements Serializable {
 
-	private static final long serialVersionUID = -6412677856067543378L;
-
+	//private static final long serialVersionUID = -6412677856067543378L;
 	// 类型
 	private int type;
 	// 列表ID

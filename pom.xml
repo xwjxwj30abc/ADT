@@ -18,16 +18,16 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>zx.soft</groupId>
-			<artifactId>weibo-sina</artifactId>
-			<version>1.2.0</version>
-		</dependency>
 		<!-- HBase -->
 		<dependency>
 			<groupId>zx.soft</groupId>
 			<artifactId>hbase-api</artifactId>
 			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>zx.soft</groupId>
+			<artifactId>weibo-mapred</artifactId>
+			<version>1.2.0</version>
 		</dependency>
 		<!--impala查询需要的hive-jdbc -->
 		<dependency>
@@ -64,10 +64,6 @@
 			<groupId>org.apache.hadoop</groupId>
 			<artifactId>hadoop-core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-		</dependency>
 		<!-- Spring包 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -98,10 +94,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -202,10 +194,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- <plugin> <artifactId>maven-assembly-plugin</artifactId> <configuration> 
-				<descriptorRefs> <descriptorRef>jar-with-dependencies</descriptorRef> </descriptorRefs> 
-				</configuration> <executions> <execution> <id>make-assembly</id> <phase>package</phase> 
-				<goals> <goal>single</goal> </goals> </execution> </executions> </plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

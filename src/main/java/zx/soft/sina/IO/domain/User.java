@@ -16,7 +16,6 @@ import zx.soft.sina.IO.util.JsonUtils;
 public class User implements Serializable {
 
 	//private static final long serialVersionUID = -4574543153431266465L;
-
 	// 用户id
 	private long id;
 	private String idstr;

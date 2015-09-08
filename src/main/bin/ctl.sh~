@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mainClass=zx.soft.sina.IO.driver.UserDriver
+mainClass=zx.soft.IO.driver.UserDriver
 
 # resolve links - $0 may be a softlink
 PRG="$0"

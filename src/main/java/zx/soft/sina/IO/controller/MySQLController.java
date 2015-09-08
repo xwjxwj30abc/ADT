@@ -26,12 +26,16 @@ public class MySQLController {
 	@RequestMapping(value = "/users", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody void insertUserToMySQL(@RequestBody List<User> values) {
-		mySQLService.insert(values);
+		if (values.size() > 0) {
+			mySQLService.insert(values);
+		}
 	}
 
 	@RequestMapping(value = "/weibos", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody void insertWeiboToMySQL(@RequestBody List<Weibo> values) {
-		mySQLService.insert(values);
+		if (values.size() > 0) {
+			mySQLService.insert(values);
+		}
 	}
 }

@@ -1,7 +1,7 @@
 package zx.soft.sina.IO.controller;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
@@ -25,23 +25,53 @@ public class HBaseController {
 	@Inject
 	private HBaseService hBaseService;
 
-	@RequestMapping(value = "/users", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/users/info", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody void insertUsers(@RequestBody List<User> users) throws IOException {
-		try {
-			hBaseService.insert(users);
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
+	public @ResponseBody void insertUsers(@RequestBody List<User> users) {
+		if (users.size() > 0) {
+			try {
+				hBaseService.insertUsers(users);
+			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-	@RequestMapping(value = "/weibos", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/users/score", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody void insertWeibos(@RequestBody List<Weibo> weibos) throws IOException {
-		try {
-			hBaseService.insert(weibos);
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
+	public @ResponseBody void insertUserScores(@RequestBody Map<String, String> ids_scores) {
+		if (ids_scores.size() > 0) {
+			try {
+				hBaseService.inserUserScores(ids_scores);
+			} catch (SecurityException | IllegalArgumentException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	@RequestMapping(value = "/weibos/history", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
+	@ResponseStatus(HttpStatus.OK)
+	public @ResponseBody void insertWeibos(@RequestBody List<Weibo> weibos) {
+		if (weibos.size() > 0) {
+			try {
+				hBaseService.insertHistoryWeibos(weibos);
+			} catch (SecurityException | IllegalArgumentException e) {
+				e.printStackTrace();
+			}
 		}
 	}
+
+	@RequestMapping(value = "/weibos/lastest", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
+	@ResponseStatus(HttpStatus.OK)
+	public @ResponseBody void insertLastestWeibos(@RequestBody List<Weibo> weibos) {
+		if (weibos.size() > 0) {
+			try {
+				hBaseService.insertlastestWeibos(weibos);
+			} catch (SecurityException | IllegalArgumentException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 }

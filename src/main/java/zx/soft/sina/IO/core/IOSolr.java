@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import zx.soft.sina.IO.domain.User;
 import zx.soft.sina.IO.domain.Weibo;
-import zx.soft.utils.config.ConfigUtil;
+import zx.soft.sina.IO.util.ConfigUtil;
 
 public class IOSolr implements SinaIO {
 

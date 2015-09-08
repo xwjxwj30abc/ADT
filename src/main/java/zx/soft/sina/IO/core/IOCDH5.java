@@ -73,7 +73,7 @@ public class IOCDH5 implements SinaIO {
 			writerUser = SequenceFile.createWriter(fs, conf, pathUser, Text.class, Text.class);
 			Path pathWeibo = new Path(fileNameWeibo);
 			if (fs.exists(pathWeibo)) {
-				throw new RuntimeException(fileNameUser);
+				throw new RuntimeException(fileNameWeibo);
 			}
 			logger.info("Create HDFS writer, fileName: " + fileNameWeibo);
 			writerWeibo = SequenceFile.createWriter(fs, conf, pathWeibo, Text.class, Text.class);
