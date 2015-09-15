@@ -18,6 +18,7 @@
 				<include>solr.properties</include>
 				<include>cache-config.properties</include>
 				<include>hive-connection.properties</include>
+				<include>super.properties</include>
 			</includes>
 			<outputDirectory>/conf</outputDirectory>
 			<filtered>true</filtered>

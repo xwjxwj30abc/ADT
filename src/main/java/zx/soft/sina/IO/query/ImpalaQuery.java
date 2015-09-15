@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import zx.soft.sina.IO.util.Constant;
-import zx.soft.utils.http.ClientDao;
-import zx.soft.utils.http.HttpClientDaoImpl;
 
 public class ImpalaQuery {
 
@@ -37,10 +35,18 @@ public class ImpalaQuery {
 	}
 
 	public static void main(String[] args) throws SQLException {
-		List<String> topN = ImpalaQuery.getTopNActiveUser(0);
-		System.out.println(topN.size());
-		System.out.println(ImpalaQuery.getMaxId());
-		ClientDao client = new HttpClientDaoImpl();
-		System.out.println(client.doGet("http://192.168.6.126:8888/users/active/" + 0));
+		//List<String> topN = ImpalaQuery.getTopNActiveUser(0);
+		//System.out.println(topN.size());
+		long before = System.currentTimeMillis();
+		String query = " select count(*) from user_score ";
+		ResultSet result = impala.Query(query);
+		String max = null;
+		while (result.next()) {
+			max = result.getString(1);
+		}
+		System.out.println(max);
+		System.out.println(System.currentTimeMillis() - before);
+		//		ClientDao client = new HttpClientDaoImpl();
+		//		System.out.println(client.doGet("http://192.168.6.126:8888/users/active/" + 0));
 	}
 }

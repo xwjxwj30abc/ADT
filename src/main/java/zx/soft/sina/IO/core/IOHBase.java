@@ -132,7 +132,7 @@ public class IOHBase implements SinaIO {
 			table.put(weibo.getIdstr(), cf, "id", weibo.getId());
 			table.put(weibo.getIdstr(), cf, "mid", weibo.getMid());
 			table.put(weibo.getIdstr(), cf, "idstr", weibo.getIdstr());
-			table.put(weibo.getIdstr(), cf, "created_at", weibo.getCreated_at().toString());
+			table.put(weibo.getIdstr(), cf, "created_at", String.valueOf(weibo.getCreated_at().getTime()));
 			table.put(weibo.getIdstr(), cf, "text", weibo.getText());
 			table.put(weibo.getIdstr(), cf, "source_allowclick", String.valueOf(weibo.getSource_allowclick()));
 			table.put(weibo.getIdstr(), cf, "source_type", String.valueOf(weibo.getSource_type()));
@@ -142,11 +142,8 @@ public class IOHBase implements SinaIO {
 			table.put(weibo.getIdstr(), cf, "in_reply_to_status_id", weibo.getIn_reply_to_status_id());
 			table.put(weibo.getIdstr(), cf, "in_reply_to_user_id", weibo.getIn_reply_to_user_id());
 			table.put(weibo.getIdstr(), cf, "in_reply_to_screen_name", weibo.getIn_reply_to_screen_name());
-			if (weibo.getUser() == null) {
-				table.put(weibo.getIdstr(), cf, "user_id", "38964038");
-			} else {
-				table.put(weibo.getIdstr(), cf, "user_id", weibo.getUser().getIdstr());
-			}
+			table.put(weibo.getIdstr(), cf, "user_id", weibo.getUser().getIdstr());
+			table.put(weibo.getIdstr(), cf, "user_screen_name", weibo.getUser().getName());
 			table.put(weibo.getIdstr(), cf, "reposts_count", String.valueOf(weibo.getReposts_count()));
 			table.put(weibo.getIdstr(), cf, "comments_count", String.valueOf(weibo.getComments_count()));
 			table.put(weibo.getIdstr(), cf, "attitudes_count", String.valueOf(weibo.getAttitudes_count()));
@@ -158,5 +155,4 @@ public class IOHBase implements SinaIO {
 			e.printStackTrace();
 		}
 	}
-
 }

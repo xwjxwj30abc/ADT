@@ -31,8 +31,6 @@ public class UserServer {
 	 * 主函数
 	 */
 	public static void main(String[] args) throws Exception {
-		//		Properties props = new Properties();
-		//		props.load(UserServer.class.getClassLoader().getResourceAsStream("web-server.properties"));
 		Properties props = ConfigUtil.getProps("web-server.properties");
 		new UserServer().startJetty(Integer.valueOf(props.getProperty("api.port", String.valueOf(DEFAULT_PORT))));
 	}
