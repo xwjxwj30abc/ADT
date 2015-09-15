@@ -1,5 +1,6 @@
 package zx.soft.sina.IO.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -72,6 +74,13 @@ public class HBaseController {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	@RequestMapping(value = "/weibos/{timeStamp}", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public @ResponseBody String getWeiboCount(@PathVariable("timeStamp") long timeStamp) throws SQLException {
+
+		return hBaseService.getHistoryWeiboCount(timeStamp);
 	}
 
 }

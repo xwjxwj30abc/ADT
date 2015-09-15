@@ -18,4 +18,7 @@ public class Constant {
 
 	public static final String USER_SCORE_Q = "score";
 
+	public static final String DATA_COUNT = "data_count";
+	public static final String DATA_COUNT_CF = "count";
+
 }

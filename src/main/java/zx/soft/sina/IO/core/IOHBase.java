@@ -127,6 +127,19 @@ public class IOHBase implements SinaIO {
 		}
 	}
 
+	public String getHistoryWeiboCountByTime(long timeStamp) {
+		String result = null;
+		try {
+			long minStamp = (timeStamp / (3600_000 * 12)) * 3600_000 * 12;
+			long maxStamp = (timeStamp / 3600_000) * 3600_000;
+			HBaseTable count = new HBaseTable(conn, Constant.DATA_COUNT);
+			result = count.get(String.valueOf(minStamp), Constant.DATA_COUNT_CF, String.valueOf(maxStamp));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 	private void transWeibo(HBaseTable table, Weibo weibo, String cf) {
 		try {
 			table.put(weibo.getIdstr(), cf, "id", weibo.getId());

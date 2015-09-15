@@ -19,7 +19,7 @@ public class HBaseService {
 	private IOHBase iOHBase;
 
 	public void insertUsers(List<User> users) throws NoSuchFieldException, SecurityException, IllegalArgumentException,
-			IllegalAccessException {
+	IllegalAccessException {
 		iOHBase.insertUsers(users);
 	}
 
@@ -34,6 +34,11 @@ public class HBaseService {
 
 	public void insertHistoryWeibos(List<Weibo> weibos) {
 		iOHBase.insertHistoryWeido(weibos);
+
+	}
+
+	public String getHistoryWeiboCount(long timeStamp) {
+		return iOHBase.getHistoryWeiboCountByTime(timeStamp);
 
 	}
 
