@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.hadoop.hbase.client.HConnection;
+import org.apache.hadoop.hbase.client.Result;
+import org.apache.hadoop.hbase.util.Bytes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -128,16 +130,18 @@ public class IOHBase implements SinaIO {
 	}
 
 	public String getHistoryWeiboCountByTime(long timeStamp) {
-		String result = null;
+		Result result = null;
+		byte[] res = null;
 		try {
-			long minStamp = (timeStamp / (3600_000 * 12)) * 3600_000 * 12;
+			long minStamp = (timeStamp / (3600_000 * 24)) * 3600_000 * 24;
 			long maxStamp = (timeStamp / 3600_000) * 3600_000;
 			HBaseTable count = new HBaseTable(conn, Constant.DATA_COUNT);
 			result = count.get(String.valueOf(minStamp), Constant.DATA_COUNT_CF, String.valueOf(maxStamp));
+			res = result.getValue(Bytes.toBytes(Constant.DATA_COUNT_CF), Bytes.toBytes(String.valueOf(maxStamp)));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return result;
+		return new String(res);
 	}
 
 	private void transWeibo(HBaseTable table, Weibo weibo, String cf) {

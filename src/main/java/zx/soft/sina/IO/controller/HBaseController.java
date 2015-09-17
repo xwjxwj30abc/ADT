@@ -5,14 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -76,11 +77,18 @@ public class HBaseController {
 		}
 	}
 
-	@RequestMapping(value = "/weibos/{timeStamp}", method = RequestMethod.GET)
+	@RequestMapping(value = "/weibos", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody String getWeiboCount(@PathVariable("timeStamp") long timeStamp) throws SQLException {
+	public @ResponseBody String getWeiboCount(@RequestParam("timeStamp") long timeStamp, HttpServletResponse response)
+			throws SQLException {
 
-		return hBaseService.getHistoryWeiboCount(timeStamp);
+		if (timeStamp < 1441929600000L) {
+			return "timeStamp should greater than 1441929600000L.";
+		} else if (timeStamp > System.currentTimeMillis()) {
+			return "timeStamp should not greater than current time.";
+		} else {
+			return hBaseService.getHistoryWeiboCount(timeStamp);
+		}
 	}
 
 }
