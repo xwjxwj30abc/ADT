@@ -84,8 +84,8 @@ public class HBaseController {
 
 		if (timeStamp < 1441929600000L) {
 			return "timeStamp should greater than 1441929600000L.";
-		} else if (timeStamp > System.currentTimeMillis()) {
-			return "timeStamp should not greater than current time.";
+		} else if (timeStamp > (System.currentTimeMillis() + 3600_000)) {
+			return "timeStamp should not more than the current time for one hour.";
 		} else {
 			return hBaseService.getHistoryWeiboCount(timeStamp);
 		}

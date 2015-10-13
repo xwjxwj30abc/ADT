@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import zx.soft.sina.IO.query.ImpalaQuery;
 import zx.soft.sina.IO.relationship.Relation;
 import zx.soft.utils.config.ConfigUtil;
 import zx.soft.utils.http.HttpClientDaoImpl;
@@ -29,18 +28,6 @@ public class WeiboController {
 	static {
 		Properties props = ConfigUtil.getProps("super.properties");
 		source = props.getProperty("super");
-	}
-
-	/**
-	 * 获取循环爬取的活跃用户微博中最大的微博id号，供循环爬取时传递since_id,用于去重
-	 * @return
-	 * @throws SQLException
-	 */
-	@RequestMapping(value = "/active/maxid", method = RequestMethod.GET)
-	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody String getMaxId() throws SQLException {
-		String maxId = ImpalaQuery.getMaxId();
-		return maxId;
 	}
 
 	@RequestMapping(value = "/lastest", method = RequestMethod.GET)

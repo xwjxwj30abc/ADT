@@ -170,6 +170,7 @@
 						<exclude>web-server.properties</exclude>
 						<exclude>hive-connection.properties</exclude>
 						<exclude>super.properties</exclude>
+						<exclude>sina-api.properties</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
