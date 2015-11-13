@@ -45,4 +45,12 @@ public class WeiboController {
 		List<Comments> comments = Relation.getComments(id, api, source);
 		return comments;
 	}
+
+	@RequestMapping(value = "/reposts/{id}", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public @ResponseBody List<Comments> getReposts(@PathVariable("id") String id) throws SQLException {
+		SinaWeiboAPI api = new SinaWeiboAPI(new HttpClientDaoImpl());
+		List<Comments> comments = Relation.getReposts(id, api, source);
+		return comments;
+	}
 }

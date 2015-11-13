@@ -64,11 +64,30 @@ public class Relation {
 		return comments;
 	}
 
+	public static List<Comments> getReposts(String id, SinaWeiboAPI api, String source) {
+		int page = 1;
+		boolean flag = true;
+		List<Comments> comments = new ArrayList<>();
+		while (flag) {
+			List<SinaDomain> sinaDomains = api.repostsShow(COOKIE, id, "0", "0", PAGE_COUNT, page++, source);
+			if (sinaDomains != null && sinaDomains.size() > 0) {
+				for (SinaDomain sinaDomain : sinaDomains) {
+					comments.add(SinaDomainUtils.getWeiboReposts(sinaDomain));
+				}
+			} else {
+				flag = false;
+			}
+		}
+		return comments;
+	}
+
 	public static void main(String[] args) {
 		SinaWeiboAPI api = new SinaWeiboAPI(new HttpClientDaoImpl());
-		//List<Weibo> weibos = Relation.getWeibos("暂时胆小", "3845272542", api);
+		List<Weibo> weibos = Relation.getWeibos("暂时胆小", "3845272542", api);
 		//System.out.println(weibos.size());
-		List<Comments> comments = Relation.getComments("3885175576849680", api, "3845272542");//3194139109
+		List<Comments> comments = Relation.getComments("3905364770682830", api, "3442868347");//3194139109
+		List<Comments> reposts = Relation.getReposts("3905364770682830", api, "3442868347");//3194139109 861 461
 		System.out.println(comments.size());
+		System.out.println(reposts.size());
 	}
 }
