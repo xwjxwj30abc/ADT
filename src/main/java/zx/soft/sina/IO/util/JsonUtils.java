@@ -7,6 +7,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
+import org.codehaus.jackson.annotate.JsonMethod;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +19,7 @@ public class JsonUtils {
 
 	private static Logger logger = LoggerFactory.getLogger(JsonUtils.class);
 
-	private static final ObjectMapper mapper = new ObjectMapper();
+	private static final ObjectMapper mapper = new ObjectMapper().setVisibility(JsonMethod.FIELD, Visibility.ANY);;
 
 	private static DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
 	static {
@@ -40,6 +42,16 @@ public class JsonUtils {
 	public static String toJsonWithoutPretty(Object object) {
 		try {
 			return mapper.writeValueAsString(object);
+		} catch (IOException e) {
+			logger.error("Exception:{}", LogbackUtil.expection2Str(e));
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static <T> T getObject(String jsonStr, Class<T> t) {
+		org.codehaus.jackson.map.ObjectReader objectReader = mapper.reader(t);
+		try {
+			return objectReader.readValue(jsonStr);
 		} catch (IOException e) {
 			logger.error("Exception:{}", LogbackUtil.expection2Str(e));
 			throw new RuntimeException(e);

@@ -12,12 +12,18 @@ import zx.soft.utils.json.JsonUtils;
  */
 public class QueryParameters {
 
-	private int operator;
-	private String field;
-	private String value;
+	private int opera;
+	private String field = "";
+	private String value = "";
 
-	public int getOperator() {
-		return operator;
+	public QueryParameters() {
+
+	}
+
+	public QueryParameters(int opera, String field, String value) {
+		this.opera = opera;
+		this.field = field;
+		this.value = value;
 	}
 
 	public String getField() {
@@ -28,10 +34,6 @@ public class QueryParameters {
 		return value;
 	}
 
-	public void setOperator(int operator) {
-		this.operator = operator;
-	}
-
 	public void setField(String field) {
 		this.field = field;
 	}
@@ -40,23 +42,26 @@ public class QueryParameters {
 		this.value = value;
 	}
 
+	public int getOpera() {
+		return opera;
+	}
+
+	public void setOpera(int opera) {
+		this.opera = opera;
+	}
+
 	@Override
 	public String toString() {
-		return "QueryParameters [operator=" + operator + ", field=" + field + ", value=" + value + "]";
+		return "QueryParameters [opera=" + opera + ", field=" + field + ", value=" + value + "]";
 	}
 
 	public static void main(String[] args) {
 		List<QueryParameters> queryParams = new ArrayList<>();
 		QueryParameters param = new QueryParameters();
-		param.setField("net_type");
-		param.setOperator(0);
-		param.setValue("99");
-		QueryParameters param2 = new QueryParameters();
-		param2.setField("id");
-		param2.setOperator(1);
-		param2.setValue("10");
+		param.setField("Device_version");
+		param.setOpera(0);
+		param.setValue("20150212");
 		queryParams.add(param);
-		queryParams.add(param2);
 		System.out.println(JsonUtils.toJsonWithoutPretty(queryParams));
 	}
 

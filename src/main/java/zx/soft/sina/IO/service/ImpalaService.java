@@ -18,6 +18,7 @@ import zx.soft.sina.IO.domain.AccessList;
 import zx.soft.sina.IO.domain.AlertList;
 import zx.soft.sina.IO.domain.PlcClient;
 import zx.soft.sina.IO.domain.QueryParameters;
+import zx.soft.sina.IO.util.Constant;
 import zx.soft.sina.IO.util.ImpalaConnection;
 
 @Service
@@ -32,16 +33,19 @@ public class ImpalaService {
 		operation.put(2, " BETWEEN ");
 	}
 
-	public List<AccessList> queryAccessList(String tableName, List<QueryParameters> queryParams, int page) {
-		return getAccessListQueryResult(getSqlStatement(tableName, queryParams, page));
+	public List<AccessList> queryAccessList(String tableName, List<QueryParameters> queryParams, String orderBy,
+			String order, int pageSize, int page) {
+		return getAccessListQueryResult(getSqlStatement(tableName, queryParams, orderBy, order, pageSize, page));
 	}
 
-	public List<AlertList> queryAlertList(String tableName, List<QueryParameters> queryParams, int page) {
-		return getAlertListQueryResult(getSqlStatement(tableName, queryParams, page));
+	public List<AlertList> queryAlertList(String tableName, List<QueryParameters> queryParams, String orderBy,
+			String order, int pageSize, int page) {
+		return getAlertListQueryResult(getSqlStatement(tableName, queryParams, orderBy, order, pageSize, page));
 	}
 
-	public List<PlcClient> queryPlcClient(String tableName, List<QueryParameters> queryParams, int page) {
-		return getPlcClientQueryResult(getSqlStatement(tableName, queryParams, page));
+	public List<PlcClient> queryPlcClient(String tableName, List<QueryParameters> queryParams, String orderBy,
+			String order, int pageSize, int page) {
+		return getPlcClientQueryResult(getSqlStatement(tableName, queryParams, orderBy, order, pageSize, page));
 	}
 
 	public List<AccessList> getAccessListQueryResult(String sqlStatement) {
@@ -210,35 +214,59 @@ public class ImpalaService {
 		}
 	}
 
-	private String getSqlStatement(String tableName, List<QueryParameters> queryParams, int page) {
+	private String getSqlStatement(String tableName, List<QueryParameters> queryParams, String orderBy, String order,
+			int pageSize, int page) {
 		String sqlStatement = null;
 		StringBuilder condition = new StringBuilder();
 		if (queryParams.size() > 0) {
 
-			if (queryParams.get(0).getOperator() == 2) {
-				condition.append(queryParams.get(0).getField()).append(operation.get(queryParams.get(0).getOperator()))
+			if (queryParams.get(0).getOpera() == 2) {
+				condition.append(queryParams.get(0).getField()).append(operation.get(queryParams.get(0).getOpera()))
 				.append(queryParams.get(0).getValue().split(",")[0]).append(" AND ")
 				.append(queryParams.get(0).getValue().split(",")[1]);
 			} else {
-				condition.append(queryParams.get(0).getField()).append(operation.get(queryParams.get(0).getOperator()))
-				.append(queryParams.get(0).getValue());
+				condition.append(queryParams.get(0).getField()).append(operation.get(queryParams.get(0).getOpera()));
+				if (Constant.StringFields.contains(queryParams.get(0).getField())
+						&& !queryParams.get(0).getField().equals("id")) {
+					condition.append("\'").append(queryParams.get(0).getValue()).append("\'");
+				} else {
+					condition.append(queryParams.get(0).getValue());
+				}
 			}
 
 			for (int j = 1; j < queryParams.size(); j++) {
-				if (queryParams.get(j).getOperator() == 2) {
-					condition.append(queryParams.get(j).getField()).append(queryParams.get(j).getOperator())
+				if (queryParams.get(j).getOpera() == 2) {
+					condition.append(queryParams.get(j).getField()).append(queryParams.get(j).getOpera())
 					.append(queryParams.get(j).getValue().split(",")[0]).append(" AND ")
 					.append(queryParams.get(j).getValue().split(",")[1]);
 				} else {
 					condition.append(" AND ").append(queryParams.get(j).getField())
-					.append(operation.get(queryParams.get(j).getOperator()))
-					.append(queryParams.get(j).getValue());
+					.append(operation.get(queryParams.get(j).getOpera()));
+					if (Constant.StringFields.contains(queryParams.get(j).getField())
+							&& !queryParams.get(j).getField().equals("id")) {
+						condition.append("\"").append(queryParams.get(j).getValue()).append("\"");
+					} else {
+						condition.append(queryParams.get(j).getValue());
+					}
+
 				}
 			}
 		}
-		sqlStatement = "SELECT * FROM " + tableName + " WHERE " + condition + " ORDER BY id LIMIT 20 OFFSET " + page;
+		sqlStatement = "SELECT * FROM " + tableName + " WHERE " + condition + " ORDER BY " + orderBy + " " + order
+				+ " LIMIT " + pageSize + " OFFSET " + page;
 		logger.info(sqlStatement);
 		return sqlStatement;
 	}
 
+	public static void main(String[] args) {
+		ImpalaService service = new ImpalaService();
+		List<QueryParameters> queryParams = new ArrayList<>();
+		QueryParameters param = new QueryParameters();
+		param.setField("Device_serial");
+		param.setOpera(0);
+		param.setValue("ZX-HB02152020515");
+		queryParams.add(param);
+		String sqlStatement = service.getSqlStatement("parquet_compression.plcclient", queryParams, "id", "ASC", 10, 0);
+		System.out.println(service.getPlcClientQueryResult(sqlStatement).get(0));
+	}
 }
