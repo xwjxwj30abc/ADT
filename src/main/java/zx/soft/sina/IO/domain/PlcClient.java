@@ -2,33 +2,34 @@ package zx.soft.sina.IO.domain;
 
 public class PlcClient {
 
+	private String rowkey = "";
 	private long id;
 	private long Service_code;
-	private String Service_name;
-	private String Address;
-	private String Zip;
-	private String Principal;
-	private String Principal_tel;
-	private String Infor_man;
-	private String Infor_man_tel;
-	private String Infor_man_email;
+	private String Service_name = "";
+	private String Address = "";
+	private String Zip = "";
+	private String Principal = "";
+	private String Principal_tel = "";
+	private String Infor_man = "";
+	private String Infor_man_tel = "";
+	private String Infor_man_email = "";
 	private int Producer_code;
 	private int Status;
 	private int Ending_number;
 	private int Server_number;
-	private String Ip;
+	private String Ip = "";
 	private int Net_type;
 	private int Practitioner_number;
-	private String Net_monitor_department;
-	private String Net_monitor_man;
-	private String Net_monitor_man_tel;
-	private String Remark;
+	private String Net_monitor_department = "";
+	private String Net_monitor_man = "";
+	private String Net_monitor_man_tel = "";
+	private String Remark = "";
 	private int NewSystem;
 	private int UnitNo;
-	private String SessionID;
-	private String UdpHost;
+	private String SessionID = "";
+	private String UdpHost = "";
 	private int UdpPort;
-	private String UdpVer;
+	private String UdpVer = "";
 	private int ComputerOnline;
 	private long ClientTime;
 	private int LogDays;
@@ -38,15 +39,15 @@ public class PlcClient {
 	private int AlertLogAttr;
 	private int UserLogAttr;
 	private int DefaultAccessRule;
-	private String Device_ipv4;
-	private String Device_ipv6;
+	private String Device_ipv4 = "";
+	private String Device_ipv6 = "";
 	private int Device_port;
 	private int Udp_online;
-	private String Device_serial;
-	private String Device_version;
+	private String Device_serial = "";
+	private String Device_version = "";
 	private long Device_flow1;
 	private long Device_flow2;
-	private String Device_note;
+	private String Device_note = "";
 
 	public long getId() {
 		return id;
@@ -408,11 +409,19 @@ public class PlcClient {
 		Device_note = device_note;
 	}
 
+	public String getRowkey() {
+		return rowkey;
+	}
+
+	public void setRowkey(String rowkey) {
+		this.rowkey = rowkey;
+	}
+
 	@Override
 	public String toString() {
-		return "PlcClient [id=" + id + ", Service_code=" + Service_code + ", Service_name=" + Service_name
-				+ ", Address=" + Address + ", Zip=" + Zip + ", Principal=" + Principal + ", Principal_tel="
-				+ Principal_tel + ", Infor_man=" + Infor_man + ", Infor_man_tel=" + Infor_man_tel
+		return "PlcClient [rowkey=" + rowkey + ", id=" + id + ", Service_code=" + Service_code + ", Service_name="
+				+ Service_name + ", Address=" + Address + ", Zip=" + Zip + ", Principal=" + Principal
+				+ ", Principal_tel=" + Principal_tel + ", Infor_man=" + Infor_man + ", Infor_man_tel=" + Infor_man_tel
 				+ ", Infor_man_email=" + Infor_man_email + ", Producer_code=" + Producer_code + ", Status=" + Status
 				+ ", Ending_number=" + Ending_number + ", Server_number=" + Server_number + ", Ip=" + Ip
 				+ ", Net_type=" + Net_type + ", Practitioner_number=" + Practitioner_number

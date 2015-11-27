@@ -58,9 +58,9 @@ public class QueryParameters {
 	public static void main(String[] args) {
 		List<QueryParameters> queryParams = new ArrayList<>();
 		QueryParameters param = new QueryParameters();
-		param.setField("Device_version");
+		param.setField("Country_name");
 		param.setOpera(0);
-		param.setValue("20150212");
+		param.setValue("中国");
 		queryParams.add(param);
 		System.out.println(JsonUtils.toJsonWithoutPretty(queryParams));
 	}

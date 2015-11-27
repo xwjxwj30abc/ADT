@@ -3,36 +3,46 @@ package zx.soft.sina.IO.domain;
 import java.util.Date;
 
 public class AccessList {
+
+	private String rowkey = "";
 	private long id;
 	private long Service_code;
 	private long Net_ending_ip;
-	private String Net_ending_name;
+	private String Net_ending_name = "";
 	private long Time;
 	private long Net_ending_mac;
 	private long Destination_ip;
 	private int Port;
 	private int Service_type;
-	private String Keyword1;
-	private String Keyword2;
-	private String Keyword3;
+	private String Keyword1 = "";
+	private String Keyword2 = "";
+	private String Keyword3 = "";
 	private long Mac;
 	private int Source_port;
-	private String Net_ending_ipv6;
-	private String Destination_ipv6;
+	private String Net_ending_ipv6 = "";
+	private String Destination_ipv6 = "";
 	private int Keyword11;
 	private int Keyword12;
 	private int Keyword13;
 	private int Keyword14;
 	private long Keyword15;
-	private String Keyword21;
-	private String Keyword22;
-	private String Keyword23;
-	private String Keyword24;
-	private String Keyword25;
+	private String Keyword21 = "";
+	private String Keyword22 = "";
+	private String Keyword23 = "";
+	private String Keyword24 = "";
+	private String Keyword25 = "";
 	private double Jd;
 	private double Wd;
-	private String Country_name;
+	private String Country_name = "";
 	private Date Cjsj;
+
+	public String getRowkey() {
+		return rowkey;
+	}
+
+	public void setRowkey(String rowkey) {
+		this.rowkey = rowkey;
+	}
 
 	public long getId() {
 		return id;
@@ -280,15 +290,16 @@ public class AccessList {
 
 	@Override
 	public String toString() {
-		return "AccessList [id=" + id + ", Service_code=" + Service_code + ", Net_ending_ip=" + Net_ending_ip
-				+ ", Net_ending_name=" + Net_ending_name + ", Time=" + Time + ", Net_ending_mac=" + Net_ending_mac
-				+ ", Destination_ip=" + Destination_ip + ", Port=" + Port + ", Service_type=" + Service_type
-				+ ", Keyword1=" + Keyword1 + ", Keyword2=" + Keyword2 + ", Keyword3=" + Keyword3 + ", Mac=" + Mac
-				+ ", Source_port=" + Source_port + ", Net_ending_ipv6=" + Net_ending_ipv6 + ", Destination_ipv6="
-				+ Destination_ipv6 + ", Keyword11=" + Keyword11 + ", Keyword12=" + Keyword12 + ", Keyword13="
-				+ Keyword13 + ", Keyword14=" + Keyword14 + ", Keyword15=" + Keyword15 + ", Keyword21=" + Keyword21
-				+ ", Keyword22=" + Keyword22 + ", Keyword23=" + Keyword23 + ", Keyword24=" + Keyword24 + ", Keyword25="
-				+ Keyword25 + ", Jd=" + Jd + ", Wd=" + Wd + ", Country_name=" + Country_name + ", Cjsj=" + Cjsj + "]";
+		return "AccessList [rowkey=" + rowkey + ", id=" + id + ", Service_code=" + Service_code + ", Net_ending_ip="
+				+ Net_ending_ip + ", Net_ending_name=" + Net_ending_name + ", Time=" + Time + ", Net_ending_mac="
+				+ Net_ending_mac + ", Destination_ip=" + Destination_ip + ", Port=" + Port + ", Service_type="
+				+ Service_type + ", Keyword1=" + Keyword1 + ", Keyword2=" + Keyword2 + ", Keyword3=" + Keyword3
+				+ ", Mac=" + Mac + ", Source_port=" + Source_port + ", Net_ending_ipv6=" + Net_ending_ipv6
+				+ ", Destination_ipv6=" + Destination_ipv6 + ", Keyword11=" + Keyword11 + ", Keyword12=" + Keyword12
+				+ ", Keyword13=" + Keyword13 + ", Keyword14=" + Keyword14 + ", Keyword15=" + Keyword15 + ", Keyword21="
+				+ Keyword21 + ", Keyword22=" + Keyword22 + ", Keyword23=" + Keyword23 + ", Keyword24=" + Keyword24
+				+ ", Keyword25=" + Keyword25 + ", Jd=" + Jd + ", Wd=" + Wd + ", Country_name=" + Country_name
+				+ ", Cjsj=" + Cjsj + "]";
 	}
 
 }

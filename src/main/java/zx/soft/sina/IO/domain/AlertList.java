@@ -2,27 +2,36 @@ package zx.soft.sina.IO.domain;
 
 public class AlertList {
 
+	private String rowkey = "";
 	private long id;
 	private long Service_code;
-	private String Rule_id;
+	private String Rule_id = "";
 	private long Destination_ip;
 	private long Net_ending_ip;
 	private long Net_ending_mac;
-	private String Destination_ipv6;
-	private String Net_ending_ipv6;
+	private String Destination_ipv6 = "";
+	private String Net_ending_ipv6 = "";
 	private long Matching_time;
 	private int Service_type;
-	private String Keyword1;
-	private String Keyword2;
-	private String Keyword3;
-	private String User_name;
-	private String Certificate_type;
-	private String Certificate_code;
-	private String Org_name;
-	private String Country;
+	private String Keyword1 = "";
+	private String Keyword2 = "";
+	private String Keyword3 = "";
+	private String User_name = "";
+	private String Certificate_type = "";
+	private String Certificate_code = "";
+	private String Org_name = "";
+	private String Country = "";
 	private double Jd;
 	private double Wd;
-	private String Country_name;
+	private String Country_name = "";
+
+	public String getRowkey() {
+		return rowkey;
+	}
+
+	public void setRowkey(String rowkey) {
+		this.rowkey = rowkey;
+	}
 
 	public long getId() {
 		return id;
@@ -194,9 +203,9 @@ public class AlertList {
 
 	@Override
 	public String toString() {
-		return "AlertList [id=" + id + ", Service_code=" + Service_code + ", Rule_id=" + Rule_id + ", Destination_ip="
-				+ Destination_ip + ", Net_ending_ip=" + Net_ending_ip + ", Net_ending_mac=" + Net_ending_mac
-				+ ", Destination_ipv6=" + Destination_ipv6 + ", Net_ending_ipv6=" + Net_ending_ipv6
+		return "AlertList [rowkey=" + rowkey + ", id=" + id + ", Service_code=" + Service_code + ", Rule_id=" + Rule_id
+				+ ", Destination_ip=" + Destination_ip + ", Net_ending_ip=" + Net_ending_ip + ", Net_ending_mac="
+				+ Net_ending_mac + ", Destination_ipv6=" + Destination_ipv6 + ", Net_ending_ipv6=" + Net_ending_ipv6
 				+ ", Matching_time=" + Matching_time + ", Service_type=" + Service_type + ", Keyword1=" + Keyword1
 				+ ", Keyword2=" + Keyword2 + ", Keyword3=" + Keyword3 + ", User_name=" + User_name
 				+ ", Certificate_type=" + Certificate_type + ", Certificate_code=" + Certificate_code + ", Org_name="
