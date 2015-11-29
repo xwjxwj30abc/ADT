@@ -149,4 +149,25 @@ public class ImpalaController {
 	public @ResponseBody String getTrendency(@RequestParam("start") long start, @RequestParam("end") long end) {
 		return impalaService.getTrendency(ConstADT.TABLE_ACCESS, start, end);
 	}
+
+	//过滤结果终端来源统计接口
+	@RequestMapping(value = "/alert/stats/{group_by}", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public @ResponseBody String getAlert(@RequestBody String query, @PathVariable("group_by") String group_by) {
+		Params p = JsonUtils.getObject(query, Params.class);
+		if (p.getOrder() == "") {
+			p.setOrder("DESC");
+		}
+		if (p.getOrder_by() == "") {
+			p.setOrder_by("Matching_time");
+		}
+		if (p.getPage_size() == 0) {
+			p.setPage_size(10);
+		}
+		if (p.getQueryParameters().size() == 0) {
+			p.getQueryParameters().add(new QueryParameters(1, "id", "0"));
+		}
+		return impalaService.getAlertStats(ConstADT.TABLE_ALERT, p.getQueryParameters(), group_by, p.getPage_size());
+	}
+
 }

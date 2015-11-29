@@ -23,7 +23,7 @@ public class Tools {
 		operation.put(2, " BETWEEN ");
 	}
 
-	public static String getPartSqlStatement(String tableName, List<QueryParameters> queryParams) {
+	public static String getPartSqlStatement(List<QueryParameters> queryParams) {
 		StringBuilder condition = new StringBuilder();
 		if (queryParams.size() > 0) {
 
@@ -65,7 +65,7 @@ public class Tools {
 
 	public static String getBasicSqlStatement(String tableName, List<QueryParameters> queryParams, String orderBy,
 			String order, int pageSize, int page) {
-		String condition = Tools.getPartSqlStatement(tableName, queryParams);
+		String condition = Tools.getPartSqlStatement(queryParams);
 		String sqlStatement = "SELECT * FROM " + tableName + " WHERE " + condition + " ORDER BY " + orderBy + " "
 				+ order + " LIMIT " + pageSize + " OFFSET " + page * pageSize;
 		logger.info(sqlStatement);

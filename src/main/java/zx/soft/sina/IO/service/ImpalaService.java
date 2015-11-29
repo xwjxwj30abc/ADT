@@ -21,6 +21,7 @@ import zx.soft.sina.IO.domain.AlertList;
 import zx.soft.sina.IO.domain.PlcClient;
 import zx.soft.sina.IO.domain.QueryParameters;
 import zx.soft.sina.IO.util.ImpalaConnection;
+import zx.soft.sina.IO.util.JsonUtils;
 
 @Service
 public class ImpalaService {
@@ -173,7 +174,7 @@ public class ImpalaService {
 	}
 
 	public int getSum(String tableName, List<QueryParameters> queryParams) {
-		String condition = Tools.getPartSqlStatement(tableName, queryParams);
+		String condition = Tools.getPartSqlStatement(queryParams);
 		String sqlStatement = "SELECT COUNT(*) FROM " + tableName + " WHERE " + condition;
 		int s = 0;
 		try (Connection conn = ImpalaConnection.getConnection();
@@ -192,7 +193,7 @@ public class ImpalaService {
 
 	//对查询的结果根据某字段类型进行分类统计
 	public String getStat(String tableName, List<QueryParameters> queryParams, String groupBy, int limit) {
-		String condition = Tools.getPartSqlStatement(tableName, queryParams);
+		String condition = Tools.getPartSqlStatement(queryParams);
 		String sqlStatement = "SELECT " + groupBy + ",COUNT(*) AS number FROM " + tableName + " WHERE " + condition
 				+ " GROUP BY " + groupBy + " ORDER BY number DESC LIMIT " + limit;
 		Map<String, Integer> map = new HashMap<>();
@@ -207,33 +208,55 @@ public class ImpalaService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return map.toString();
+		return JsonUtils.toJson(map);
 	}
 
 	//用户一段时间上网趋势统计分析
 	public String getTrendency(String tableName, long start, long end) {
-		String sqlStatement = "SELECT (time-time%86400) AS DAY , COUNT(*) AS NUM FROM " + tableName
+		String sqlStatement = "SELECT (time-time%86400)-28800 AS DAY , COUNT(*) AS NUM FROM " + tableName
 				+ " WHERE time BETWEEN " + start + " AND " + end + " GROUP BY DAY ORDER BY NUM";
-		List<Integer> trends = new ArrayList<>();
+		Map<Long, Integer> map = new HashMap<>();
 		try (Connection conn = ImpalaConnection.getConnection();
 				Statement statement = conn.createStatement();
 				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
 			if (resultSet != null) {
 				while (resultSet.next()) {
-					trends.add(resultSet.getInt(2));
+					map.put(resultSet.getLong(1), resultSet.getInt(2));
 				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return trends.toString();
+		return JsonUtils.toJson(map);
+	}
+
+	public String getAlertStats(String tableName, List<QueryParameters> queryParams, String groupBy, int limit) {
+		String condition = Tools.getPartSqlStatement(queryParams);
+		String sqlStatement = "SELECT " + groupBy + " , COUNT(*) AS NUM FROM " + tableName + " WHERE " + condition
+				+ " GROUP BY " + groupBy + " ORDER BY NUM DESC LIMIT " + limit;
+		logger.info(sqlStatement);
+		Map<String, Integer> map = new HashMap<>();
+		try (Connection conn = ImpalaConnection.getConnection();
+				Statement statement = conn.createStatement();
+				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
+			if (resultSet != null) {
+				while (resultSet.next()) {
+					if (resultSet.getString(1) == null) {
+						map.put("unknown", resultSet.getInt(2));
+					} else {
+						map.put(resultSet.getString(1), resultSet.getInt(2));
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return JsonUtils.toJson(map);
 	}
 
 	public static void main(String[] args) throws UnsupportedEncodingException {
 		ImpalaService service = new ImpalaService();
-		Map<String, Integer> maps = new HashMap<>();
-		maps.put("q", 1);
-		maps.put("s", 23);
-		System.out.println(maps.toString());
+		System.out.println(service.getTrendency("parquet_compression.accesslist", 1446307200L, 1448899200L));
 	}
 }
