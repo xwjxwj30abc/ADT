@@ -29,14 +29,16 @@ public class Tools {
 
 			if (queryParams.get(0).getOpera() == 2) {
 				condition.append(queryParams.get(0).getField()).append(operation.get(queryParams.get(0).getOpera()))
-				.append(queryParams.get(0).getValue().split(",")[0]).append(" AND ")
-				.append(queryParams.get(0).getValue().split(",")[1]);
+						.append(queryParams.get(0).getValue().split(",")[0]).append(" AND ")
+						.append(queryParams.get(0).getValue().split(",")[1]);
 			} else {
-				condition.append(queryParams.get(0).getField()).append(operation.get(queryParams.get(0).getOpera()));
 				if (Constant.StringFields.contains(queryParams.get(0).getField())
 						&& !queryParams.get(0).getField().equals("id")) {
-					condition.append("\'").append(URLDecoder.decode(queryParams.get(0).getValue())).append("\'");
+					condition.append(queryParams.get(0).getField()).append(" LIKE ");
+					condition.append("\'%").append(URLDecoder.decode(queryParams.get(0).getValue())).append("%\'");
 				} else {
+					condition.append(queryParams.get(0).getField())
+							.append(operation.get(queryParams.get(0).getOpera()));
 					condition.append(queryParams.get(0).getValue());
 				}
 			}
@@ -44,15 +46,16 @@ public class Tools {
 			for (int j = 1; j < queryParams.size(); j++) {
 				if (queryParams.get(j).getOpera() == 2) {
 					condition.append(queryParams.get(j).getField()).append(queryParams.get(j).getOpera())
-					.append(queryParams.get(j).getValue().split(",")[0]).append(" AND ")
-					.append(queryParams.get(j).getValue().split(",")[1]);
+							.append(queryParams.get(j).getValue().split(",")[0]).append(" AND ")
+							.append(queryParams.get(j).getValue().split(",")[1]);
 				} else {
-					condition.append(" AND ").append(queryParams.get(j).getField())
-					.append(operation.get(queryParams.get(j).getOpera()));
 					if (Constant.StringFields.contains(queryParams.get(j).getField())
 							&& !queryParams.get(j).getField().equals("id")) {
-						condition.append("\"").append(URLDecoder.decode(queryParams.get(j).getValue())).append("\"");
+						condition.append(" AND ").append(queryParams.get(j).getField()).append(" LIKE ");
+						condition.append("\"%").append(URLDecoder.decode(queryParams.get(j).getValue())).append("\"%");
 					} else {
+						condition.append(" AND ").append(queryParams.get(j).getField())
+						.append(operation.get(queryParams.get(j).getOpera()));
 						condition.append(queryParams.get(j).getValue());
 					}
 

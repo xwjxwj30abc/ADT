@@ -58,9 +58,9 @@ public class QueryParameters {
 	public static void main(String[] args) {
 		List<QueryParameters> queryParams = new ArrayList<>();
 		QueryParameters param = new QueryParameters();
-		param.setField("Country_name");
+		param.setField("Net_ending_name");
 		param.setOpera(0);
-		param.setValue("中国");
+		param.setValue("c0");
 		queryParams.add(param);
 		System.out.println(JsonUtils.toJsonWithoutPretty(queryParams));
 	}

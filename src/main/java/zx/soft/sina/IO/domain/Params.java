@@ -73,8 +73,7 @@ public class Params {
 
 		Params p = new Params();
 		List<QueryParameters> queryParameters = new ArrayList<>();
-		queryParameters.add(new QueryParameters(0, "Device_serial", "ZX-HB01152020515"));
-		queryParameters.add(new QueryParameters(0, "Device_version", "20150212"));
+		queryParameters.add(new QueryParameters(0, "rule_id", "34010101201507220211"));
 		p.setQueryParameters(queryParameters);
 		//{"queryParameters":[{"opera":0,"field":"id","value":"1"}],"order_by":"id","order":"DESC","page_size":2,"page":1}
 		String ps = JsonUtils.toJsonWithoutPretty(p);

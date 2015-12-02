@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import zx.soft.impala.adt.core.ConstADT;
 import zx.soft.impala.adt.core.DataTrans;
 import zx.soft.impala.adt.core.Tools;
 import zx.soft.sina.IO.domain.AccessList;
@@ -241,11 +242,21 @@ public class ImpalaService {
 				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
 			if (resultSet != null) {
 				while (resultSet.next()) {
-					if (resultSet.getString(1) == null) {
-						map.put("unknown", resultSet.getInt(2));
-					} else {
+					if (!groupBy.equals("rule_id")) {
 						map.put(resultSet.getString(1), resultSet.getInt(2));
+					} else {
+						if (resultSet.getString(1) == null) {
+							map.put("ruleId_is_null", resultSet.getInt(2));
+						} else {
+							String rule_name = getRuleNameById("\\'" + resultSet.getString(1) + "\\'");
+							if (rule_name == null) {
+								map.put(resultSet.getString(1), resultSet.getInt(2));
+							} else {
+								map.put(rule_name.substring(1, rule_name.length() - 1), resultSet.getInt(2));
+							}
+						}
 					}
+
 				}
 			}
 		} catch (SQLException e) {
@@ -255,8 +266,33 @@ public class ImpalaService {
 		return JsonUtils.toJson(map);
 	}
 
+	private String getRuleNameById(String ruleId) {
+		String sqlStatement = "SELECT rule_name FROM " + ConstADT.TABLE_PLCNETINFO + " WHERE rule_id = " + "\""
+				+ ruleId + "\"";
+		String ruleName = null;
+		logger.info(sqlStatement);
+		try (Connection conn = ImpalaConnection.getConnection();
+				Statement statement = conn.createStatement();
+				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
+			if (resultSet != null) {
+				while (resultSet.next()) {
+					if (resultSet.getString(1) != null) {
+						ruleName = resultSet.getString(1);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ruleName;
+	}
+
 	public static void main(String[] args) throws UnsupportedEncodingException {
 		ImpalaService service = new ImpalaService();
-		System.out.println(service.getTrendency("parquet_compression.accesslist", 1446307200L, 1448899200L));
+		String id = "34010101201507220211";
+		String rule_id = "\\'" + id + "\\'";
+		System.out.println(rule_id);
+		System.out.println(service.getRuleNameById(rule_id));
+		//System.out.println(service.getAlertStats("parquet_compression.alertlist", queryParams, "rule_id", 10));
 	}
 }
