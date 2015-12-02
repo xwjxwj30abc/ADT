@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zx.soft.sina.IO.dao.ADTDataMapper">
+	<!-- 插入完整用户信息 -->
+	<insert id="insertPlcNetInfo" parameterType="zx.soft.sina.IO.domain.PlcNetInfo"
+		useGeneratedKeys="true" keyProperty="id" flushCache="true"
+		statementType="PREPARED">
+		INSERT INTO `plcNetInfo`
+		(`Service_code`,`Rule_id`,`Rule_name`,`Matching_level`,`Rule_action`,`Service_type`,
+		`Keyword1`,`Keyword2`,`Keyword3`,`Matching_word`,`Set_time`,
+		`Validation_time`,`Manual_pause_time`,`Filter_method`,`Filter_argument`)
+		VALUES
+		(#{Service_code},#{Rule_id},#{Rule_name},#{Matching_level},#{Rule_action},#{Service_type},
+		#{Keyword1},#{Keyword2},#{Keyword3},#{Matching_word},#{Set_time},
+		#{Validation_time},#{Manual_pause_time},#{Filter_method},#{Filter_argument});
+	</insert>
+</mapper>

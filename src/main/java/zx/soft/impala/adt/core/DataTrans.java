@@ -1,7 +1,12 @@
 package zx.soft.impala.adt.core;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,10 +14,34 @@ import org.slf4j.LoggerFactory;
 import zx.soft.sina.IO.domain.AccessList;
 import zx.soft.sina.IO.domain.AlertList;
 import zx.soft.sina.IO.domain.PlcClient;
+import zx.soft.sina.IO.util.ImpalaConnection;
 
 public class DataTrans {
 
 	public static Logger logger = LoggerFactory.getLogger(DataTrans.class);
+	public static Map<String, String> map;
+	static {
+		map = new HashMap<String, String>();
+		updateMap();
+	}
+
+	public static void updateMap() {
+
+		String sqlStatement = "SELECT rule_id,rule_name FROM " + ConstADT.TABLE_PLCNETINFO;
+		try (Connection conn = ImpalaConnection.getConnection();
+				Statement statement = conn.createStatement();
+				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
+			if (resultSet != null) {
+				while (resultSet.next()) {
+					if (resultSet.getString(1) != null) {
+						map.put(resultSet.getString(1), resultSet.getString(2));
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static AccessList resultSet2Access(ResultSet resultSet) {
 		AccessList result = new AccessList();

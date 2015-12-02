@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import zx.soft.impala.adt.core.ConstADT;
 import zx.soft.impala.adt.core.DataTrans;
 import zx.soft.impala.adt.core.Tools;
 import zx.soft.sina.IO.domain.AccessList;
@@ -231,6 +230,7 @@ public class ImpalaService {
 		return JsonUtils.toJson(map);
 	}
 
+	//过滤结果表统计分析
 	public String getAlertStats(String tableName, List<QueryParameters> queryParams, String groupBy, int limit) {
 		String condition = Tools.getPartSqlStatement(queryParams);
 		String sqlStatement = "SELECT " + groupBy + " , COUNT(*) AS NUM FROM " + tableName + " WHERE " + condition
@@ -248,9 +248,17 @@ public class ImpalaService {
 						if (resultSet.getString(1) == null) {
 							map.put("ruleId_is_null", resultSet.getInt(2));
 						} else {
-							String rule_name = getRuleNameById("\\'" + resultSet.getString(1) + "\\'");
+							String rule_name = DataTrans.map.get("\'" + resultSet.getString(1) + "\'");
 							if (rule_name == null) {
-								map.put(resultSet.getString(1), resultSet.getInt(2));
+								DataTrans.updateMap();
+								rule_name = DataTrans.map.get("\'" + resultSet.getString(1) + "\'");
+								if (rule_name == null) {
+									//当前库中不存在id对应的规则名称，抛出提示，暂时以id标识规则名称
+									map.put(resultSet.getString(1), resultSet.getInt(2));
+								} else {
+									//map更新后，成功匹配规则id和name
+									map.put(rule_name.substring(1, rule_name.length() - 1), resultSet.getInt(2));
+								}
 							} else {
 								map.put(rule_name.substring(1, rule_name.length() - 1), resultSet.getInt(2));
 							}
@@ -266,33 +274,7 @@ public class ImpalaService {
 		return JsonUtils.toJson(map);
 	}
 
-	private String getRuleNameById(String ruleId) {
-		String sqlStatement = "SELECT rule_name FROM " + ConstADT.TABLE_PLCNETINFO + " WHERE rule_id = " + "\""
-				+ ruleId + "\"";
-		String ruleName = null;
-		logger.info(sqlStatement);
-		try (Connection conn = ImpalaConnection.getConnection();
-				Statement statement = conn.createStatement();
-				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
-			if (resultSet != null) {
-				while (resultSet.next()) {
-					if (resultSet.getString(1) != null) {
-						ruleName = resultSet.getString(1);
-					}
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return ruleName;
-	}
-
 	public static void main(String[] args) throws UnsupportedEncodingException {
 		ImpalaService service = new ImpalaService();
-		String id = "34010101201507220211";
-		String rule_id = "\\'" + id + "\\'";
-		System.out.println(rule_id);
-		System.out.println(service.getRuleNameById(rule_id));
-		//System.out.println(service.getAlertStats("parquet_compression.alertlist", queryParams, "rule_id", 10));
 	}
 }
