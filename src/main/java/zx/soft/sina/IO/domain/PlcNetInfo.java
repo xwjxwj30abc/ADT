@@ -1,5 +1,7 @@
 package zx.soft.sina.IO.domain;
 
+import zx.soft.sina.IO.util.JsonUtils;
+
 public class PlcNetInfo {
 
 	private long Service_code;
@@ -17,6 +19,10 @@ public class PlcNetInfo {
 	private long Manual_pause_time;
 	private int Filter_method;
 	private String Filter_argument = "";
+
+	public PlcNetInfo() {
+
+	}
 
 	public long getService_code() {
 		return Service_code;
@@ -148,4 +154,10 @@ public class PlcNetInfo {
 				+ ", Filter_argument=" + Filter_argument + "]";
 	}
 
+	public static void main(String[] args) {
+		PlcNetInfo p = new PlcNetInfo();
+		p.setRule_id("34010101201504070011");
+		p.setRule_name("guiyi");
+		System.out.println(JsonUtils.toJsonWithoutPretty(p));
+	}
 }

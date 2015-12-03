@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +14,8 @@ import zx.soft.sina.IO.domain.Weibo;
 import zx.soft.sina.IO.util.ConfigUtil;
 import zx.soft.sina.IO.util.JsonUtils;
 import zx.soft.sina.IO.util.LogbackUtil;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class RedisMQ {
 

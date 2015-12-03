@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.inject.Inject;
 
 import zx.soft.sina.IO.dao.UserMapper;
+import zx.soft.sina.IO.domain.PlcNetInfo;
 import zx.soft.sina.IO.domain.User;
 import zx.soft.sina.IO.domain.Weibo;
 
@@ -12,6 +13,10 @@ public class IOMySQL implements SinaIO {
 
 	@Inject
 	private UserMapper userMapper;
+
+	public void insertPlcNetInfo(PlcNetInfo plcNetInfo) {
+		userMapper.insertPlcNetInfo(plcNetInfo);
+	}
 
 	@Override
 	public <T> void write(String key, T value) {

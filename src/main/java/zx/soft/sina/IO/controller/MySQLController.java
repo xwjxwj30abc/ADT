@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import zx.soft.sina.IO.domain.PlcNetInfo;
 import zx.soft.sina.IO.domain.User;
 import zx.soft.sina.IO.domain.Weibo;
 import zx.soft.sina.IO.service.MySQLService;
@@ -38,4 +39,14 @@ public class MySQLController {
 			mySQLService.insert(values);
 		}
 	}
+
+	//请求存在问题
+	@RequestMapping(value = "/plcnetinfo", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
+	@ResponseStatus(HttpStatus.OK)
+	public @ResponseBody void insertPlcNetInfoToMySQL(@RequestBody PlcNetInfo plcNetInfo) {
+		if (plcNetInfo != null) {
+			mySQLService.insertPlcNetInfo(plcNetInfo);
+		}
+	}
+
 }

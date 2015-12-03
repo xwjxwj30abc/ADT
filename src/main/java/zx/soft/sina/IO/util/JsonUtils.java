@@ -7,23 +7,25 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
-import org.codehaus.jackson.annotate.JsonMethod;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import zx.soft.utils.log.LogbackUtil;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 public class JsonUtils {
 
 	private static Logger logger = LoggerFactory.getLogger(JsonUtils.class);
 
-	private static final ObjectMapper mapper = new ObjectMapper().setVisibility(JsonMethod.FIELD, Visibility.ANY);;
+	private static final ObjectMapper mapper = new ObjectMapper();
 
 	private static DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
 	static {
 		mapper.setDateFormat(dateFormat);
+		mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 	}
 
 	public static ObjectMapper getObjectMapper() {
@@ -49,7 +51,7 @@ public class JsonUtils {
 	}
 
 	public static <T> T getObject(String jsonStr, Class<T> t) {
-		org.codehaus.jackson.map.ObjectReader objectReader = mapper.reader(t);
+		ObjectReader objectReader = mapper.reader(t);
 		try {
 			return objectReader.readValue(jsonStr);
 		} catch (IOException e) {

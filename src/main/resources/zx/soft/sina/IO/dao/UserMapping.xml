@@ -49,6 +49,18 @@
 		#{visible.type},#{visible.list_id},#{pic_urls,typeHandler=zx.soft.sina.IO.dao.ListTypeHandler},
 		#{darwin_tags,typeHandler=zx.soft.sina.IO.dao.ListTypeHandler},NOW());
 	</insert>
-
+	<!-- 插入完整用户信息 -->
+	<insert id="insertPlcNetInfo" parameterType="zx.soft.sina.IO.domain.PlcNetInfo"
+		useGeneratedKeys="true" keyProperty="id" flushCache="true"
+		statementType="PREPARED">
+		INSERT INTO `plcNetInfo`
+		(`Service_code`,`Rule_id`,`Rule_name`,`Matching_level`,`Rule_action`,`Service_type`,
+		`Keyword1`,`Keyword2`,`Keyword3`,`Matching_word`,`Set_time`,
+		`Validation_time`,`Manual_pause_time`,`Filter_method`,`Filter_argument`)
+		VALUES
+		(#{Service_code},#{Rule_id},#{Rule_name},#{Matching_level},#{Rule_action},#{Service_type},
+		#{Keyword1},#{Keyword2},#{Keyword3},#{Matching_word},#{Set_time},
+		#{Validation_time},#{Manual_pause_time},#{Filter_method},#{Filter_argument});
+	</insert>
 
 </mapper>

@@ -24,7 +24,6 @@ import zx.soft.sina.IO.domain.PlcClient;
 import zx.soft.sina.IO.domain.QueryParameters;
 import zx.soft.sina.IO.domain.QueryResult;
 import zx.soft.sina.IO.service.ImpalaService;
-import zx.soft.sina.IO.util.JsonUtils;
 
 @Controller
 @RequestMapping("/impala")
@@ -35,8 +34,7 @@ public class ImpalaController {
 
 	@RequestMapping(value = "/access", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody QueryResult getAccessResult(@RequestBody String query) throws SQLException {
-		Params p = JsonUtils.getObject(query, Params.class);
+	public @ResponseBody QueryResult getAccessResult(@RequestBody Params p) throws SQLException {
 		if (p.getOrder() == "") {
 			p.setOrder("DESC");
 		}
@@ -58,8 +56,7 @@ public class ImpalaController {
 	//多条件查询parquet_compression.alertlist表
 	@RequestMapping(value = "/alert", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody QueryResult getAlertResult(@RequestBody String query) throws SQLException {
-		Params p = JsonUtils.getObject(query, Params.class);
+	public @ResponseBody QueryResult getAlertResult(@RequestBody Params p) throws SQLException {
 		if (p.getOrder() == "") {
 			p.setOrder("DESC");
 		}
@@ -81,8 +78,7 @@ public class ImpalaController {
 	//多条件查询parquet_compression.plcclient表
 	@RequestMapping(value = "/plcclient", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody QueryResult getPlcClientQueryResult(@RequestBody String query) throws SQLException {
-		Params p = JsonUtils.getObject(query, Params.class);
+	public @ResponseBody QueryResult getPlcClientQueryResult(@RequestBody Params p) throws SQLException {
 		if (p.getOrder() == "") {
 			p.setOrder("ASC");
 		}
@@ -126,8 +122,7 @@ public class ImpalaController {
 	//上网结果统计accesslist
 	@RequestMapping(value = "/access/stats/{group_by}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody String getStatistics(@RequestBody String query, @PathVariable("group_by") String group_by) {
-		Params p = JsonUtils.getObject(query, Params.class);
+	public @ResponseBody String getStatistics(@RequestBody Params p, @PathVariable("group_by") String group_by) {
 		if (p.getOrder() == "") {
 			p.setOrder("DESC");
 		}
@@ -153,8 +148,7 @@ public class ImpalaController {
 	//过滤结果终端来源统计接口
 	@RequestMapping(value = "/alert/stats/{group_by}", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody String getAlert(@RequestBody String query, @PathVariable("group_by") String group_by) {
-		Params p = JsonUtils.getObject(query, Params.class);
+	public @ResponseBody String getAlert(@RequestBody Params p, @PathVariable("group_by") String group_by) {
 		if (p.getOrder() == "") {
 			p.setOrder("DESC");
 		}

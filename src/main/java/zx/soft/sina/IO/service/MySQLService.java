@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import zx.soft.sina.IO.core.IOMySQL;
+import zx.soft.sina.IO.domain.PlcNetInfo;
 
 @Service
 public class MySQLService {
@@ -21,4 +22,7 @@ public class MySQLService {
 
 	}
 
+	public void insertPlcNetInfo(PlcNetInfo info) {
+		iOMySQL.insertPlcNetInfo(info);
+	}
 }
