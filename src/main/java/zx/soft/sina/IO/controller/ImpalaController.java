@@ -20,7 +20,6 @@ import zx.soft.impala.adt.core.ConstADT;
 import zx.soft.sina.IO.domain.AccessList;
 import zx.soft.sina.IO.domain.AlertList;
 import zx.soft.sina.IO.domain.Params;
-import zx.soft.sina.IO.domain.PlcClient;
 import zx.soft.sina.IO.domain.QueryParameters;
 import zx.soft.sina.IO.domain.QueryResult;
 import zx.soft.sina.IO.service.ImpalaService;
@@ -75,29 +74,6 @@ public class ImpalaController {
 		return new QueryResult(number, lists);
 	}
 
-	//多条件查询parquet_compression.plcclient表
-	@RequestMapping(value = "/plcclient", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
-	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody QueryResult getPlcClientQueryResult(@RequestBody Params p) throws SQLException {
-		if (p.getOrder() == "") {
-			p.setOrder("ASC");
-		}
-		if (p.getOrder_by() == "") {
-			p.setOrder_by("Service_code");
-		}
-		if (p.getPage_size() == 0) {
-			p.setPage_size(20);
-		}
-		if (p.getQueryParameters().size() == 0) {
-			p.getQueryParameters().add(new QueryParameters(1, "id", "0"));
-		}
-		List<PlcClient> lists = impalaService.getPlcClientQueryResult(ConstADT.TABLE_PLCCLIENT, p.getQueryParameters(),
-				p.getOrder_by(), p.getOrder(), p.getPage_size(), p.getPage());
-		int number = impalaService.getSum(ConstADT.TABLE_PLCCLIENT, p.getQueryParameters());
-
-		return new QueryResult(number, lists);
-	}
-
 	//查看具体一条accesslist记录
 	@RequestMapping(value = "/access/info", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
@@ -110,13 +86,6 @@ public class ImpalaController {
 	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody AlertList getSpecAlert(@RequestParam("rowkey") String rowkey) {
 		return impalaService.getSpecAlert(ConstADT.TABLE_ALERT, rowkey);
-	}
-
-	//查看具体一条plcclient记录
-	@RequestMapping(value = "/plcclient/info", method = RequestMethod.GET)
-	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody PlcClient getSpecPlcClient(@RequestParam("rowkey") String rowkey) {
-		return impalaService.getSpecPlcClient(ConstADT.TABLE_PLCCLIENT, rowkey);
 	}
 
 	//上网结果统计accesslist

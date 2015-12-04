@@ -1,9 +1,9 @@
 package zx.soft.sina.IO.domain;
 
+import zx.soft.sina.IO.util.JsonUtils;
+
 public class PlcClient {
 
-	private String rowkey = "";
-	private long id;
 	private long Service_code;
 	private String Service_name = "";
 	private String Address = "";
@@ -13,12 +13,12 @@ public class PlcClient {
 	private String Infor_man = "";
 	private String Infor_man_tel = "";
 	private String Infor_man_email = "";
-	private int Producer_code;
-	private int Status;
+	private int Producer_code = 99;
+	private int Status = 4;
 	private int Ending_number;
 	private int Server_number;
 	private String Ip = "";
-	private int Net_type;
+	private int Net_type = 99;
 	private int Practitioner_number;
 	private String Net_monitor_department = "";
 	private String Net_monitor_man = "";
@@ -32,25 +32,24 @@ public class PlcClient {
 	private String UdpVer = "";
 	private int ComputerOnline;
 	private long ClientTime;
-	private int LogDays;
-	private int CommStatus;
-	private int CommNormal;
-	private int CommTiming;
+	private int LogDays = 60;
+	private int CommStatus = 60;
+	private int CommNormal = 10;
+	private int CommTiming = 10;
 	private int AlertLogAttr;
 	private int UserLogAttr;
 	private int DefaultAccessRule;
-	private String Device_ipv4 = "";
+	private int Device_ipv4;
 	private String Device_ipv6 = "";
 	private int Device_port;
 	private int Udp_online;
 	private String Device_serial = "";
-	private String Device_version = "";
+	private String Device_version = "20120801";
 	private long Device_flow1;
 	private long Device_flow2;
 	private String Device_note = "";
 
-	public long getId() {
-		return id;
+	public PlcClient() {
 	}
 
 	public long getService_code() {
@@ -59,6 +58,14 @@ public class PlcClient {
 
 	public String getService_name() {
 		return Service_name;
+	}
+
+	public void setService_code(long service_code) {
+		Service_code = service_code;
+	}
+
+	public void setService_name(String service_name) {
+		Service_name = service_name;
 	}
 
 	public String getAddress() {
@@ -193,7 +200,7 @@ public class PlcClient {
 		return DefaultAccessRule;
 	}
 
-	public String getDevice_ipv4() {
+	public int getDevice_ipv4() {
 		return Device_ipv4;
 	}
 
@@ -227,18 +234,6 @@ public class PlcClient {
 
 	public String getDevice_note() {
 		return Device_note;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public void setService_code(long service_code) {
-		Service_code = service_code;
-	}
-
-	public void setService_name(String service_name) {
-		Service_name = service_name;
 	}
 
 	public void setAddress(String address) {
@@ -373,7 +368,7 @@ public class PlcClient {
 		DefaultAccessRule = defaultAccessRule;
 	}
 
-	public void setDevice_ipv4(String device_ipv4) {
+	public void setDevice_ipv4(int device_ipv4) {
 		Device_ipv4 = device_ipv4;
 	}
 
@@ -409,32 +404,30 @@ public class PlcClient {
 		Device_note = device_note;
 	}
 
-	public String getRowkey() {
-		return rowkey;
-	}
-
-	public void setRowkey(String rowkey) {
-		this.rowkey = rowkey;
-	}
-
 	@Override
 	public String toString() {
-		return "PlcClient [rowkey=" + rowkey + ", id=" + id + ", Service_code=" + Service_code + ", Service_name="
-				+ Service_name + ", Address=" + Address + ", Zip=" + Zip + ", Principal=" + Principal
-				+ ", Principal_tel=" + Principal_tel + ", Infor_man=" + Infor_man + ", Infor_man_tel=" + Infor_man_tel
-				+ ", Infor_man_email=" + Infor_man_email + ", Producer_code=" + Producer_code + ", Status=" + Status
-				+ ", Ending_number=" + Ending_number + ", Server_number=" + Server_number + ", Ip=" + Ip
-				+ ", Net_type=" + Net_type + ", Practitioner_number=" + Practitioner_number
-				+ ", Net_monitor_department=" + Net_monitor_department + ", Net_monitor_man=" + Net_monitor_man
-				+ ", Net_monitor_man_tel=" + Net_monitor_man_tel + ", Remark=" + Remark + ", NewSystem=" + NewSystem
-				+ ", UnitNo=" + UnitNo + ", SessionID=" + SessionID + ", UdpHost=" + UdpHost + ", UdpPort=" + UdpPort
-				+ ", UdpVer=" + UdpVer + ", ComputerOnline=" + ComputerOnline + ", ClientTime=" + ClientTime
-				+ ", LogDays=" + LogDays + ", CommStatus=" + CommStatus + ", CommNormal=" + CommNormal
-				+ ", CommTiming=" + CommTiming + ", AlertLogAttr=" + AlertLogAttr + ", UserLogAttr=" + UserLogAttr
-				+ ", DefaultAccessRule=" + DefaultAccessRule + ", Device_ipv4=" + Device_ipv4 + ", Device_ipv6="
-				+ Device_ipv6 + ", Device_port=" + Device_port + ", Udp_online=" + Udp_online + ", Device_serial="
-				+ Device_serial + ", Device_version=" + Device_version + ", Device_flow1=" + Device_flow1
-				+ ", Device_flow2=" + Device_flow2 + ", Device_note=" + Device_note + "]";
+		return "PlcClient [Service_code=" + Service_code + ", Service_name=" + Service_name + ", Address=" + Address
+				+ ", Zip=" + Zip + ", Principal=" + Principal + ", Principal_tel=" + Principal_tel + ", Infor_man="
+				+ Infor_man + ", Infor_man_tel=" + Infor_man_tel + ", Infor_man_email=" + Infor_man_email
+				+ ", Producer_code=" + Producer_code + ", Status=" + Status + ", Ending_number=" + Ending_number
+				+ ", Server_number=" + Server_number + ", Ip=" + Ip + ", Net_type=" + Net_type
+				+ ", Practitioner_number=" + Practitioner_number + ", Net_monitor_department=" + Net_monitor_department
+				+ ", Net_monitor_man=" + Net_monitor_man + ", Net_monitor_man_tel=" + Net_monitor_man_tel + ", Remark="
+				+ Remark + ", NewSystem=" + NewSystem + ", UnitNo=" + UnitNo + ", SessionID=" + SessionID
+				+ ", UdpHost=" + UdpHost + ", UdpPort=" + UdpPort + ", UdpVer=" + UdpVer + ", ComputerOnline="
+				+ ComputerOnline + ", ClientTime=" + ClientTime + ", LogDays=" + LogDays + ", CommStatus=" + CommStatus
+				+ ", CommNormal=" + CommNormal + ", CommTiming=" + CommTiming + ", AlertLogAttr=" + AlertLogAttr
+				+ ", UserLogAttr=" + UserLogAttr + ", DefaultAccessRule=" + DefaultAccessRule + ", Device_ipv4="
+				+ Device_ipv4 + ", Device_ipv6=" + Device_ipv6 + ", Device_port=" + Device_port + ", Udp_online="
+				+ Udp_online + ", Device_serial=" + Device_serial + ", Device_version=" + Device_version
+				+ ", Device_flow1=" + Device_flow1 + ", Device_flow2=" + Device_flow2 + ", Device_note=" + Device_note
+				+ "]";
 	}
 
+	public static void main(String[] args) {
+		PlcClient p = new PlcClient();
+		p.setService_code(982354L);
+		p.setService_name("服务名");
+		System.out.println(JsonUtils.toJsonWithoutPretty(p));
+	}
 }
