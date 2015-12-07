@@ -1,6 +1,7 @@
 package zx.soft.sina.IO.dao;
 
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Select;
 
 import zx.soft.sina.IO.domain.PlcClient;
 import zx.soft.sina.IO.domain.PlcNetInfo;
@@ -15,11 +16,14 @@ public interface UserMapper {
 
 	public void insertPlcNetInfo(PlcNetInfo plcNetInfo);
 
-	public void insertPlcClient(PlcClient plcClient);
+	public int insertPlcClient(PlcClient plcClient);
 
 	@Delete("DELETE  FROM plcClient WHERE Service_code=#{Service_code}")
-	public void deletePlcClient(long Service_code);
+	public int deletePlcClient(long Service_code);
 
-	public void updatePlcClient(PlcClient plcClient);
+	public int updatePlcClient(PlcClient plcClient);
+
+	@Select("SELECT COUNT(*) FROM jdadt.plcClient WHERE Service_code=#{serviceCode}")
+	public int existsServiceCode(long serviceCode);
 
 }

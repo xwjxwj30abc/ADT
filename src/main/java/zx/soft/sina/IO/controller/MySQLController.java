@@ -20,6 +20,7 @@ import zx.soft.sina.IO.domain.Params;
 import zx.soft.sina.IO.domain.PlcClient;
 import zx.soft.sina.IO.domain.QueryParameters;
 import zx.soft.sina.IO.domain.QueryResult;
+import zx.soft.sina.IO.domain.Status;
 import zx.soft.sina.IO.domain.User;
 import zx.soft.sina.IO.domain.Weibo;
 import zx.soft.sina.IO.service.MySQLService;
@@ -48,22 +49,27 @@ public class MySQLController {
 
 	@RequestMapping(value = "/plcclient/insert", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody void insertPlcClientToMySQL(@RequestBody PlcClient plcClient) {
+	public @ResponseBody Status insertPlcClientToMySQL(@RequestBody PlcClient plcClient) {
+		Status st = null;
 		if (plcClient != null) {
-			mySQLService.insertPlcClient(plcClient);
+			st = mySQLService.insertPlcClient(plcClient);
+		} else {
+			st.setCode(2);
+			st.setMessage("plcClient为空");
 		}
+		return st;
 	}
 
 	@RequestMapping(value = "/plcclient/delete/{service_code}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody void deletePlcClientToMySQL(@PathVariable("service_code") long Service_code) {
-		mySQLService.deletePlcClient(Service_code);
+	public @ResponseBody Status deletePlcClientToMySQL(@PathVariable("service_code") long Service_code) {
+		return mySQLService.deletePlcClient(Service_code);
 	}
 
 	@RequestMapping(value = "/plcclient/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody void updatePlcClientToMySQL(@RequestBody PlcClient plcClient) {
-		mySQLService.updatePlcClient(plcClient);
+	public @ResponseBody Status updatePlcClientToMySQL(@RequestBody PlcClient plcClient) {
+		return mySQLService.updatePlcClient(plcClient);
 	}
 
 	//多条件查询parquet_compression.plcclient表

@@ -10,6 +10,7 @@ import zx.soft.sina.IO.core.IOMySQL;
 import zx.soft.sina.IO.domain.PlcClient;
 import zx.soft.sina.IO.domain.PlcNetInfo;
 import zx.soft.sina.IO.domain.QueryParameters;
+import zx.soft.sina.IO.domain.Status;
 
 @Service
 public class MySQLService {
@@ -24,20 +25,20 @@ public class MySQLService {
 
 	}
 
-	public void insertPlcNetInfo(PlcNetInfo info) {
-		iOMySQL.insertPlcNetInfo(info);
+	public Status insertPlcNetInfo(PlcNetInfo info) {
+		return iOMySQL.insertPlcNetInfo(info);
 	}
 
-	public void insertPlcClient(PlcClient plcClient) {
-		iOMySQL.insertPlcClient(plcClient);
+	public Status insertPlcClient(PlcClient plcClient) {
+		return iOMySQL.insertPlcClient(plcClient);
 	}
 
-	public void deletePlcClient(long Service_code) {
-		iOMySQL.deletePlcClient(Service_code);
+	public Status deletePlcClient(long Service_code) {
+		return iOMySQL.deletePlcClient(Service_code);
 	}
 
-	public void updatePlcClient(PlcClient plcClient) {
-		iOMySQL.updatePlcClient(plcClient);
+	public Status updatePlcClient(PlcClient plcClient) {
+		return iOMySQL.updatePlcClient(plcClient);
 	}
 
 	public List<PlcClient> getPlcClientQueryResult(String tableName, List<QueryParameters> queryParams, String orderBy,
