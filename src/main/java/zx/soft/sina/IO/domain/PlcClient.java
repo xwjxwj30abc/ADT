@@ -539,30 +539,10 @@ public class PlcClient {
 		Device_note = device_note;
 	}
 
-	@Override
-	public String toString() {
-		return "PlcClient [Service_code=" + Service_code + ", Service_name=" + Service_name + ", Address=" + Address
-				+ ", Zip=" + Zip + ", Principal=" + Principal + ", Principal_tel=" + Principal_tel + ", Infor_man="
-				+ Infor_man + ", Infor_man_tel=" + Infor_man_tel + ", Infor_man_email=" + Infor_man_email
-				+ ", Producer_code=" + Producer_code + ", Status=" + Status + ", Ending_number=" + Ending_number
-				+ ", Server_number=" + Server_number + ", Ip=" + Ip + ", Net_type=" + Net_type
-				+ ", Practitioner_number=" + Practitioner_number + ", Net_monitor_department=" + Net_monitor_department
-				+ ", Net_monitor_man=" + Net_monitor_man + ", Net_monitor_man_tel=" + Net_monitor_man_tel + ", Remark="
-				+ Remark + ", NewSystem=" + NewSystem + ", UnitNo=" + UnitNo + ", SessionID=" + SessionID
-				+ ", UdpHost=" + UdpHost + ", UdpPort=" + UdpPort + ", UdpVer=" + UdpVer + ", ComputerOnline="
-				+ ComputerOnline + ", ClientTime=" + ClientTime + ", LogDays=" + LogDays + ", CommStatus=" + CommStatus
-				+ ", CommNormal=" + CommNormal + ", CommTiming=" + CommTiming + ", AlertLogAttr=" + AlertLogAttr
-				+ ", UserLogAttr=" + UserLogAttr + ", DefaultAccessRule=" + DefaultAccessRule + ", Device_ipv4="
-				+ Device_ipv4 + ", Device_ipv6=" + Device_ipv6 + ", Device_port=" + Device_port + ", Udp_online="
-				+ Udp_online + ", Device_serial=" + Device_serial + ", Device_version=" + Device_version
-				+ ", Device_flow1=" + Device_flow1 + ", Device_flow2=" + Device_flow2 + ", Device_note=" + Device_note
-				+ "]";
-	}
-
 	public static void main(String[] args) {
 		PlcClient p = new PlcClient();
-		p.setService_code(982354L);
-		p.setService_name("服务名");
+		p.setService_code(34010129000002L);
+		p.setService_name("服务名称");
 		System.out.println(JsonUtils.toJsonWithoutPretty(p));
 	}
 }

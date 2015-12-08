@@ -18,7 +18,7 @@ public interface UserMapper {
 
 	public int insertPlcClient(PlcClient plcClient);
 
-	@Delete("DELETE  FROM plcClient WHERE Service_code=#{Service_code}")
+	@Delete("DELETE  FROM jdadt.plcClient WHERE Service_code=#{Service_code}")
 	public int deletePlcClient(long Service_code);
 
 	public int updatePlcClient(PlcClient plcClient);

@@ -73,7 +73,8 @@
 		`Net_monitor_man`,`Net_monitor_man_tel`,`Remark`,`NewSystem`,`UnitNo`,`SessionID`,`UdpHost`,`UdpPort`,
 		`UdpVer`,`ComputerOnline`,`ClientTime`,`LogDays`,`CommStatus`,`CommNormal`,`CommTiming`,
 		`AlertLogAttr`,`UserLogAttr`,`DefaultAccessRule`,`Device_ipv4`,`Device_ipv6`,`Device_port`,
-		`Udp_online`,`Device_serial`,`Device_version`,`Device_flow1`,`Device_flow2`,`Device_note`)
+		`Udp_online`,`Device_serial`,`Device_version`,`Device_flow1`,`Device_flow2`,`Device_note`
+		)
 		VALUES
 		(#{Service_code},#{Service_name},#{Address},#{Zip},#{Principal},#{Principal_tel},
 		#{Infor_man},#{Infor_man_tel},#{Infor_man_email},#{Producer_code},#{Status},
@@ -81,7 +82,8 @@
 		#{Net_monitor_man},#{Net_monitor_man_tel},#{Remark},#{NewSystem},#{UnitNo},#{SessionID},#{UdpHost},#{UdpPort},
 		#{UdpVer},#{ComputerOnline},#{ClientTime},#{LogDays},#{CommStatus},#{CommNormal},#{CommTiming},
 		#{AlertLogAttr},#{UserLogAttr},#{DefaultAccessRule},#{Device_ipv4},#{Device_ipv6},#{Device_port},
-		#{Udp_online},#{Device_serial},#{Device_version},#{Device_flow1},#{Device_flow2},#{Device_note});
+		#{Udp_online},#{Device_serial},#{Device_version},#{Device_flow1},#{Device_flow2},#{Device_note}
+		);
 	</insert>
 
 	<update id="updatePlcClient" parameterType="zx.soft.sina.IO.domain.PlcClient"
