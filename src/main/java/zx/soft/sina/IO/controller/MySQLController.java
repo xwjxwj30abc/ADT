@@ -54,8 +54,8 @@ public class MySQLController {
 		if (plcClient != null) {
 			st = mySQLService.insertPlcClient(plcClient);
 		} else {
-			st.setCode(2);
-			st.setMessage("plcClient为空");
+			st.setErrorCode("2");
+			st.setErrorMessage("plcClient为空");
 		}
 		return st;
 	}

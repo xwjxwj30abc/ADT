@@ -2,37 +2,37 @@ package zx.soft.sina.IO.domain;
 
 public class Status {
 
-	private int code;
-	private String message;
+	private String errorCode;
+	private String errorMessage;
 
 	public Status() {
 
 	}
 
-	public Status(int code, String message) {
-		this.code = code;
-		this.message = message;
+	public Status(String errorCode, String errorMessage) {
+		this.errorCode = errorCode;
+		this.errorMessage = errorMessage;
 	}
 
-	public int getCode() {
-		return code;
+	public String getErrorCode() {
+		return errorCode;
 	}
 
-	public String getMessage() {
-		return message;
+	public String getErrorMessage() {
+		return errorMessage;
 	}
 
-	public void setCode(int code) {
-		this.code = code;
+	public void setErrorCode(String errorCode) {
+		this.errorCode = errorCode;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage;
 	}
 
 	@Override
 	public String toString() {
-		return "Status [code=" + code + ", message=" + message + "]";
+		return "Status [errorCode=" + errorCode + ", errorMessage=" + errorMessage + "]";
 	}
 
 }

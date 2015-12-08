@@ -32,7 +32,7 @@ public class IOMySQL implements SinaIO {
 
 	public Status insertPlcNetInfo(PlcNetInfo plcNetInfo) {
 		userMapper.insertPlcNetInfo(plcNetInfo);
-		return new Status(1, "insert successfully");
+		return new Status("1", "insert successfully");
 	}
 
 	public Status insertPlcClient(PlcClient plcClient) {
@@ -40,13 +40,13 @@ public class IOMySQL implements SinaIO {
 		Status st = new Status();
 		if (success == 1) {
 			logger.info("表中存在该service_code，不可插入");
-			st.setCode(2);
-			st.setMessage("表中存在该service_code，请更换service_code.");
+			st.setErrorCode("2");
+			st.setErrorMessage("表中存在该service_code，请更换service_code.");
 		} else if (success == 0) {
 			logger.info("表中不存在该service_code，可插入.");
 			userMapper.insertPlcClient(plcClient);
-			st.setCode(1);
-			st.setMessage("插入成功.");
+			st.setErrorCode("1");
+			st.setErrorMessage("插入成功.");
 		}
 		return st;
 	}
@@ -55,11 +55,11 @@ public class IOMySQL implements SinaIO {
 		Status st = new Status();
 		int success = userMapper.deletePlcClient(Service_code);
 		if (success == 0) {
-			st.setCode(2);
-			st.setMessage("不存在该service_code.");
+			st.setErrorCode("2");
+			st.setErrorMessage("不存在该service_code.");
 		} else {
-			st.setCode(1);
-			st.setMessage("删除 " + Service_code + " 成功.");
+			st.setErrorCode("1");
+			st.setErrorMessage("删除 " + Service_code + " 成功.");
 		}
 		return st;
 	}
@@ -68,11 +68,11 @@ public class IOMySQL implements SinaIO {
 		Status st = new Status();
 		int success = userMapper.updatePlcClient(plcClient);
 		if (success == 0) {
-			st.setCode(2);
-			st.setMessage("不存在该service_code对应的记录，无法更新.");
+			st.setErrorCode("2");
+			st.setErrorMessage("不存在该service_code对应的记录，无法更新.");
 		} else {
-			st.setCode(1);
-			st.setMessage("更新成功.");
+			st.setErrorCode("1");
+			st.setErrorMessage("更新成功.");
 		}
 		return st;
 	}
