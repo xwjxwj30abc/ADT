@@ -66,14 +66,16 @@
 	<insert id="insertPlcClient" parameterType="zx.soft.sina.IO.domain.PlcClient"
 		useGeneratedKeys="true" keyProperty="id" flushCache="true"
 		statementType="PREPARED">
-		INSERT INTO `plcClient`
+		INSERT INTO `plcClientNew`
 		(`Service_code`,`Service_name`,`Address`,`Zip`,`Principal`,`Principal_tel`,
 		`Infor_man`,`Infor_man_tel`,`Infor_man_email`,`Producer_code`,`Status`,
 		`Ending_number`,`Server_number`,`Ip`,`Net_type`,`Practitioner_number`,`Net_monitor_department`,
 		`Net_monitor_man`,`Net_monitor_man_tel`,`Remark`,`NewSystem`,`UnitNo`,`SessionID`,`UdpHost`,`UdpPort`,
 		`UdpVer`,`ComputerOnline`,`ClientTime`,`LogDays`,`CommStatus`,`CommNormal`,`CommTiming`,
 		`AlertLogAttr`,`UserLogAttr`,`DefaultAccessRule`,`Device_ipv4`,`Device_ipv6`,`Device_port`,
-		`Udp_online`,`Device_serial`,`Device_version`,`Device_flow1`,`Device_flow2`,`Device_note`)
+		`Udp_online`,`Device_serial`,`Device_version`,`Device_flow1`,`Device_flow2`,`Device_note`,
+		`User_name`,`Certificate_type`,`Certificate_code`,`Org_name`,`Country`
+		)
 		VALUES
 		(#{Service_code},#{Service_name},#{Address},#{Zip},#{Principal},#{Principal_tel},
 		#{Infor_man},#{Infor_man_tel},#{Infor_man_email},#{Producer_code},#{Status},
@@ -81,12 +83,14 @@
 		#{Net_monitor_man},#{Net_monitor_man_tel},#{Remark},#{NewSystem},#{UnitNo},#{SessionID},#{UdpHost},#{UdpPort},
 		#{UdpVer},#{ComputerOnline},#{ClientTime},#{LogDays},#{CommStatus},#{CommNormal},#{CommTiming},
 		#{AlertLogAttr},#{UserLogAttr},#{DefaultAccessRule},#{Device_ipv4},#{Device_ipv6},#{Device_port},
-		#{Udp_online},#{Device_serial},#{Device_version},#{Device_flow1},#{Device_flow2},#{Device_note});
+		#{Udp_online},#{Device_serial},#{Device_version},#{Device_flow1},#{Device_flow2},#{Device_note},
+		#{User_name},#{Certificate_type},#{Certificate_code},#{Org_name},#{Country}
+		);
 	</insert>
 
 	<update id="updatePlcClient" parameterType="zx.soft.sina.IO.domain.PlcClient"
 		flushCache="true" statementType="PREPARED">
-		UPDATE plcClient SET
+		UPDATE plcClientNew SET
 		Service_code=#{Service_code},Service_name=#{Service_name},Address=#{Address},Zip=#{Zip},Principal=#{Principal},
 		Principal_tel=#{Principal_tel},Infor_man=#{Infor_man},Infor_man_tel=#{Infor_man_tel},
 		Infor_man_email=#{Infor_man_email},Producer_code=#{Producer_code},
@@ -99,7 +103,9 @@
 		,UserLogAttr=#{UserLogAttr},DefaultAccessRule=#{DefaultAccessRule},
 		Device_ipv4=#{Device_ipv4},Device_ipv6=#{Device_ipv6},Device_port=#{Device_port},
 		Udp_online=#{Udp_online},Device_serial=#{Device_serial},
-		Device_version=#{Device_version},Device_flow1=#{Device_flow1},Device_flow2=#{Device_flow2},Device_note=#{Device_note} WHERE
+		Device_version=#{Device_version},Device_flow1=#{Device_flow1},Device_flow2=#{Device_flow2},Device_note=#{Device_note},
+		User_name=#{User_name},Certificate_type=#{Certificate_type},Certificate_code=#{Certificate_code},Org_name=#{Org_name},Country=#{Country}
+		WHERE
 		Service_code=#{Service_code}
 	</update>
 
