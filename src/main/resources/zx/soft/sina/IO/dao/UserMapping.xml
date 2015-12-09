@@ -66,7 +66,7 @@
 	<insert id="insertPlcClient" parameterType="zx.soft.sina.IO.domain.PlcClient"
 		useGeneratedKeys="true" keyProperty="id" flushCache="true"
 		statementType="PREPARED">
-		INSERT INTO `plcClientNew`
+		INSERT INTO `plcClient`
 		(`Service_code`,`Service_name`,`Address`,`Zip`,`Principal`,`Principal_tel`,
 		`Infor_man`,`Infor_man_tel`,`Infor_man_email`,`Producer_code`,`Status`,
 		`Ending_number`,`Server_number`,`Ip`,`Net_type`,`Practitioner_number`,`Net_monitor_department`,
@@ -90,7 +90,7 @@
 
 	<update id="updatePlcClient" parameterType="zx.soft.sina.IO.domain.PlcClient"
 		flushCache="true" statementType="PREPARED">
-		UPDATE plcClientNew SET
+		UPDATE plcClient SET
 		Service_code=#{Service_code},Service_name=#{Service_name},Address=#{Address},Zip=#{Zip},Principal=#{Principal},
 		Principal_tel=#{Principal_tel},Infor_man=#{Infor_man},Infor_man_tel=#{Infor_man_tel},
 		Infor_man_email=#{Infor_man_email},Producer_code=#{Producer_code},
