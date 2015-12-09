@@ -161,6 +161,11 @@ public class DataTrans {
 			result.setDevice_flow1(resultSet.getLong(43));
 			result.setDevice_flow2(resultSet.getLong(44));
 			result.setDevice_note(resultSet.getString(45));
+			result.setUser_name(resultSet.getString(46));
+			result.setCertificate_type(resultSet.getString(47));
+			result.setCertificate_code(resultSet.getString(48));
+			result.setOrg_name(resultSet.getString(49));
+			result.setCountry(resultSet.getString(50));
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}

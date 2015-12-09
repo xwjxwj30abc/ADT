@@ -23,7 +23,7 @@ public interface UserMapper {
 
 	public int updatePlcClient(PlcClient plcClient);
 
-	@Select("SELECT COUNT(*) FROM jdadt.plcClient WHERE Service_code=#{serviceCode}")
+	@Select("SELECT COUNT(*) FROM jdadt.plcClientNew WHERE Service_code=#{serviceCode}")
 	public int existsServiceCode(long serviceCode);
 
 }

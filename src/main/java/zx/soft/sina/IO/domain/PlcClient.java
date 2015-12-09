@@ -95,6 +95,16 @@ public class PlcClient {
 	private long Device_flow2;
 	@JsonProperty
 	private String Device_note = "";
+	@JsonProperty
+	private String User_name = "";
+	@JsonProperty
+	private String Certificate_type = "";
+	@JsonProperty
+	private String Certificate_code = "";
+	@JsonProperty
+	private String Org_name = "";
+	@JsonProperty
+	private String Country = "";
 
 	public PlcClient() {
 	}
@@ -539,10 +549,82 @@ public class PlcClient {
 		Device_note = device_note;
 	}
 
+	@JsonIgnore
+	public String getUser_name() {
+		return User_name;
+	}
+
+	@JsonIgnore
+	public String getCertificate_type() {
+		return Certificate_type;
+	}
+
+	@JsonIgnore
+	public String getCertificate_code() {
+		return Certificate_code;
+	}
+
+	@JsonIgnore
+	public String getOrg_name() {
+		return Org_name;
+	}
+
+	@JsonIgnore
+	public void setUser_name(String user_name) {
+		User_name = user_name;
+	}
+
+	@JsonIgnore
+	public void setCertificate_type(String certificate_type) {
+		Certificate_type = certificate_type;
+	}
+
+	@JsonIgnore
+	public void setCertificate_code(String certificate_code) {
+		Certificate_code = certificate_code;
+	}
+
+	@JsonIgnore
+	public void setOrg_name(String org_name) {
+		Org_name = org_name;
+	}
+
+	@JsonIgnore
+	public String getCountry() {
+		return Country;
+	}
+
+	@JsonIgnore
+	public void setCountry(String country) {
+		Country = country;
+	}
+
+	@Override
+	public String toString() {
+		return "PlcClient [Service_code=" + Service_code + ", Service_name=" + Service_name + ", Address=" + Address
+				+ ", Zip=" + Zip + ", Principal=" + Principal + ", Principal_tel=" + Principal_tel + ", Infor_man="
+				+ Infor_man + ", Infor_man_tel=" + Infor_man_tel + ", Infor_man_email=" + Infor_man_email
+				+ ", Producer_code=" + Producer_code + ", Status=" + Status + ", Ending_number=" + Ending_number
+				+ ", Server_number=" + Server_number + ", Ip=" + Ip + ", Net_type=" + Net_type
+				+ ", Practitioner_number=" + Practitioner_number + ", Net_monitor_department=" + Net_monitor_department
+				+ ", Net_monitor_man=" + Net_monitor_man + ", Net_monitor_man_tel=" + Net_monitor_man_tel + ", Remark="
+				+ Remark + ", NewSystem=" + NewSystem + ", UnitNo=" + UnitNo + ", SessionID=" + SessionID
+				+ ", UdpHost=" + UdpHost + ", UdpPort=" + UdpPort + ", UdpVer=" + UdpVer + ", ComputerOnline="
+				+ ComputerOnline + ", ClientTime=" + ClientTime + ", LogDays=" + LogDays + ", CommStatus=" + CommStatus
+				+ ", CommNormal=" + CommNormal + ", CommTiming=" + CommTiming + ", AlertLogAttr=" + AlertLogAttr
+				+ ", UserLogAttr=" + UserLogAttr + ", DefaultAccessRule=" + DefaultAccessRule + ", Device_ipv4="
+				+ Device_ipv4 + ", Device_ipv6=" + Device_ipv6 + ", Device_port=" + Device_port + ", Udp_online="
+				+ Udp_online + ", Device_serial=" + Device_serial + ", Device_version=" + Device_version
+				+ ", Device_flow1=" + Device_flow1 + ", Device_flow2=" + Device_flow2 + ", Device_note=" + Device_note
+				+ ", User_name=" + User_name + ", Certificate_type=" + Certificate_type + ", Certificate_code="
+				+ Certificate_code + ", Org_name=" + Org_name + ", Country=" + Country + "]";
+	}
+
 	public static void main(String[] args) {
 		PlcClient p = new PlcClient();
 		p.setService_code(34010129000002L);
-		p.setService_name("服务名称");
+		p.setService_name("服务名");
+		p.setUser_name("上网用户名");
 		System.out.println(JsonUtils.toJsonWithoutPretty(p));
 	}
 }
