@@ -50,8 +50,9 @@ public class MySQLConnection {
 	}
 
 	public static void main(String[] args) throws SQLException {
-		String sqlStatement = "DESCRIBE jdadt.plcClient_tmp";
-		try (Connection conn = ImpalaConnection.getConnection();
+		String sqlStatement = "DESCRIBE jdadt.plcClient";
+
+		try (Connection conn = MySQLConnection.getConnection();
 				Statement statement = conn.createStatement();
 				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
 			if (resultSet != null) {
