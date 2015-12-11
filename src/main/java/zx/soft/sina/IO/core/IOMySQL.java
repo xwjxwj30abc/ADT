@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -16,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import zx.soft.impala.adt.core.DataTrans;
 import zx.soft.impala.adt.core.Tools;
 import zx.soft.sina.IO.dao.UserMapper;
+import zx.soft.sina.IO.domain.IP2GEO;
 import zx.soft.sina.IO.domain.PlcClient;
 import zx.soft.sina.IO.domain.PlcNetInfo;
 import zx.soft.sina.IO.domain.QueryParameters;
@@ -27,8 +30,20 @@ import zx.soft.sina.IO.util.MySQLConnection;
 public class IOMySQL implements SinaIO {
 
 	public static Logger logger = LoggerFactory.getLogger(IOMySQL.class);
+
 	@Inject
 	private UserMapper userMapper;
+
+	public Map initGEO(String tablename) {
+		Map<String, IP2GEO> map = new HashMap<>();
+		List<IP2GEO> lists = userMapper.getGEO(tablename);
+		if (lists != null && lists.size() > 0) {
+			for (IP2GEO ip2GEO : lists) {
+				map.put(ip2GEO.getCOUNTRY(), ip2GEO);
+			}
+		}
+		return map;
+	}
 
 	public Status insertPlcNetInfo(PlcNetInfo plcNetInfo) {
 		userMapper.insertPlcNetInfo(plcNetInfo);
@@ -171,4 +186,5 @@ public class IOMySQL implements SinaIO {
 
 		return plcClient;
 	}
+
 }

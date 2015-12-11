@@ -161,6 +161,27 @@ public class ImpalaService {
 		return JsonUtils.toJson(map);
 	}
 
+	//根据国家类型group_by，返回具体的访问不同国家的数据记录数
+	public Map getAccessStat(String tableName, List<QueryParameters> queryParams, String groupBy) {
+		String condition = Tools.getPartSqlStatement(queryParams);
+		String sqlStatement = "SELECT " + groupBy + ",COUNT(*) AS number FROM " + tableName + " WHERE " + condition
+				+ " GROUP BY " + groupBy;
+		logger.info(sqlStatement);
+		Map<String, Long> map = new HashMap<>();
+		try (Connection conn = ImpalaConnection.getConnection();
+				Statement statement = conn.createStatement();
+				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
+			if (resultSet != null) {
+				while (resultSet.next()) {
+					map.put(resultSet.getString(1), resultSet.getLong(2));
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return map;
+	}
+
 	//用户一段时间上网趋势统计分析
 	public String getTrendency(String tableName, long start, long end) {
 		String sqlStatement = "SELECT (time-time%86400)-28800 AS DAY , COUNT(*) AS NUM FROM " + tableName

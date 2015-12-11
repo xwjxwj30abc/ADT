@@ -1,6 +1,7 @@
 package zx.soft.sina.IO.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -54,4 +55,7 @@ public class MySQLService {
 		return iOMySQL.getSpecPlcClient(tableName, Service_code);
 	}
 
+	public Map initGEO(String tablename) {
+		return iOMySQL.initGEO(tablename);
+	}
 }

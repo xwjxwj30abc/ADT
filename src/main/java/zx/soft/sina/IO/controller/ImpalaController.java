@@ -1,7 +1,10 @@
 package zx.soft.sina.IO.controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
@@ -18,11 +21,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import zx.soft.impala.adt.core.ConstADT;
 import zx.soft.sina.IO.domain.AccessList;
+import zx.soft.sina.IO.domain.AccessStat;
 import zx.soft.sina.IO.domain.AlertList;
+import zx.soft.sina.IO.domain.IP2GEO;
 import zx.soft.sina.IO.domain.Params;
 import zx.soft.sina.IO.domain.QueryParameters;
 import zx.soft.sina.IO.domain.QueryResult;
 import zx.soft.sina.IO.service.ImpalaService;
+import zx.soft.sina.IO.service.MySQLService;
 
 @Controller
 @RequestMapping("/impala")
@@ -30,6 +36,10 @@ public class ImpalaController {
 
 	@Inject
 	private ImpalaService impalaService;
+	@Inject
+	private MySQLService mySQLService;
+
+	public static Map<String, IP2GEO> geoMap = null;
 
 	@RequestMapping(value = "/access", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)
@@ -105,6 +115,49 @@ public class ImpalaController {
 			p.getQueryParameters().add(new QueryParameters(1, "id", "0"));
 		}
 		return impalaService.getStat(ConstADT.TABLE_ACCESS, p.getQueryParameters(), group_by, 10);
+	}
+
+	//上网结果统计accesslist
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value = "/access/stats/country", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
+	@ResponseStatus(HttpStatus.OK)
+	public @ResponseBody List<AccessStat> getAccessStat(@RequestBody Params p) {
+		if (p.getOrder() == "") {
+			p.setOrder("DESC");
+		}
+		if (p.getOrder_by() == "") {
+			p.setOrder_by("Time");
+		}
+		if (p.getPage_size() == 0) {
+			p.setPage_size(20);
+		}
+		if (p.getQueryParameters().size() == 0) {
+			p.getQueryParameters().add(new QueryParameters(1, "id", "0"));
+		}
+		@SuppressWarnings("unchecked")
+		Map<String, Long> map = impalaService.getAccessStat(ConstADT.TABLE_ACCESS, p.getQueryParameters(),
+				"Country_name");
+		List<AccessStat> ast = new ArrayList<>();
+		if (geoMap == null) {
+			geoMap = mySQLService.initGEO("countryinfo");
+		}
+		AccessStat as = null;
+		if (map.size() > 0) {
+			for (Entry<String, Long> entry : map.entrySet()) {
+				as = new AccessStat();
+				as.setCount(entry.getValue());
+				as.setCountry_name(entry.getKey());
+				try {
+					as.setJd(geoMap.get(entry.getKey()).getJD());
+					as.setWd(geoMap.get(entry.getKey()).getWD());
+				} catch (NullPointerException e) {
+					as.setJd(0.0);
+					as.setWd(0.0);
+				}
+				ast.add(as);
+			}
+		}
+		return ast;
 	}
 
 	//上网趋势统计

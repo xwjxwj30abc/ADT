@@ -1,8 +1,12 @@
 package zx.soft.sina.IO.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import zx.soft.sina.IO.domain.IP2GEO;
 import zx.soft.sina.IO.domain.PlcClient;
 import zx.soft.sina.IO.domain.PlcNetInfo;
 import zx.soft.sina.IO.domain.User;
@@ -25,5 +29,8 @@ public interface UserMapper {
 
 	@Select("SELECT COUNT(*) FROM jdadt.plcClient WHERE Service_code=#{serviceCode}")
 	public int existsServiceCode(long serviceCode);
+
+	@Select("SELECT COUNTRY,JD,WD FROM ${tablename} ")
+	public List<IP2GEO> getGEO(@Param("tablename") String tablename);
 
 }

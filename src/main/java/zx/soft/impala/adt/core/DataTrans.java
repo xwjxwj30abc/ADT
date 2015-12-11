@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -20,11 +19,6 @@ public class DataTrans {
 
 	public static Logger logger = LoggerFactory.getLogger(DataTrans.class);
 	public static Map<String, String> map;
-	static {
-		map = new HashMap<String, String>();
-		updateMap();
-	}
-
 	public static void updateMap() {
 
 		String sqlStatement = "SELECT rule_id,rule_name FROM " + ConstADT.TABLE_PLCNETINFO;
@@ -152,7 +146,7 @@ public class DataTrans {
 			result.setAlertLogAttr(resultSet.getInt(34));
 			result.setUserLogAttr(resultSet.getInt(35));
 			result.setDefaultAccessRule(resultSet.getInt(36));
-			result.setDevice_ipv4(resultSet.getInt(37));
+			result.setDevice_ipv4(resultSet.getLong(37));
 			result.setDevice_ipv6(resultSet.getString(38));
 			result.setDevice_port(resultSet.getInt(39));
 			result.setUdp_online(resultSet.getInt(40));
