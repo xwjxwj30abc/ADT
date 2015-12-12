@@ -214,15 +214,16 @@ public class ImpalaService {
 			if (resultSet != null) {
 				while (resultSet.next()) {
 					if (!groupBy.equals("rule_id")) {
+						//由于plcnetinfo表由sqoop导出，须额外处理字符串
 						map.put(resultSet.getString(1), resultSet.getInt(2));
 					} else {
 						if (resultSet.getString(1) == null) {
 							map.put("ruleId_is_null", resultSet.getInt(2));
 						} else {
-							String rule_name = DataTrans.map.get("\'" + resultSet.getString(1) + "\'");
+							String rule_name = DataTrans.MAP.get("\'" + resultSet.getString(1) + "\'");
 							if (rule_name == null) {
 								DataTrans.updateMap();
-								rule_name = DataTrans.map.get("\'" + resultSet.getString(1) + "\'");
+								rule_name = DataTrans.MAP.get("\'" + resultSet.getString(1) + "\'");
 								if (rule_name == null) {
 									//当前库中不存在id对应的规则名称，抛出提示，暂时以id标识规则名称
 									map.put(resultSet.getString(1), resultSet.getInt(2));

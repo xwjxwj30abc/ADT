@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -18,7 +19,13 @@ import zx.soft.sina.IO.util.ImpalaConnection;
 public class DataTrans {
 
 	public static Logger logger = LoggerFactory.getLogger(DataTrans.class);
-	public static Map<String, String> map;
+	public static Map<String, String> MAP = new HashMap<>();
+
+	static {
+		updateMap();
+	}
+
+	//从impala查询jdadt.plcnetinfo表,获得规则id和规则名称的对应关系
 	public static void updateMap() {
 
 		String sqlStatement = "SELECT rule_id,rule_name FROM " + ConstADT.TABLE_PLCNETINFO;
@@ -27,8 +34,8 @@ public class DataTrans {
 				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
 			if (resultSet != null) {
 				while (resultSet.next()) {
-					if (resultSet.getString(1) != null) {
-						map.put(resultSet.getString(1), resultSet.getString(2));
+					if (resultSet.getString(1) != null && resultSet.getString(2) != null) {
+						MAP.put(resultSet.getString(1), resultSet.getString(2));
 					}
 				}
 			}

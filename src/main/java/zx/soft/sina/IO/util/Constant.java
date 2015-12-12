@@ -25,6 +25,6 @@ public class Constant {
 			+ "Keyword21,Keyword22,Keyword23,Keyword24,Keyword25,Country_name,Rule_id,Destination_ipv6,Net_ending_ipv6,User_name,"
 			+ "Certificate_type,Certificate_code,Org_name,Country,Service_name,Address,Zip,Principal,Principal_tel,"
 			+ "Infor_man,Infor_man_tel,Infor_man_email,Ip,Net_monitor_department,Net_monitor_man,Net_monitor_man_tel."
-			+ "Remark,SessionID,UdpHost,UdpVer,Device_ipv4,Device_ipv6,Device_serial,Device_version,Device_note";
+			+ "Remark,SessionID,UdpHost,UdpVer,Device_ipv6,Device_serial,Device_version,Device_note";
 
 }

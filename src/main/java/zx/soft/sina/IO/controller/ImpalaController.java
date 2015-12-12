@@ -117,7 +117,7 @@ public class ImpalaController {
 		return impalaService.getStat(ConstADT.TABLE_ACCESS, p.getQueryParameters(), group_by, 10);
 	}
 
-	//上网结果统计accesslist
+	//上网日志表：根据国家，省名称获取一定查询条件下的访问不同国家的数据总数以及目的地址的经纬度
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/access/stats/country", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)
@@ -148,8 +148,15 @@ public class ImpalaController {
 				as.setCount(entry.getValue());
 				as.setCountry_name(entry.getKey());
 				try {
-					as.setJd(geoMap.get(entry.getKey()).getJD());
-					as.setWd(geoMap.get(entry.getKey()).getWD());
+					if (!entry.getKey().startsWith("中国") | entry.getKey().equals("中国")) {//中国和不是以中国开始的字符串国家，直接获取经纬度
+						as.setJd(geoMap.get(entry.getKey()).getJD());
+						as.setWd(geoMap.get(entry.getKey()).getWD());
+					} else {
+						//对于中国的不同省的统计额外处理（数据库中存安徽，而根据国家名称统计时以中国安徽出现）
+						as.setJd(geoMap.get(entry.getKey().substring(2, entry.getKey().length())).getJD());
+						as.setWd(geoMap.get(entry.getKey().substring(2, entry.getKey().length())).getWD());
+					}
+
 				} catch (NullPointerException e) {
 					as.setJd(0.0);
 					as.setWd(0.0);
@@ -160,7 +167,7 @@ public class ImpalaController {
 		return ast;
 	}
 
-	//上网趋势统计
+	//一段时间内上网趋势统计
 	@RequestMapping(value = "/access/trend", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody String getTrendency(@RequestParam("start") long start, @RequestParam("end") long end) {

@@ -29,8 +29,8 @@ public class Tools {
 
 			if (queryParams.get(0).getOpera() == 2) {
 				condition.append(queryParams.get(0).getField()).append(operation.get(queryParams.get(0).getOpera()))
-				.append(queryParams.get(0).getValue().split(",")[0]).append(" AND ")
-				.append(queryParams.get(0).getValue().split(",")[1]);
+						.append(queryParams.get(0).getValue().split(",")[0]).append(" AND ")
+						.append(queryParams.get(0).getValue().split(",")[1]);
 			} else {
 				if (Constant.StringFields.contains(queryParams.get(0).getField())
 						&& !queryParams.get(0).getField().equals("id")) {
@@ -38,34 +38,39 @@ public class Tools {
 					condition.append("\'%").append(URLDecoder.decode(queryParams.get(0).getValue())).append("%\'");
 				} else {
 					condition.append(queryParams.get(0).getField())
-					.append(operation.get(queryParams.get(0).getOpera()));
-					condition.append(queryParams.get(0).getValue());
+							.append(operation.get(queryParams.get(0).getOpera()));
+					condition.append(String.valueOf(queryParams.get(0).getValue()));
 				}
 			}
 
 			for (int j = 1; j < queryParams.size(); j++) {
+				condition.append(" AND ");
 				if (queryParams.get(j).getOpera() == 2) {
-					condition.append(queryParams.get(j).getField()).append(queryParams.get(j).getOpera())
-					.append(queryParams.get(j).getValue().split(",")[0]).append(" AND ")
-					.append(queryParams.get(j).getValue().split(",")[1]);
+					condition.append(queryParams.get(j).getField())
+							.append(operation.get(queryParams.get(j).getOpera()))
+							.append(queryParams.get(j).getValue().split(",")[0]).append(" AND ")
+							.append(queryParams.get(j).getValue().split(",")[1]);
 				} else {
 					if (Constant.StringFields.contains(queryParams.get(j).getField())
 							&& !queryParams.get(j).getField().equals("id")) {
-						condition.append(" AND ").append(queryParams.get(j).getField()).append(" LIKE ");
+						//对于字符串类型字段构造模糊查询语句查询
+						condition.append(queryParams.get(j).getField()).append(" LIKE ");
 						condition.append("\'%").append(URLDecoder.decode(queryParams.get(j).getValue())).append("%\'");
 					} else {
-						condition.append(" AND ").append(queryParams.get(j).getField())
-								.append(operation.get(queryParams.get(j).getOpera()));
-						condition.append(queryParams.get(j).getValue());
+						//对于数值类型字段，获取String包装的数值，并构造查询语句
+						condition.append(queryParams.get(j).getField()).append(
+								operation.get(queryParams.get(j).getOpera()));
+						condition.append(String.valueOf(queryParams.get(j).getValue()));
 					}
 
 				}
 			}
+
 		}
-		logger.info(condition.toString());
 		return condition.toString();
 	}
 
+	//根据参数构造基本查询语句
 	public static String getBasicSqlStatement(String tableName, List<QueryParameters> queryParams, String orderBy,
 			String order, int pageSize, int page) {
 		String condition = Tools.getPartSqlStatement(queryParams);
