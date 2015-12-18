@@ -162,7 +162,7 @@ public class ImpalaService {
 	}
 
 	//根据国家类型group_by，返回具体的访问不同国家的数据记录数
-	public Map getAccessStat(String tableName, List<QueryParameters> queryParams, String groupBy) {
+	public Map getStat(String tableName, List<QueryParameters> queryParams, String groupBy) {
 		String condition = Tools.getPartSqlStatement(queryParams);
 		String sqlStatement = "SELECT " + groupBy + ",COUNT(*) AS number FROM " + tableName + " WHERE " + condition
 				+ " GROUP BY " + groupBy;

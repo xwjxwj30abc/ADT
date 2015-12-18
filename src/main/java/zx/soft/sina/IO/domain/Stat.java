@@ -1,6 +1,6 @@
 package zx.soft.sina.IO.domain;
 
-public class AccessStat {
+public class Stat {
 
 	private String Country_name = "";
 	private double Jd;
@@ -41,7 +41,7 @@ public class AccessStat {
 
 	@Override
 	public String toString() {
-		return "AccessStat [Country_name=" + Country_name + ", Jd=" + Jd + ", Wd=" + Wd + ", Count=" + Count + "]";
+		return "Stat [Country_name=" + Country_name + ", Jd=" + Jd + ", Wd=" + Wd + ", Count=" + Count + "]";
 	}
 
 }

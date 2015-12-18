@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import zx.soft.impala.adt.core.ConstADT;
 import zx.soft.sina.IO.domain.AccessList;
-import zx.soft.sina.IO.domain.AccessStat;
 import zx.soft.sina.IO.domain.AlertList;
 import zx.soft.sina.IO.domain.IP2GEO;
 import zx.soft.sina.IO.domain.Params;
 import zx.soft.sina.IO.domain.QueryParameters;
 import zx.soft.sina.IO.domain.QueryResult;
+import zx.soft.sina.IO.domain.Stat;
 import zx.soft.sina.IO.service.ImpalaService;
 import zx.soft.sina.IO.service.MySQLService;
 
@@ -119,9 +119,9 @@ public class ImpalaController {
 
 	//上网日志表：根据国家，省名称获取一定查询条件下的访问不同国家的数据总数以及目的地址的经纬度
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = "/access/stats/country", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
+	@RequestMapping(value = "/alert/stats/country", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody List<AccessStat> getAccessStat(@RequestBody Params p) {
+	public @ResponseBody List<Stat> getAccessStat(@RequestBody Params p) {
 		if (p.getOrder() == "") {
 			p.setOrder("DESC");
 		}
@@ -135,16 +135,15 @@ public class ImpalaController {
 			p.getQueryParameters().add(new QueryParameters(1, "id", "0"));
 		}
 		@SuppressWarnings("unchecked")
-		Map<String, Long> map = impalaService.getAccessStat(ConstADT.TABLE_ACCESS, p.getQueryParameters(),
-				"Country_name");
-		List<AccessStat> ast = new ArrayList<>();
+		Map<String, Long> map = impalaService.getStat(ConstADT.TABLE_ALERT, p.getQueryParameters(), "Country_name");
+		List<Stat> ast = new ArrayList<>();
 		if (geoMap == null) {
 			geoMap = mySQLService.initGEO("countryinfo");
 		}
-		AccessStat as = null;
+		Stat as = null;
 		if (map.size() > 0) {
 			for (Entry<String, Long> entry : map.entrySet()) {
-				as = new AccessStat();
+				as = new Stat();
 				as.setCount(entry.getValue());
 				as.setCountry_name(entry.getKey());
 				try {
