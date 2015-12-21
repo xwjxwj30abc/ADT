@@ -1,6 +1,5 @@
 package zx.soft.sina.IO.core;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,11 +22,9 @@ import zx.soft.sina.IO.domain.PlcClient;
 import zx.soft.sina.IO.domain.PlcNetInfo;
 import zx.soft.sina.IO.domain.QueryParameters;
 import zx.soft.sina.IO.domain.Status;
-import zx.soft.sina.IO.domain.User;
-import zx.soft.sina.IO.domain.Weibo;
 import zx.soft.sina.IO.util.MySQLConnection;
 
-public class IOMySQL implements SinaIO {
+public class IOMySQL {
 
 	public static Logger logger = LoggerFactory.getLogger(IOMySQL.class);
 
@@ -102,23 +99,6 @@ public class IOMySQL implements SinaIO {
 			st.setErrorMessage(e.getCause().getMessage());
 		}
 		return st;
-	}
-
-	@Override
-	public <T> void write(String key, T value) {
-		if (value instanceof User) {
-			User user = (User) value;
-			userMapper.insertUser(user);
-		}
-		if (value instanceof Weibo) {
-			Weibo weibo = (Weibo) value;
-			userMapper.insertWeibo(weibo);
-		}
-	}
-
-	@Override
-	public void close() throws IOException {
-		//
 	}
 
 	public List<PlcClient> getPlcClientQueryResult(String tableName, List<QueryParameters> queryParams, String orderBy,

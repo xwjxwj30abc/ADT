@@ -19,13 +19,6 @@ public class MySQLService {
 	@Inject
 	private IOMySQL iOMySQL;
 
-	public <T> void insert(List<T> values) {
-		for (T value : values) {
-			iOMySQL.write("", value);
-		}
-
-	}
-
 	public Status insertPlcNetInfo(PlcNetInfo info) {
 		return iOMySQL.insertPlcNetInfo(info);
 	}

@@ -10,7 +10,7 @@ public class UserDriver {
 		int exitCode = -1;
 		ProgramDriver pgd = new ProgramDriver();
 		try {
-			pgd.addClass("userServer", UserServer.class, "微博用户服务");
+			pgd.addClass("adtServer", UserServer.class, "ADT服务");
 			pgd.driver(args);
 			exitCode = 0;
 		} catch (Throwable e) {

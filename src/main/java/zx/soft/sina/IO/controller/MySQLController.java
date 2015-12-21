@@ -21,8 +21,6 @@ import zx.soft.sina.IO.domain.PlcClient;
 import zx.soft.sina.IO.domain.QueryParameters;
 import zx.soft.sina.IO.domain.QueryResult;
 import zx.soft.sina.IO.domain.Status;
-import zx.soft.sina.IO.domain.User;
-import zx.soft.sina.IO.domain.Weibo;
 import zx.soft.sina.IO.service.MySQLService;
 
 @Controller
@@ -30,22 +28,6 @@ import zx.soft.sina.IO.service.MySQLService;
 public class MySQLController {
 	@Inject
 	private MySQLService mySQLService;
-
-	@RequestMapping(value = "/users", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
-	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody void insertUserToMySQL(@RequestBody List<User> values) {
-		if (values.size() > 0) {
-			mySQLService.insert(values);
-		}
-	}
-
-	@RequestMapping(value = "/weibos", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
-	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody void insertWeiboToMySQL(@RequestBody List<Weibo> values) {
-		if (values.size() > 0) {
-			mySQLService.insert(values);
-		}
-	}
 
 	@RequestMapping(value = "/plcclient/insert", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)

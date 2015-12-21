@@ -2,53 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="zx.soft.sina.IO.dao.UserMapper">
 
-	<!-- 插入完整用户信息 -->
-	<insert id="insertUser" parameterType="zx.soft.sina.IO.domain.User"
-		useGeneratedKeys="true" keyProperty="id" flushCache="true"
-		statementType="PREPARED">
-		INSERT INTO `user`
-		(`uid`,`idstr`,`uclass`,`screen_name`,`name`,`province`,
-		`city`,`location`,`description`,`url`,`profile_image_url`,
-		`profile_url`,`domain`,`weihao`,`gender`,`followers_count`,
-		`friends_count`,`pagefriends_count`,`statuses_count`,`favourites_count`,
-		`created_at`,`following`,`allow_all_act_msg`,`geo_enabled`,`verified`,
-		`verified_type`,`remark`,`ptype`,`allow_all_comment`,`avatar_large`,`avatar_hd`,
-		`verified_reason`,`verified_trade`,`verified_reason_url`,`verified_source`,
-		`verified_source_url`,`verified_state`,`verified_level`,`verified_reason_modified`,
-		`verified_contact_name`,`verified_contact_email`,`verified_contact_mobile`,
-		`follow_me`,`online_status`,`bi_followers_count`,`lang`,`star`,`mbtype`,`mbrank`,
-		`block_word`,`block_app`,`credit_score`,`user_ability`,`urank`,`lasttime`)
-		VALUES
-		(#{id},#{idstr},#{uclass},#{screen_name},#{name},#{province},
-		#{city},#{location},#{description},#{url},#{profile_image_url},
-		#{profile_url},#{domain},#{weihao},#{gender},#{followers_count},
-		#{friends_count},#{pagefriends_count},#{statuses_count},#{favourites_count},
-		#{created_at},#{following},#{allow_all_act_msg},#{geo_enabled},#{verified},
-		#{verified_type},#{remark},#{ptype},#{allow_all_comment},#{avatar_large},#{avatar_hd},
-		#{verified_reason},#{verified_trade},#{verified_reason_url},#{verified_source},
-		#{verified_source_url},#{verified_state},#{verified_level},#{verified_reason_modified},
-		#{verified_contact_name},#{verified_contact_email},#{verified_contact_mobile},
-		#{follow_me},#{online_status},#{bi_followers_count},#{lang},#{star},#{mbtype},#{mbrank},
-		#{block_word},#{block_app},#{credit_score},#{user_ability},#{urank},NOW());
-	</insert>
-	<!-- 插入微博信息 -->
-	<insert id="insertWeibo" parameterType="zx.soft.sina.IO.domain.Weibo"
-		useGeneratedKeys="true" keyProperty="id" flushCache="true"
-		statementType="PREPARED">
-		INSERT INTO `weibo`
-		(`uid`,`created_at`,`mid`,`idstr`,`text`,`source_allowclick`,`source_type`,
-		`source`,`favorited`,`truncated`,`in_reply_to_status_id`,
-		`in_reply_to_user_id`,`in_reply_to_screen_name`,`geo`,`reposts_count`,
-		`comments_count`,`attitudes_count`,`mlevel`,`owid`,`ousername`,`user`,
-		`visible_type`,`visible_list_id`,`pic_urls`,`darwin_tags`,`lasttime`)
-		VALUES
-		(#{id},#{created_at},#{mid},#{idstr},#{text},#{source_allowclick},#{source_type},
-		#{source},#{favorited},#{truncated},#{in_reply_to_status_id},
-		#{in_reply_to_user_id},#{in_reply_to_screen_name},#{geo},#{reposts_count},
-		#{comments_count},#{attitudes_count},#{mlevel},#{owid},#{ousername},#{user.idstr},
-		#{visible.type},#{visible.list_id},#{pic_urls,typeHandler=zx.soft.sina.IO.dao.ListTypeHandler},
-		#{darwin_tags,typeHandler=zx.soft.sina.IO.dao.ListTypeHandler},NOW());
-	</insert>
 	<insert id="insertPlcNetInfo" parameterType="zx.soft.sina.IO.domain.PlcNetInfo"
 		useGeneratedKeys="true" keyProperty="id" flushCache="true"
 		statementType="PREPARED">

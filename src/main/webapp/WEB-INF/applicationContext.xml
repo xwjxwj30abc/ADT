@@ -27,7 +27,6 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="mapperLocations" value="classpath*:zx/soft/sina/IO/dao/*.xml" />
-		<property name="typeHandlersPackage" value="zx.soft.sina.IO.dao" />
 	</bean>
 
 
@@ -40,10 +39,6 @@
 		<property name="validationQuery" value="select 1" />
 	</bean>
 
-	<bean id="iORedis" class="zx.soft.sina.IO.core.IORedis" />
-	<bean id="iOHBase" class="zx.soft.sina.IO.core.IOHBase" />
-	<bean id="iOSolr" class="zx.soft.sina.IO.core.IOSolr" />
-	<bean id="iOCDH5" class="zx.soft.sina.IO.core.IOCDH5" />
 	<bean id="iOMySQL" class="zx.soft.sina.IO.core.IOMySQL" />
 	<!-- 自定义JSON对象映射 -->
 	<bean id="customObjectMapper" class="zx.soft.sina.IO.util.CustomObjectMapper" />
