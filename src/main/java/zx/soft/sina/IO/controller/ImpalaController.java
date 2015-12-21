@@ -167,10 +167,23 @@ public class ImpalaController {
 	}
 
 	//一段时间内上网趋势统计
-	@RequestMapping(value = "/access/trend", method = RequestMethod.GET)
+	@RequestMapping(value = "/access/trend", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody String getTrendency(@RequestParam("start") long start, @RequestParam("end") long end) {
-		return impalaService.getTrendency(ConstADT.TABLE_ACCESS, start, end);
+	public @ResponseBody String getTrendency(@RequestBody Params p, @RequestParam("start") long start,
+			@RequestParam("end") long end) {
+		if (p.getOrder() == "") {
+			p.setOrder("DESC");
+		}
+		if (p.getOrder_by() == "") {
+			p.setOrder_by("Time");
+		}
+		if (p.getPage_size() == 0) {
+			p.setPage_size(20);
+		}
+		if (p.getQueryParameters().size() == 0) {
+			p.getQueryParameters().add(new QueryParameters(1, "id", "0"));
+		}
+		return impalaService.getTrendency(ConstADT.TABLE_ACCESS, p.getQueryParameters(), start, end);
 	}
 
 	//过滤结果终端来源统计接口

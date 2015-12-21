@@ -183,9 +183,11 @@ public class ImpalaService {
 	}
 
 	//用户一段时间上网趋势统计分析
-	public String getTrendency(String tableName, long start, long end) {
+	public String getTrendency(String tableName, List<QueryParameters> queryParams, long start, long end) {
+		String condition = Tools.getPartSqlStatement(queryParams);
 		String sqlStatement = "SELECT (time-time%86400)-28800 AS DAY , COUNT(*) AS NUM FROM " + tableName
-				+ " WHERE time BETWEEN " + start + " AND " + end + " GROUP BY DAY ORDER BY NUM";
+				+ " WHERE time BETWEEN " + start + " AND " + end + " AND " + condition + " GROUP BY DAY ORDER BY NUM";
+		logger.info(sqlStatement);
 		Map<Long, Integer> map = new HashMap<>();
 		try (Connection conn = ImpalaConnection.getConnection();
 				Statement statement = conn.createStatement();
