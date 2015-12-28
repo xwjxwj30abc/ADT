@@ -117,7 +117,7 @@ public class ImpalaController {
 		return impalaService.getStat(ConstADT.TABLE_ACCESS, p.getQueryParameters(), group_by, 10);
 	}
 
-	//上网日志表：根据国家，省名称获取一定查询条件下的访问不同国家的数据总数以及目的地址的经纬度
+	//过滤结果表：根据国家，省名称获取一定查询条件下的访问不同国家的数据总数以及目的地址的经纬度
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/alert/stats/country", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)
