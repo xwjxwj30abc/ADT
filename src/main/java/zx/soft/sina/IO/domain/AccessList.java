@@ -34,6 +34,18 @@ public class AccessList {
 	private double Jd;
 	private double Wd;
 	private String Country_name = "";
+	private long vpn1_ip;
+	private double Jd_vpn1;
+	private double Wd_vpn1;
+	private String Country_name_vpn1 = "";
+	private long vpn2_ip;
+	private double Jd_vpn2;
+	private double Wd_vpn2;
+	private String Country_name_vpn2 = "";
+	private long vpn3_ip;
+	private double Jd_vpn3;
+	private double Wd_vpn3;
+	private String Country_name_vpn3 = "";
 	private Date Cjsj;
 
 	public String getRowkey() {
@@ -286,6 +298,102 @@ public class AccessList {
 
 	public void setCjsj(Date cjsj) {
 		Cjsj = cjsj;
+	}
+
+	public long getVpn1_ip() {
+		return vpn1_ip;
+	}
+
+	public double getJd_vpn1() {
+		return Jd_vpn1;
+	}
+
+	public double getWd_vpn1() {
+		return Wd_vpn1;
+	}
+
+	public String getCountry_name_vpn1() {
+		return Country_name_vpn1;
+	}
+
+	public long getVpn2_ip() {
+		return vpn2_ip;
+	}
+
+	public double getJd_vpn2() {
+		return Jd_vpn2;
+	}
+
+	public double getWd_vpn2() {
+		return Wd_vpn2;
+	}
+
+	public String getCountry_name_vpn2() {
+		return Country_name_vpn2;
+	}
+
+	public long getVpn3_ip() {
+		return vpn3_ip;
+	}
+
+	public double getJd_vpn3() {
+		return Jd_vpn3;
+	}
+
+	public double getWd_vpn3() {
+		return Wd_vpn3;
+	}
+
+	public String getCountry_name_vpn3() {
+		return Country_name_vpn3;
+	}
+
+	public void setVpn1_ip(long vpn1_ip) {
+		this.vpn1_ip = vpn1_ip;
+	}
+
+	public void setJd_vpn1(double jd_vpn1) {
+		Jd_vpn1 = jd_vpn1;
+	}
+
+	public void setWd_vpn1(double wd_vpn1) {
+		Wd_vpn1 = wd_vpn1;
+	}
+
+	public void setCountry_name_vpn1(String country_name_vpn1) {
+		Country_name_vpn1 = country_name_vpn1;
+	}
+
+	public void setVpn2_ip(long vpn2_ip) {
+		this.vpn2_ip = vpn2_ip;
+	}
+
+	public void setJd_vpn2(double jd_vpn2) {
+		Jd_vpn2 = jd_vpn2;
+	}
+
+	public void setWd_vpn2(double wd_vpn2) {
+		Wd_vpn2 = wd_vpn2;
+	}
+
+	public void setCountry_name_vpn2(String country_name_vpn2) {
+		Country_name_vpn2 = country_name_vpn2;
+	}
+
+	public void setVpn3_ip(long vpn3_ip) {
+		this.vpn3_ip = vpn3_ip;
+	}
+
+	public void setJd_vpn3(double jd_vpn3) {
+		Jd_vpn3 = jd_vpn3;
+	}
+
+	public void setWd_vpn3(double wd_vpn3) {
+		Wd_vpn3 = wd_vpn3;
+	}
+
+	public void setCountry_name_vpn3(String country_name_vpn3) {
+		Country_name_vpn3 = country_name_vpn3;
 	}
 
 	@Override

@@ -44,6 +44,7 @@ public class MySQLConnection {
 		ds.setMinIdle(Integer.parseInt(props.getProperty("mysql.dbcp.minIdle")));
 		ds.setMaxIdle(Integer.parseInt(props.getProperty("mysql.dbcp.maxIdle")));
 		ds.setMaxWait(Integer.parseInt(props.getProperty("mysql.dbcp.maxWait")));
+		ds.setMinEvictableIdleTimeMillis(Long.parseLong(props.getProperty("mysql.dbcp.maxActive.time")));
 		ds.setRemoveAbandoned(true);
 		ds.setRemoveAbandonedTimeout(2000);
 		dataSource = ds;

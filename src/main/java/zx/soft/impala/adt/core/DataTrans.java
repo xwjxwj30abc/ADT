@@ -77,7 +77,20 @@ public class DataTrans {
 			result.setJd(resultSet.getDouble(28));
 			result.setWd(resultSet.getDouble(29));
 			result.setCountry_name(resultSet.getString(30));
-			result.setCjsj(new Date(resultSet.getLong(31)));
+			result.setVpn1_ip(resultSet.getLong(31));
+			result.setJd_vpn1(resultSet.getDouble(32));
+			result.setWd_vpn1(resultSet.getDouble(33));
+			result.setCountry_name_vpn1(resultSet.getString(34));
+			result.setVpn2_ip(resultSet.getLong(35));
+			result.setJd_vpn2(resultSet.getDouble(36));
+			result.setWd_vpn2(resultSet.getDouble(37));
+			result.setCountry_name_vpn2(resultSet.getString(38));
+			result.setVpn3_ip(resultSet.getLong(39));
+			result.setJd_vpn3(resultSet.getDouble(40));
+			result.setWd_vpn3(resultSet.getDouble(41));
+			result.setCountry_name_vpn3(resultSet.getString(42));
+			result.setCjsj(new Date(resultSet.getLong(43) * 1000));
+
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}

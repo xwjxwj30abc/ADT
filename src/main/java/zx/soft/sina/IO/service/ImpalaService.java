@@ -1,6 +1,5 @@
 package zx.soft.sina.IO.service;
 
-import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,6 +20,7 @@ import zx.soft.sina.IO.domain.AlertList;
 import zx.soft.sina.IO.domain.QueryParameters;
 import zx.soft.sina.IO.util.ImpalaConnection;
 import zx.soft.sina.IO.util.JsonUtils;
+import zx.soft.utils.log.LogbackUtil;
 
 @Service
 public class ImpalaService {
@@ -67,21 +67,20 @@ public class ImpalaService {
 				}
 			}
 		} catch (SQLException e) {
-			throw new RuntimeException();
+			logger.error(LogbackUtil.expection2Str(e));
 		} catch (Exception e1) {
-			throw new RuntimeException();
+			logger.error(LogbackUtil.expection2Str(e1));
 		}
-
 		return alertList;
 	}
 
 	public List<AccessList> getAccessListQueryResult(String tableName, List<QueryParameters> queryParams,
 			String orderBy, String order, int pageSize, int page) {
 		String sqlStatement = Tools.getBasicSqlStatement(tableName, queryParams, orderBy, order, pageSize, page);
+		List<AccessList> temp = new ArrayList<>();
 		try (Connection conn = ImpalaConnection.getConnection();
 				Statement statement = conn.createStatement();
 				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
-			List<AccessList> temp = new ArrayList<>();
 			if (resultSet != null) {
 				try {
 					while (resultSet.next()) {
@@ -91,21 +90,22 @@ public class ImpalaService {
 					e.printStackTrace();
 				}
 			}
-			return temp;
+
 		} catch (SQLException e) {
-			throw new RuntimeException();
+			logger.error(LogbackUtil.expection2Str(e));
 		} catch (Exception e1) {
-			throw new RuntimeException();
+			logger.error(LogbackUtil.expection2Str(e1));
 		}
+		return temp;
 	}
 
 	public List<AlertList> getAlertListQueryResult(String tableName, List<QueryParameters> queryParams, String orderBy,
 			String order, int pageSize, int page) {
 		String sqlStatement = Tools.getBasicSqlStatement(tableName, queryParams, orderBy, order, pageSize, page);
+		List<AlertList> temp = new ArrayList<>();
 		try (Connection conn = ImpalaConnection.getConnection();
 				Statement statement = conn.createStatement();
 				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
-			List<AlertList> temp = new ArrayList<>();
 			if (resultSet != null) {
 				try {
 					while (resultSet.next()) {
@@ -115,12 +115,13 @@ public class ImpalaService {
 					e.printStackTrace();
 				}
 			}
-			return temp;
+
 		} catch (SQLException e) {
-			throw new RuntimeException();
+			logger.error(LogbackUtil.expection2Str(e));
 		} catch (Exception e1) {
-			throw new RuntimeException();
+			logger.error(LogbackUtil.expection2Str(e1));
 		}
+		return temp;
 	}
 
 	public int getSum(String tableName, List<QueryParameters> queryParams) {
@@ -136,7 +137,7 @@ public class ImpalaService {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(LogbackUtil.expection2Str(e));
 		}
 		return s;
 	}
@@ -156,7 +157,7 @@ public class ImpalaService {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(LogbackUtil.expection2Str(e));
 		}
 		return JsonUtils.toJson(map);
 	}
@@ -177,7 +178,7 @@ public class ImpalaService {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(LogbackUtil.expection2Str(e));
 		}
 		return map;
 	}
@@ -198,7 +199,7 @@ public class ImpalaService {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(LogbackUtil.expection2Str(e));
 		}
 		return JsonUtils.toJson(map);
 	}
@@ -242,13 +243,10 @@ public class ImpalaService {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error(LogbackUtil.expection2Str(e));
 		}
 
 		return JsonUtils.toJson(map);
 	}
 
-	public static void main(String[] args) throws UnsupportedEncodingException {
-		ImpalaService service = new ImpalaService();
-	}
 }
