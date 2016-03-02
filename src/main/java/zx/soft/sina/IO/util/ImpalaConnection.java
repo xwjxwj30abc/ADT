@@ -44,6 +44,8 @@ public class ImpalaConnection {
 		ds.setMaxIdle(Integer.parseInt(props.getProperty("dbcp.maxIdle")));
 		ds.setMaxWait(Integer.parseInt(props.getProperty("dbcp.maxWait")));
 		ds.setMinEvictableIdleTimeMillis(Long.parseLong(props.getProperty("dbcp.maxActive.time")));
+		ds.setTestOnBorrow(true);
+		ds.setValidationQuery("select 1");
 		ds.setRemoveAbandoned(true);
 		ds.setRemoveAbandonedTimeout(2000);
 		dataSource = ds;
