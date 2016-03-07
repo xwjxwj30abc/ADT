@@ -230,19 +230,20 @@ public class ImpalaService {
 						if (resultSet.getString(1) == null) {
 							map.put("ruleId_is_null", resultSet.getInt(2));
 						} else {
-							String rule_name = DataTrans.MAP.get("\'" + resultSet.getString(1) + "\'");
+							String rule_name = DataTrans.MAP.get(resultSet.getString(1));
 							if (rule_name == null) {
 								DataTrans.updateMap();
-								rule_name = DataTrans.MAP.get("\'" + resultSet.getString(1) + "\'");
+								rule_name = DataTrans.MAP.get(resultSet.getString(1));
 								if (rule_name == null) {
 									//当前库中不存在id对应的规则名称，抛出提示，暂时以id标识规则名称
 									map.put(resultSet.getString(1), resultSet.getInt(2));
 								} else {
 									//map更新后，成功匹配规则id和name
-									map.put(rule_name.substring(1, rule_name.length() - 1), resultSet.getInt(2));
+									//map.put(rule_name.substring(1, rule_name.length() - 1), resultSet.getInt(2));
+									map.put(rule_name, resultSet.getInt(2));
 								}
 							} else {
-								map.put(rule_name.substring(1, rule_name.length() - 1), resultSet.getInt(2));
+								map.put(rule_name, resultSet.getInt(2));
 							}
 						}
 					}
@@ -250,6 +251,7 @@ public class ImpalaService {
 				}
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			logger.error(LogbackUtil.expection2Str(e));
 		}
 
