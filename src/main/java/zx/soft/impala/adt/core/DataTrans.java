@@ -25,10 +25,11 @@ public class DataTrans {
 		updateMap();
 	}
 
-	//从impala查询jdadt.plcnetinfo表,获得规则id和规则名称的对应关系
+	//从impala查询adt.plcnetinfo表,获得规则id和规则名称的对应关系
 	public static void updateMap() {
 
-		String sqlStatement = "SELECT rule_id,rule_name FROM " + ConstADT.TABLE_PLCNETINFO;
+		//String sqlStatement = "SELECT rule_id,rule_name FROM " + ConstADT.TABLE_PLCNETINFO;
+		String sqlStatement = "SELECT rowkey,rule_name FROM " + ConstADT.TABLE_PLCNETINFO;
 		try (Connection conn = ImpalaConnection.getConnection();
 				Statement statement = conn.createStatement();
 				ResultSet resultSet = statement.executeQuery(sqlStatement);) {

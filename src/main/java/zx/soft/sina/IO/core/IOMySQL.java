@@ -95,6 +95,7 @@ public class IOMySQL {
 				st.setErrorMessage("更新成功.");
 			}
 		} catch (RuntimeException e) {
+			e.printStackTrace();
 			st.setErrorCode("2");
 			st.setErrorMessage(e.getCause().getMessage());
 		}
@@ -103,11 +104,11 @@ public class IOMySQL {
 
 	public List<PlcClient> getPlcClientQueryResult(String tableName, List<QueryParameters> queryParams, String orderBy,
 			String order, int pageSize, int page) {
+		List<PlcClient> temp = new ArrayList<>();
 		String sqlStatement = Tools.getBasicSqlStatement(tableName, queryParams, orderBy, order, pageSize, page);
 		try (Connection conn = MySQLConnection.getConnection();
 				Statement statement = conn.createStatement();
 				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
-			List<PlcClient> temp = new ArrayList<>();
 			if (resultSet != null) {
 				try {
 					while (resultSet.next()) {
@@ -117,12 +118,13 @@ public class IOMySQL {
 					e.printStackTrace();
 				}
 			}
-			return temp;
+
 		} catch (SQLException e) {
-			throw new RuntimeException();
+			e.printStackTrace();
 		} catch (Exception e1) {
-			throw new RuntimeException();
+			e1.printStackTrace();
 		}
+		return temp;
 	}
 
 	public int getSum(String tableName, List<QueryParameters> queryParams) {
@@ -159,12 +161,11 @@ public class IOMySQL {
 				}
 			}
 		} catch (SQLException e) {
-			throw new RuntimeException();
+			e.printStackTrace();
 		} catch (Exception e1) {
-			throw new RuntimeException();
+			e1.printStackTrace();
 		}
 
 		return plcClient;
 	}
-
 }

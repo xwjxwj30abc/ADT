@@ -51,7 +51,7 @@ public class MySQLConnection {
 	}
 
 	public static void main(String[] args) throws SQLException {
-		String sqlStatement = "DESCRIBE jdadt.plcClient";
+		String sqlStatement = "DESCRIBE adt.plcClient";
 
 		try (Connection conn = MySQLConnection.getConnection();
 				Statement statement = conn.createStatement();
