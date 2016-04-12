@@ -224,7 +224,6 @@ public class ImpalaService {
 			if (resultSet != null) {
 				while (resultSet.next()) {
 					if (!groupBy.equals("rule_id")) {
-						//由于plcnetinfo表由sqoop导出，须额外处理字符串
 						map.put(resultSet.getString(1), resultSet.getInt(2));
 					} else {
 						if (resultSet.getString(1) == null) {
