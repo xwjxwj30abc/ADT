@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import zx.soft.sina.IO.domain.AccessList;
 import zx.soft.sina.IO.domain.AlertList;
 import zx.soft.sina.IO.domain.PlcClient;
+import zx.soft.sina.IO.domain.VPNTraffic;
+import zx.soft.sina.IO.domain.WanIpv4;
 import zx.soft.sina.IO.util.ImpalaConnection;
 
 public class DataTrans {
@@ -181,6 +183,36 @@ public class DataTrans {
 			result.setCertificate_code(resultSet.getString(48));
 			result.setOrg_name(resultSet.getString(49));
 			result.setCountry(resultSet.getString(50));
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return result;
+	}
+
+	public static VPNTraffic resultSet2VPNTraffic(ResultSet resultSet) {
+		VPNTraffic result = new VPNTraffic();
+		try {
+			result.setRowkey(resultSet.getString(1));
+			result.setBegin_time(resultSet.getLong(2));
+			result.setEnd_time(resultSet.getLong(3));
+			result.setId(resultSet.getInt(4));
+			result.setIpv4(resultSet.getString(5));
+			result.setService_code(resultSet.getLong(6));
+			result.setTraffic(resultSet.getLong(7));
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return result;
+	}
+
+	public static WanIpv4 resultSet2WanIpv4(ResultSet resultSet) {
+		WanIpv4 result = new WanIpv4();
+		try {
+			result.setRowkey(resultSet.getString(1));
+			result.setAdd_time(resultSet.getLong(2));
+			result.setId(resultSet.getInt(3));
+			result.setIpv4(resultSet.getString(4));
+			result.setService_code(resultSet.getLong(5));
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}

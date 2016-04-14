@@ -205,4 +205,42 @@ public class ImpalaController {
 		return impalaService.getAlertStats(ConstADT.TABLE_ALERT, p.getQueryParameters(), group_by, p.getPage_size());
 	}
 
+	//指定设备的上网流量统计结果
+	@RequestMapping(value = "/traffic/stats", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public @ResponseBody String getTraffic(@RequestBody Params p) {
+		if (p.getOrder() == "") {
+			p.setOrder("DESC");
+		}
+		if (p.getOrder_by() == "") {
+			p.setOrder_by("end_time");
+		}
+		if (p.getPage_size() == 0) {
+			p.setPage_size(800);
+		}
+		if (p.getQueryParameters().size() == 0) {
+			p.getQueryParameters().add(new QueryParameters(1, "id", "0"));
+		}
+		return impalaService.getTraffic(ConstADT.TABLE_VPN_TRAFFIC, p.getQueryParameters());
+	}
+
+	//查看不同设备出口的公网地址
+	@RequestMapping(value = "/wanipv4/ip", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public @ResponseBody String getWanIpv4(@RequestBody Params p) {
+		if (p.getOrder() == "") {
+			p.setOrder("DESC");
+		}
+		if (p.getOrder_by() == "") {
+			p.setOrder_by("add_time");
+		}
+		if (p.getPage_size() == 0) {
+			p.setPage_size(10);
+		}
+		if (p.getQueryParameters().size() == 0) {
+			p.getQueryParameters().add(new QueryParameters(1, "id", "0"));
+		}
+		return impalaService.getWanIpv4(ConstADT.TABLE_VPN_WAN_IPV4, p.getQueryParameters());
+	}
+
 }

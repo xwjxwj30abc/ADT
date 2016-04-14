@@ -4,6 +4,7 @@ import zx.soft.sina.IO.util.JsonUtils;
 
 public class PlcNetInfo {
 
+	private String rowkey = "";
 	private long Service_code;
 	private String Rule_id = "";
 	private String Rule_name = "";
@@ -22,6 +23,14 @@ public class PlcNetInfo {
 
 	public PlcNetInfo() {
 
+	}
+
+	public String getRowkey() {
+		return rowkey;
+	}
+
+	public void setRowkey(String rowkey) {
+		this.rowkey = rowkey;
 	}
 
 	public long getService_code() {

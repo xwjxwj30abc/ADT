@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import zx.soft.sina.IO.domain.QueryParameters;
-import zx.soft.sina.IO.util.Constant;
 
 public class Tools {
 
@@ -32,7 +31,7 @@ public class Tools {
 						.append(queryParams.get(0).getValue().split(",")[0]).append(" AND ")
 						.append(queryParams.get(0).getValue().split(",")[1]);
 			} else {
-				if (Constant.StringFields.contains(queryParams.get(0).getField())
+				if (ConstADT.StringFields.contains(queryParams.get(0).getField())
 						&& !queryParams.get(0).getField().equals("id")) {
 					condition.append(queryParams.get(0).getField()).append(" LIKE ");
 					condition.append("\'%").append(URLDecoder.decode(queryParams.get(0).getValue())).append("%\'");
@@ -51,7 +50,7 @@ public class Tools {
 							.append(queryParams.get(j).getValue().split(",")[0]).append(" AND ")
 							.append(queryParams.get(j).getValue().split(",")[1]);
 				} else {
-					if (Constant.StringFields.contains(queryParams.get(j).getField())
+					if (ConstADT.StringFields.contains(queryParams.get(j).getField())
 							&& !queryParams.get(j).getField().equals("id")) {
 						//对于字符串类型字段构造模糊查询语句查询
 						condition.append(queryParams.get(j).getField()).append(" LIKE ");

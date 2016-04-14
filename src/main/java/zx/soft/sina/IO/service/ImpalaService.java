@@ -18,6 +18,8 @@ import zx.soft.impala.adt.core.Tools;
 import zx.soft.sina.IO.domain.AccessList;
 import zx.soft.sina.IO.domain.AlertList;
 import zx.soft.sina.IO.domain.QueryParameters;
+import zx.soft.sina.IO.domain.VPNTraffic;
+import zx.soft.sina.IO.domain.WanIpv4;
 import zx.soft.sina.IO.util.ImpalaConnection;
 import zx.soft.sina.IO.util.JsonUtils;
 import zx.soft.utils.log.LogbackUtil;
@@ -212,9 +214,55 @@ public class ImpalaService {
 	}
 
 	//过滤结果表统计分析
+	//	public String getAlertStats(String tableName, List<QueryParameters> queryParams, String groupBy, int limit) {
+	//		String condition = Tools.getPartSqlStatement(queryParams);
+	//		String sqlStatement = "SELECT " + groupBy + " , COUNT(*) AS NUM FROM " + tableName + " WHERE " + condition
+	//				+ " GROUP BY " + groupBy + " ORDER BY NUM DESC LIMIT " + limit;
+	//		logger.info(sqlStatement);
+	//		Map<String, Integer> map = new HashMap<>();
+	//		try (Connection conn = ImpalaConnection.getConnection();
+	//				Statement statement = conn.createStatement();
+	//				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
+	//			if (resultSet != null) {
+	//				while (resultSet.next()) {
+	//					if (!groupBy.equals("rule_id")) {
+	//						map.put(resultSet.getString(1), resultSet.getInt(2));
+	//					} else {
+	//						if (resultSet.getString(1) == null) {
+	//							map.put("ruleId_is_null", resultSet.getInt(2));
+	//						} else {
+	//							String rule_name = DataTrans.MAP.get(resultSet.getString(1));
+	//							if (rule_name == null) {
+	//								DataTrans.updateMap();
+	//								rule_name = DataTrans.MAP.get(resultSet.getString(1));
+	//								if (rule_name == null) {
+	//									//当前库中不存在id对应的规则名称，抛出提示，暂时以id标识规则名称
+	//									map.put(resultSet.getString(1), resultSet.getInt(2));
+	//								} else {
+	//									//map更新后，成功匹配规则id和name
+	//									//map.put(rule_name.substring(1, rule_name.length() - 1), resultSet.getInt(2));
+	//									map.put(rule_name, resultSet.getInt(2));
+	//								}
+	//							} else {
+	//								map.put(rule_name, resultSet.getInt(2));
+	//							}
+	//						}
+	//					}
+	//
+	//				}
+	//			}
+	//		} catch (SQLException e) {
+	//			e.printStackTrace();
+	//			logger.error(LogbackUtil.expection2Str(e));
+	//		}
+	//
+	//		return JsonUtils.toJson(map);
+	//	}
+
+	//过滤结果表统计分析
 	public String getAlertStats(String tableName, List<QueryParameters> queryParams, String groupBy, int limit) {
 		String condition = Tools.getPartSqlStatement(queryParams);
-		String sqlStatement = "SELECT " + groupBy + " , COUNT(*) AS NUM FROM " + tableName + " WHERE " + condition
+		String sqlStatement = "SELECT " + groupBy + " , COUNT(*)  AS NUM FROM " + tableName + " WHERE " + condition
 				+ " GROUP BY " + groupBy + " ORDER BY NUM DESC LIMIT " + limit;
 		logger.info(sqlStatement);
 		Map<String, Integer> map = new HashMap<>();
@@ -223,38 +271,69 @@ public class ImpalaService {
 				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
 			if (resultSet != null) {
 				while (resultSet.next()) {
-					if (!groupBy.equals("rule_id")) {
-						map.put(resultSet.getString(1), resultSet.getInt(2));
-					} else {
-						if (resultSet.getString(1) == null) {
-							map.put("ruleId_is_null", resultSet.getInt(2));
+					String rule_name = DataTrans.MAP.get(resultSet.getString(1));
+					if (rule_name == null) {
+						DataTrans.updateMap();
+						rule_name = DataTrans.MAP.get(resultSet.getString(1));
+						if (rule_name == null) {
+							//当前库中不存在id对应的规则名称，抛出提示，暂时以rowkey标识规则名称
+							map.put(resultSet.getString(1), resultSet.getInt(2));
 						} else {
-							String rule_name = DataTrans.MAP.get(resultSet.getString(1));
-							if (rule_name == null) {
-								DataTrans.updateMap();
-								rule_name = DataTrans.MAP.get(resultSet.getString(1));
-								if (rule_name == null) {
-									//当前库中不存在id对应的规则名称，抛出提示，暂时以id标识规则名称
-									map.put(resultSet.getString(1), resultSet.getInt(2));
-								} else {
-									//map更新后，成功匹配规则id和name
-									//map.put(rule_name.substring(1, rule_name.length() - 1), resultSet.getInt(2));
-									map.put(rule_name, resultSet.getInt(2));
-								}
-							} else {
-								map.put(rule_name, resultSet.getInt(2));
-							}
+							//map更新后，成功匹配规则id和name
+							//map.put(rule_name.substring(1, rule_name.length() - 1), resultSet.getInt(2));
+							map.put(rule_name, resultSet.getInt(2));
 						}
+					} else {
+						map.put(rule_name, resultSet.getInt(2));
 					}
-
 				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.error(LogbackUtil.expection2Str(e));
 		}
-
 		return JsonUtils.toJson(map);
+
 	}
 
+	//流量统计表
+	public String getTraffic(String tableName, List<QueryParameters> queryParams) {
+		String condition = Tools.getPartSqlStatement(queryParams);
+
+		String sqlStatement = "SELECT * FROM " + tableName + " WHERE " + condition;
+		logger.info(sqlStatement);
+		List<VPNTraffic> traffics = new ArrayList<>();
+		try (Connection conn = ImpalaConnection.getConnection();
+				Statement statement = conn.createStatement();
+				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
+			if (resultSet != null) {
+				while (resultSet.next()) {
+					traffics.add(DataTrans.resultSet2VPNTraffic(resultSet));
+				}
+			}
+		} catch (SQLException e) {
+			logger.error(LogbackUtil.expection2Str(e));
+		}
+		return JsonUtils.toJson(traffics);
+	}
+
+	//设备出口公网地址
+	public String getWanIpv4(String tableName, List<QueryParameters> queryParams) {
+		String condition = Tools.getPartSqlStatement(queryParams);
+		String sqlStatement = "SELECT * FROM " + tableName + "  WHERE " + condition;
+		logger.info(sqlStatement);
+		List<WanIpv4> wanIpv4s = new ArrayList<>();
+		try (Connection conn = ImpalaConnection.getConnection();
+				Statement statement = conn.createStatement();
+				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
+			if (resultSet != null) {
+				while (resultSet.next()) {
+					wanIpv4s.add(DataTrans.resultSet2WanIpv4(resultSet));
+				}
+			}
+		} catch (SQLException e) {
+			logger.error(LogbackUtil.expection2Str(e));
+		}
+		return JsonUtils.toJson(wanIpv4s);
+	}
 }
