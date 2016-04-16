@@ -168,4 +168,30 @@ public class IOMySQL {
 
 		return plcClient;
 	}
+
+	public List<Long> getMappingServiceCodeByServiceName(String tableName, String Service_name) {
+		String sqlStatement = "SELECT Service_code FROM " + tableName + " WHERE Service_name LIKE  \'%" + Service_name
+				+ "%\'";
+		logger.info(sqlStatement);
+		List<Long> Service_codes = new ArrayList<>();
+		try (Connection conn = MySQLConnection.getConnection();
+				Statement statement = conn.createStatement();
+				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
+			if (resultSet != null) {
+				try {
+					while (resultSet.next()) {
+						Service_codes.add(resultSet.getLong(1));
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		logger.info(Service_codes.size() + "");
+		return Service_codes;
+	}
 }

@@ -17,14 +17,16 @@ import zx.soft.sina.IO.domain.PlcClient;
 import zx.soft.sina.IO.domain.VPNTraffic;
 import zx.soft.sina.IO.domain.WanIpv4;
 import zx.soft.sina.IO.util.ImpalaConnection;
+import zx.soft.sina.IO.util.MySQLConnection;
 
 public class DataTrans {
 
 	public static Logger logger = LoggerFactory.getLogger(DataTrans.class);
 	public static Map<String, String> MAP = new HashMap<>();
-
+	public static Map<Long, String> plcClientMAP = new HashMap<>();
 	static {
 		updateMap();
+		updatePlcClientMap();
 	}
 
 	//从impala查询adt.plcnetinfo表,获得规则id和规则名称的对应关系
@@ -39,6 +41,25 @@ public class DataTrans {
 				while (resultSet.next()) {
 					if (resultSet.getString(1) != null && resultSet.getString(2) != null) {
 						MAP.put(resultSet.getString(1), resultSet.getString(2));
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	//从mysql查询adt.plcClient表,获得service_code和service名称的对应关系
+	public static void updatePlcClientMap() {
+
+		String sqlStatement = "SELECT Service_code,Service_name FROM " + ConstADT.TABLE_PLCCLIENT;
+		try (Connection conn = MySQLConnection.getConnection();
+				Statement statement = conn.createStatement();
+				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
+			if (resultSet != null) {
+				while (resultSet.next()) {
+					if (resultSet.getLong(1) != 0 && resultSet.getString(2) != null) {
+						plcClientMAP.put(resultSet.getLong(1), resultSet.getString(2));
 					}
 				}
 			}
@@ -218,4 +239,5 @@ public class DataTrans {
 		}
 		return result;
 	}
+
 }

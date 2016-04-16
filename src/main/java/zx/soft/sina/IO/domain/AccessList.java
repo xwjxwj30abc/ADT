@@ -7,6 +7,7 @@ public class AccessList {
 	private String rowkey = "";
 	private long id;
 	private long Service_code;
+	private String Service_name = "";
 	private long Net_ending_ip;
 	private String Net_ending_name = "";
 	private long Time;
@@ -47,6 +48,14 @@ public class AccessList {
 	private double Wd_vpn3;
 	private String Country_name_vpn3 = "";
 	private Date Cjsj;
+
+	public String getService_name() {
+		return Service_name;
+	}
+
+	public void setService_name(String service_name) {
+		Service_name = service_name;
+	}
 
 	public String getRowkey() {
 		return rowkey;

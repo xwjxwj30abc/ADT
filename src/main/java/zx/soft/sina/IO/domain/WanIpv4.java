@@ -9,12 +9,21 @@ public class WanIpv4 {
 
 	private String rowkey = "";
 	private long Service_code;
+	private String Service_name = "";
 	private int id;
 	private String ipv4;
 	private long add_time;
 
 	public WanIpv4() {
 
+	}
+
+	public String getService_name() {
+		return Service_name;
+	}
+
+	public void setService_name(String service_name) {
+		Service_name = service_name;
 	}
 
 	public String getRowkey() {

@@ -39,6 +39,16 @@ public class ImpalaService {
 				try {
 					while (resultSet.next()) {
 						accessList = DataTrans.resultSet2Access(resultSet);
+						long Service_code_tmp = resultSet.getLong(3);
+						String Service_name_tmp = DataTrans.plcClientMAP.get(Service_code_tmp);
+						if (Service_name_tmp == null) {
+							DataTrans.updatePlcClientMap();
+							Service_name_tmp = DataTrans.plcClientMAP.get(Service_code_tmp);
+							if (Service_name_tmp == null) {
+								Service_name_tmp = "";
+							}
+						}
+						accessList.setService_name(Service_name_tmp);
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -63,6 +73,17 @@ public class ImpalaService {
 				try {
 					while (resultSet.next()) {
 						alertList = DataTrans.resultSet2AlertList(resultSet);
+						long Service_code_tmp = resultSet.getLong(3);
+						String Service_name_tmp = DataTrans.plcClientMAP.get(Service_code_tmp);
+						if (Service_name_tmp == null) {
+							DataTrans.updatePlcClientMap();
+							Service_name_tmp = DataTrans.plcClientMAP.get(Service_code_tmp);
+							if (Service_name_tmp == null) {
+								Service_name_tmp = "";
+							}
+						}
+						alertList.setService_name(Service_name_tmp);
+
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -86,7 +107,18 @@ public class ImpalaService {
 			if (resultSet != null) {
 				try {
 					while (resultSet.next()) {
-						temp.add(DataTrans.resultSet2Access(resultSet));
+						AccessList access = DataTrans.resultSet2Access(resultSet);
+						long Service_code_tmp = resultSet.getLong(3);
+						String Service_name_tmp = DataTrans.plcClientMAP.get(Service_code_tmp);
+						if (Service_name_tmp == null) {
+							DataTrans.updatePlcClientMap();
+							Service_name_tmp = DataTrans.plcClientMAP.get(Service_code_tmp);
+							if (Service_name_tmp == null) {
+								Service_name_tmp = "";
+							}
+						}
+						access.setService_name(Service_name_tmp);
+						temp.add(access);
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -111,7 +143,18 @@ public class ImpalaService {
 			if (resultSet != null) {
 				try {
 					while (resultSet.next()) {
-						temp.add(DataTrans.resultSet2AlertList(resultSet));
+						long Service_code_tmp = resultSet.getLong(3);
+						AlertList alertList = DataTrans.resultSet2AlertList(resultSet);
+						String Service_name_tmp = DataTrans.plcClientMAP.get(Service_code_tmp);
+						if (Service_name_tmp == null) {
+							DataTrans.updatePlcClientMap();
+							Service_name_tmp = DataTrans.plcClientMAP.get(Service_code_tmp);
+							if (Service_name_tmp == null) {
+								Service_name_tmp = "";
+							}
+						}
+						alertList.setService_name(Service_name_tmp);
+						temp.add(alertList);
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -297,30 +340,48 @@ public class ImpalaService {
 	}
 
 	//流量统计表
-	public String getTraffic(String tableName, List<QueryParameters> queryParams) {
-		String condition = Tools.getPartSqlStatement(queryParams);
+	public List<VPNTraffic> getTraffic(String tableName, List<QueryParameters> queryParams, String orderBy,
+			String order, int pageSize, int page) {
 
-		String sqlStatement = "SELECT * FROM " + tableName + " WHERE " + condition;
+		String sqlStatement = Tools.getBasicSqlStatement(tableName, queryParams, orderBy, order, pageSize, page);
 		logger.info(sqlStatement);
 		List<VPNTraffic> traffics = new ArrayList<>();
 		try (Connection conn = ImpalaConnection.getConnection();
 				Statement statement = conn.createStatement();
 				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
+
 			if (resultSet != null) {
 				while (resultSet.next()) {
-					traffics.add(DataTrans.resultSet2VPNTraffic(resultSet));
+					long Service_code_tmp = resultSet.getLong(6);
+					String Service_name_tmp = DataTrans.plcClientMAP.get(Service_code_tmp);
+					VPNTraffic traffic_tmp = DataTrans.resultSet2VPNTraffic(resultSet);
+					if (Service_name_tmp == null) {
+						DataTrans.updatePlcClientMap();
+						Service_name_tmp = DataTrans.plcClientMAP.get(Service_code_tmp);
+						if (Service_name_tmp == null) {
+							//当前库中不存在设备名称，以空格标识
+							traffic_tmp.setService_name("没有");
+						} else {
+							//更新后，成功获取设备名称
+							traffic_tmp.setService_name(Service_name_tmp);
+						}
+					} else {
+						traffic_tmp.setService_name(Service_name_tmp);
+					}
+					traffics.add(traffic_tmp);
+
 				}
 			}
 		} catch (SQLException e) {
 			logger.error(LogbackUtil.expection2Str(e));
 		}
-		return JsonUtils.toJson(traffics);
+		return traffics;
 	}
 
 	//设备出口公网地址
-	public String getWanIpv4(String tableName, List<QueryParameters> queryParams) {
-		String condition = Tools.getPartSqlStatement(queryParams);
-		String sqlStatement = "SELECT * FROM " + tableName + "  WHERE " + condition;
+	public List<WanIpv4> getWanIpv4(String tableName, List<QueryParameters> queryParams, String orderBy, String order,
+			int pageSize, int page) {
+		String sqlStatement = Tools.getBasicSqlStatement(tableName, queryParams, orderBy, order, pageSize, page);
 		logger.info(sqlStatement);
 		List<WanIpv4> wanIpv4s = new ArrayList<>();
 		try (Connection conn = ImpalaConnection.getConnection();
@@ -328,12 +389,28 @@ public class ImpalaService {
 				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
 			if (resultSet != null) {
 				while (resultSet.next()) {
-					wanIpv4s.add(DataTrans.resultSet2WanIpv4(resultSet));
+					long Service_code_tmp = resultSet.getLong(5);
+					String Service_name_tmp = DataTrans.plcClientMAP.get(Service_code_tmp);
+					WanIpv4 wanIpv4_tmp = DataTrans.resultSet2WanIpv4(resultSet);
+					if (Service_name_tmp == null) {
+						DataTrans.updatePlcClientMap();
+						Service_name_tmp = DataTrans.plcClientMAP.get(Service_code_tmp);
+						if (Service_name_tmp == null) {
+							//当前库中不存在设备名称，以空格标识
+							wanIpv4_tmp.setService_name("");
+						} else {
+							//更新后，成功获取设备名称
+							wanIpv4_tmp.setService_name(Service_name_tmp);
+						}
+					} else {
+						wanIpv4_tmp.setService_name(Service_name_tmp);
+					}
+					wanIpv4s.add(wanIpv4_tmp);
 				}
 			}
 		} catch (SQLException e) {
 			logger.error(LogbackUtil.expection2Str(e));
 		}
-		return JsonUtils.toJson(wanIpv4s);
+		return wanIpv4s;
 	}
 }

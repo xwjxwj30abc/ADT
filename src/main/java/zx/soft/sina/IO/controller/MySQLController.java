@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import zx.soft.impala.adt.core.ConstADT;
+import zx.soft.impala.adt.core.DataTrans;
 import zx.soft.sina.IO.domain.Params;
 import zx.soft.sina.IO.domain.PlcClient;
 import zx.soft.sina.IO.domain.QueryParameters;
@@ -35,6 +36,7 @@ public class MySQLController {
 		Status st = null;
 		if (plcClient != null) {
 			st = mySQLService.insertPlcClient(plcClient);
+			DataTrans.plcClientMAP.put(plcClient.getService_code(), plcClient.getService_name());
 		} else {
 			st.setErrorCode("2");
 			st.setErrorMessage("plcClient为空");
@@ -45,12 +47,14 @@ public class MySQLController {
 	@RequestMapping(value = "/plcclient/delete/{service_code}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody Status deletePlcClientToMySQL(@PathVariable("service_code") long Service_code) {
+		DataTrans.plcClientMAP.remove(Service_code);
 		return mySQLService.deletePlcClient(Service_code);
 	}
 
 	@RequestMapping(value = "/plcclient/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody Status updatePlcClientToMySQL(@RequestBody PlcClient plcClient) {
+		DataTrans.plcClientMAP.put(plcClient.getService_code(), plcClient.getService_name());
 		return mySQLService.updatePlcClient(plcClient);
 	}
 

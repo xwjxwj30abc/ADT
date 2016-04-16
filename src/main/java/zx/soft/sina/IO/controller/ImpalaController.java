@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,8 @@ import zx.soft.sina.IO.domain.Params;
 import zx.soft.sina.IO.domain.QueryParameters;
 import zx.soft.sina.IO.domain.QueryResult;
 import zx.soft.sina.IO.domain.Stat;
+import zx.soft.sina.IO.domain.VPNTraffic;
+import zx.soft.sina.IO.domain.WanIpv4;
 import zx.soft.sina.IO.service.ImpalaService;
 import zx.soft.sina.IO.service.MySQLService;
 
@@ -56,9 +59,13 @@ public class ImpalaController {
 		if (p.getQueryParameters().size() == 0) {
 			p.getQueryParameters().add(new QueryParameters(1, "id", "0"));
 		}
-		List<AccessList> lists = impalaService.getAccessListQueryResult(ConstADT.TABLE_ACCESS, p.getQueryParameters(),
+
+		List<QueryParameters> queryParameters = p.getQueryParameters();
+		queryParameters = this.changeQueryServiceName2ServiceCode(queryParameters);
+
+		List<AccessList> lists = impalaService.getAccessListQueryResult(ConstADT.TABLE_ACCESS, queryParameters,
 				p.getOrder_by(), p.getOrder(), p.getPage_size(), p.getPage());
-		int number = impalaService.getSum(ConstADT.TABLE_ACCESS, p.getQueryParameters());
+		int number = impalaService.getSum(ConstADT.TABLE_ACCESS, queryParameters);
 		return new QueryResult(number, lists);
 	}
 
@@ -78,9 +85,12 @@ public class ImpalaController {
 		if (p.getQueryParameters().size() == 0) {
 			p.getQueryParameters().add(new QueryParameters(1, "id", "0"));
 		}
-		List<AlertList> lists = impalaService.getAlertListQueryResult(ConstADT.TABLE_ALERT, p.getQueryParameters(),
+
+		List<QueryParameters> queryParameters = p.getQueryParameters();
+		queryParameters = this.changeQueryServiceName2ServiceCode(queryParameters);
+		List<AlertList> lists = impalaService.getAlertListQueryResult(ConstADT.TABLE_ALERT, queryParameters,
 				p.getOrder_by(), p.getOrder(), p.getPage_size(), p.getPage());
-		int number = impalaService.getSum(ConstADT.TABLE_ALERT, p.getQueryParameters());
+		int number = impalaService.getSum(ConstADT.TABLE_ALERT, queryParameters);
 		return new QueryResult(number, lists);
 	}
 
@@ -208,7 +218,7 @@ public class ImpalaController {
 	//指定设备的上网流量统计结果
 	@RequestMapping(value = "/traffic/stats", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody String getTraffic(@RequestBody Params p) {
+	public @ResponseBody QueryResult getTraffic(@RequestBody Params p) {
 		if (p.getOrder() == "") {
 			p.setOrder("DESC");
 		}
@@ -216,18 +226,23 @@ public class ImpalaController {
 			p.setOrder_by("end_time");
 		}
 		if (p.getPage_size() == 0) {
-			p.setPage_size(800);
+			p.setPage_size(720);
 		}
 		if (p.getQueryParameters().size() == 0) {
 			p.getQueryParameters().add(new QueryParameters(1, "id", "0"));
 		}
-		return impalaService.getTraffic(ConstADT.TABLE_VPN_TRAFFIC, p.getQueryParameters());
+		List<QueryParameters> queryParameters = p.getQueryParameters();
+		queryParameters = this.changeQueryServiceName2ServiceCode(queryParameters);
+		int number = impalaService.getSum(ConstADT.TABLE_VPN_TRAFFIC, queryParameters);
+		List<VPNTraffic> lists = impalaService.getTraffic(ConstADT.TABLE_VPN_TRAFFIC, queryParameters, p.getOrder_by(),
+				p.getOrder(), p.getPage_size(), p.getPage());
+		return new QueryResult(number, lists);
 	}
 
 	//查看不同设备出口的公网地址
 	@RequestMapping(value = "/wanipv4/ip", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody String getWanIpv4(@RequestBody Params p) {
+	public @ResponseBody QueryResult getWanIpv4(@RequestBody Params p) {
 		if (p.getOrder() == "") {
 			p.setOrder("DESC");
 		}
@@ -240,7 +255,41 @@ public class ImpalaController {
 		if (p.getQueryParameters().size() == 0) {
 			p.getQueryParameters().add(new QueryParameters(1, "id", "0"));
 		}
-		return impalaService.getWanIpv4(ConstADT.TABLE_VPN_WAN_IPV4, p.getQueryParameters());
+		List<QueryParameters> queryParameters = p.getQueryParameters();
+		queryParameters = this.changeQueryServiceName2ServiceCode(queryParameters);
+		int num = impalaService.getSum(ConstADT.TABLE_VPN_WAN_IPV4, queryParameters);
+		List<WanIpv4> lists = impalaService.getWanIpv4(ConstADT.TABLE_VPN_WAN_IPV4, queryParameters, p.getOrder_by(),
+				p.getOrder(), p.getPage_size(), p.getPage());
+		return new QueryResult(num, lists);
+	}
+
+	private List<QueryParameters> changeQueryServiceName2ServiceCode(List<QueryParameters> queryParameters) {
+		for (int i = 0; i < queryParameters.size(); i++) {
+			QueryParameters queryParameter = queryParameters.get(i);
+			if (queryParameter.getField().equals("service_name") | queryParameter.getField().equals("Service_name")) {
+				List<Long> Service_codes = mySQLService.getMappingServiceCodeByServiceName(ConstADT.TABLE_PLCCLIENT,
+						queryParameter.getValue());
+				queryParameter.setField("service_code");
+				QueryParameters query_tmp = new QueryParameters();
+				query_tmp.setField("Service_code");
+				String value_tmp = null;
+				if (Service_codes.size() == 1) {
+					query_tmp.setOpera(0);
+					value_tmp = StringUtils.join(Service_codes.toArray(), ",");
+				} else if (Service_codes.size() > 1) {
+					query_tmp.setOpera(-2);
+					StringBuilder builder = new StringBuilder();
+					builder.append("(");
+					builder.append(StringUtils.join(Service_codes.toArray(), ","));
+					builder.append(")");
+					value_tmp = builder.toString();
+				}
+				query_tmp.setValue(value_tmp);
+				queryParameters.set(i, query_tmp);
+				break;
+			}
+		}
+		return queryParameters;
 	}
 
 }

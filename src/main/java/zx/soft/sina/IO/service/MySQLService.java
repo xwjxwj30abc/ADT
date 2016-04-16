@@ -48,6 +48,10 @@ public class MySQLService {
 		return iOMySQL.getSpecPlcClient(tableName, Service_code);
 	}
 
+	public List<Long> getMappingServiceCodeByServiceName(String tableName, String Service_name) {
+		return iOMySQL.getMappingServiceCodeByServiceName(tableName, Service_name);
+	}
+
 	public Map initGEO(String tablename) {
 		return iOMySQL.initGEO(tablename);
 	}

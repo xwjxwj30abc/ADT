@@ -5,6 +5,7 @@ public class AlertList {
 	private String rowkey = "";
 	private long id;
 	private long Service_code;
+	private String Service_name;
 	private String Rule_id = "";
 	private long Destination_ip;
 	private long Net_ending_ip;
@@ -24,6 +25,14 @@ public class AlertList {
 	private double Jd;
 	private double Wd;
 	private String Country_name = "";
+
+	public String getService_name() {
+		return Service_name;
+	}
+
+	public void setService_name(String service_name) {
+		Service_name = service_name;
+	}
 
 	public String getRowkey() {
 		return rowkey;

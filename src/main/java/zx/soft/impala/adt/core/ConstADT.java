@@ -8,7 +8,7 @@ public class ConstADT {
 	public static String TABLE_PLCNETINFO = "adt.plcnetinfo";//impala
 	public static String TABLE_COUNTRYINFO = "adt.countryinfo";//mysql
 	public static String TABLE_VPN_TRAFFIC = "adt.vpn_traffic";//impala
-	public static String TABLE_VPN_WAN_IPV4 = "adt.vpn_wan_ipv4";//impala
+	public static String TABLE_VPN_WAN_IPV4 = "adt.vpn_wlan_ip";//impala
 
 	public static final String StringFields = "Net_ending_name,Keyword1,Keyword2,Keyword3,Net_ending_ipv6,Destination_ipv6,"
 			+ "Keyword21,Keyword22,Keyword23,Keyword24,Keyword25,Country_name,Rule_id,Destination_ipv6,Net_ending_ipv6,User_name,"

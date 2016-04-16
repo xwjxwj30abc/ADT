@@ -5,13 +5,22 @@ public class VPNTraffic {
 	private String rowkey = "";
 	private int id;
 	private long Service_code;
-	private String ipv4;
+	private String Service_name = "";
+	private String ipv4 = "";
 	private long begin_time;
 	private long end_time;
 	private long traffic;
 
 	public VPNTraffic() {
 
+	}
+
+	public String getService_name() {
+		return Service_name;
+	}
+
+	public void setService_name(String service_name) {
+		Service_name = service_name;
 	}
 
 	public long getService_code() {
