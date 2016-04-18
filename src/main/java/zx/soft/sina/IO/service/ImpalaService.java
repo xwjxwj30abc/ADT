@@ -257,52 +257,6 @@ public class ImpalaService {
 	}
 
 	//过滤结果表统计分析
-	//	public String getAlertStats(String tableName, List<QueryParameters> queryParams, String groupBy, int limit) {
-	//		String condition = Tools.getPartSqlStatement(queryParams);
-	//		String sqlStatement = "SELECT " + groupBy + " , COUNT(*) AS NUM FROM " + tableName + " WHERE " + condition
-	//				+ " GROUP BY " + groupBy + " ORDER BY NUM DESC LIMIT " + limit;
-	//		logger.info(sqlStatement);
-	//		Map<String, Integer> map = new HashMap<>();
-	//		try (Connection conn = ImpalaConnection.getConnection();
-	//				Statement statement = conn.createStatement();
-	//				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
-	//			if (resultSet != null) {
-	//				while (resultSet.next()) {
-	//					if (!groupBy.equals("rule_id")) {
-	//						map.put(resultSet.getString(1), resultSet.getInt(2));
-	//					} else {
-	//						if (resultSet.getString(1) == null) {
-	//							map.put("ruleId_is_null", resultSet.getInt(2));
-	//						} else {
-	//							String rule_name = DataTrans.MAP.get(resultSet.getString(1));
-	//							if (rule_name == null) {
-	//								DataTrans.updateMap();
-	//								rule_name = DataTrans.MAP.get(resultSet.getString(1));
-	//								if (rule_name == null) {
-	//									//当前库中不存在id对应的规则名称，抛出提示，暂时以id标识规则名称
-	//									map.put(resultSet.getString(1), resultSet.getInt(2));
-	//								} else {
-	//									//map更新后，成功匹配规则id和name
-	//									//map.put(rule_name.substring(1, rule_name.length() - 1), resultSet.getInt(2));
-	//									map.put(rule_name, resultSet.getInt(2));
-	//								}
-	//							} else {
-	//								map.put(rule_name, resultSet.getInt(2));
-	//							}
-	//						}
-	//					}
-	//
-	//				}
-	//			}
-	//		} catch (SQLException e) {
-	//			e.printStackTrace();
-	//			logger.error(LogbackUtil.expection2Str(e));
-	//		}
-	//
-	//		return JsonUtils.toJson(map);
-	//	}
-
-	//过滤结果表统计分析
 	public String getAlertStats(String tableName, List<QueryParameters> queryParams, String groupBy, int limit) {
 		String condition = Tools.getPartSqlStatement(queryParams);
 		String sqlStatement = "SELECT " + groupBy + " , COUNT(*)  AS NUM FROM " + tableName + " WHERE " + condition
@@ -412,5 +366,47 @@ public class ImpalaService {
 			logger.error(LogbackUtil.expection2Str(e));
 		}
 		return wanIpv4s;
+	}
+
+	//具体设备总流量统计表
+	public Map getSummaryTrafficByServiceName(String tableName, List<QueryParameters> queryParams) {
+		String condition = Tools.getPartSqlStatement(queryParams);
+		String sqlStatement = "select unix_timestamp(trunc(from_unixtime(begin_time),\"HH24\")) as times_tmp,sum(traffic) from "
+				+ tableName + " WHERE " + condition + " group by times_tmp order by times_tmp";
+		logger.info(sqlStatement);
+		Map<Long, Integer> map = new HashMap<>();
+		try (Connection conn = ImpalaConnection.getConnection();
+				Statement statement = conn.createStatement();
+				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
+			if (resultSet != null) {
+				while (resultSet.next()) {
+					map.put(resultSet.getLong(1), resultSet.getInt(2));
+				}
+			}
+		} catch (SQLException e) {
+			logger.error(LogbackUtil.expection2Str(e));
+		}
+		return map;
+	}
+
+	//新版本流量统计表
+	public Map getSpecificIPTranffic(String tableName, List<QueryParameters> queryParams) {
+		String condition = Tools.getPartSqlStatement(queryParams);
+		String sqlStatement = "select ipv4,sum(traffic) as total from " + tableName + " WHERE " + condition
+				+ " group by ipv4  order by total";
+		logger.info(sqlStatement);
+		Map<String, Integer> map = new HashMap<>();
+		try (Connection conn = ImpalaConnection.getConnection();
+				Statement statement = conn.createStatement();
+				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
+			if (resultSet != null) {
+				while (resultSet.next()) {
+					map.put(resultSet.getString(1), resultSet.getInt(2));
+				}
+			}
+		} catch (SQLException e) {
+			logger.error(LogbackUtil.expection2Str(e));
+		}
+		return map;
 	}
 }

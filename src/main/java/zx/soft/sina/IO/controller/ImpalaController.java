@@ -28,7 +28,6 @@ import zx.soft.sina.IO.domain.Params;
 import zx.soft.sina.IO.domain.QueryParameters;
 import zx.soft.sina.IO.domain.QueryResult;
 import zx.soft.sina.IO.domain.Stat;
-import zx.soft.sina.IO.domain.VPNTraffic;
 import zx.soft.sina.IO.domain.WanIpv4;
 import zx.soft.sina.IO.service.ImpalaService;
 import zx.soft.sina.IO.service.MySQLService;
@@ -218,25 +217,21 @@ public class ImpalaController {
 	//指定设备的上网流量统计结果
 	@RequestMapping(value = "/traffic/stats", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
-	public @ResponseBody QueryResult getTraffic(@RequestBody Params p) {
-		if (p.getOrder() == "") {
-			p.setOrder("DESC");
-		}
-		if (p.getOrder_by() == "") {
-			p.setOrder_by("end_time");
-		}
-		if (p.getPage_size() == 0) {
-			p.setPage_size(720);
-		}
-		if (p.getQueryParameters().size() == 0) {
-			p.getQueryParameters().add(new QueryParameters(1, "id", "0"));
-		}
+	public @ResponseBody Map getTraffic(@RequestBody Params p) {
 		List<QueryParameters> queryParameters = p.getQueryParameters();
 		queryParameters = this.changeQueryServiceName2ServiceCode(queryParameters);
-		int number = impalaService.getSum(ConstADT.TABLE_VPN_TRAFFIC, queryParameters);
-		List<VPNTraffic> lists = impalaService.getTraffic(ConstADT.TABLE_VPN_TRAFFIC, queryParameters, p.getOrder_by(),
-				p.getOrder(), p.getPage_size(), p.getPage());
-		return new QueryResult(number, lists);
+		Map map = impalaService.getSummaryTrafficByServiceName(ConstADT.TABLE_VPN_TRAFFIC, queryParameters);
+		return map;
+	}
+
+	//查询具体一段时间内的流量所涉及到的ip
+	@RequestMapping(value = "/traffic/stats/ip", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	public @ResponseBody Map getSpecificTraffic(@RequestBody Params p) {
+		List<QueryParameters> queryParameters = p.getQueryParameters();
+		queryParameters = this.changeQueryServiceName2ServiceCode(queryParameters);
+		Map map = impalaService.getSpecificIPTranffic(ConstADT.TABLE_VPN_TRAFFIC, queryParameters);
+		return map;
 	}
 
 	//查看不同设备出口的公网地址
