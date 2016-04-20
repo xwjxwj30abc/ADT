@@ -123,7 +123,10 @@ public class ImpalaController {
 		if (p.getQueryParameters().size() == 0) {
 			p.getQueryParameters().add(new QueryParameters(1, "id", "0"));
 		}
-		return impalaService.getStat(ConstADT.TABLE_ACCESS, p.getQueryParameters(), group_by, 10);
+
+		List<QueryParameters> queryParameters = p.getQueryParameters();
+		queryParameters = this.changeQueryServiceName2ServiceCode(queryParameters);
+		return impalaService.getStat(ConstADT.TABLE_ACCESS, queryParameters, group_by, 10);
 	}
 
 	//过滤结果表：根据国家，省名称获取一定查询条件下的访问不同国家的数据总数以及目的地址的经纬度
