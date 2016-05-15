@@ -11,28 +11,28 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import zx.soft.sina.IO.domain.AccessList;
-import zx.soft.sina.IO.domain.AlertList;
-import zx.soft.sina.IO.domain.PlcClient;
-import zx.soft.sina.IO.domain.VPNTraffic;
-import zx.soft.sina.IO.domain.WanIpv4;
-import zx.soft.sina.IO.util.ImpalaConnection;
-import zx.soft.sina.IO.util.MySQLConnection;
+import zx.soft.impala.adt.domain.AccessList;
+import zx.soft.impala.adt.domain.AlertList;
+import zx.soft.impala.adt.domain.HotPlugLog;
+import zx.soft.impala.adt.domain.PlcClient;
+import zx.soft.impala.adt.domain.VPNTraffic;
+import zx.soft.impala.adt.domain.WanIpv4;
+import zx.soft.impala.adt.util.ImpalaConnection;
+import zx.soft.impala.adt.util.MySQLConnection;
 
 public class DataTrans {
 
 	public static Logger logger = LoggerFactory.getLogger(DataTrans.class);
-	public static Map<String, String> MAP = new HashMap<>();
 	public static Map<Long, String> plcClientMAP = new HashMap<>();
+	public static Map<String, String> plcNetInfoMap = new HashMap<>();
 	static {
-		updateMap();
+		updatePlcNetInfoMap();
 		updatePlcClientMap();
 	}
 
 	//从impala查询adt.plcnetinfo表,获得规则id和规则名称的对应关系
-	public static void updateMap() {
+	public static void updatePlcNetInfoMap() {
 
-		//String sqlStatement = "SELECT rule_id,rule_name FROM " + ConstADT.TABLE_PLCNETINFO;
 		String sqlStatement = "SELECT rowkey,rule_name FROM " + ConstADT.TABLE_PLCNETINFO;
 		try (Connection conn = ImpalaConnection.getConnection();
 				Statement statement = conn.createStatement();
@@ -40,7 +40,7 @@ public class DataTrans {
 			if (resultSet != null) {
 				while (resultSet.next()) {
 					if (resultSet.getString(1) != null && resultSet.getString(2) != null) {
-						MAP.put(resultSet.getString(1), resultSet.getString(2));
+						plcNetInfoMap.put(resultSet.getString(1), resultSet.getString(2));
 					}
 				}
 			}
@@ -125,27 +125,32 @@ public class DataTrans {
 		AlertList result = new AlertList();
 		try {
 			result.setRowkey(resultSet.getString(1));
-			result.setId(resultSet.getLong(2));
-			result.setService_code(resultSet.getLong(3));
-			result.setRule_id(resultSet.getString(4));
+			result.setJd(resultSet.getDouble(2));
+			result.setWd(resultSet.getDouble(3));
+			result.setCountry_name(resultSet.getString(4));
 			result.setDestination_ip(resultSet.getLong(5));
-			result.setNet_ending_ip(resultSet.getLong(6));
-			result.setNet_ending_mac(resultSet.getLong(7));
-			result.setDestination_ipv6(resultSet.getString(8));
-			result.setNet_ending_ipv6(resultSet.getString(9));
-			result.setMatching_time(resultSet.getLong(10));
-			result.setService_type(resultSet.getInt(11));
-			result.setKeyword1(resultSet.getString(12));
-			result.setKeyword2(resultSet.getString(13));
-			result.setKeyword3(resultSet.getString(14));
-			result.setUser_name(resultSet.getString(15));
-			result.setCertificate_type(resultSet.getString(16));
-			result.setCertificate_code(resultSet.getString(17));
-			result.setOrg_name(resultSet.getString(18));
-			result.setCountry(resultSet.getString(19));
-			result.setJd(resultSet.getDouble(20));
-			result.setWd(resultSet.getDouble(21));
-			result.setCountry_name(resultSet.getString(22));
+			result.setService_code(resultSet.getLong(6));
+			result.setRule_id(resultSet.getString(7));
+			result.setService_rule(resultSet.getString(8));
+			result.setRule_name(resultSet.getString(9));
+			result.setMatching_level(resultSet.getInt(10));
+			result.setRule_action(resultSet.getInt(11));
+			result.setService_type(resultSet.getInt(12));
+			result.setKeyword1(resultSet.getString(13));
+			result.setKeyword2(resultSet.getString(14));
+			result.setKeyword3(resultSet.getString(15));
+			result.setMatching_word(resultSet.getInt(16));
+			result.setSet_time(resultSet.getLong(17));
+			result.setValidation_time(resultSet.getLong(18));
+			result.setManual_pause_time(resultSet.getLong(19));
+			result.setFilter_method(resultSet.getInt(20));
+			result.setFilter_argument(resultSet.getString(21));
+			result.setNet_ending_ip(resultSet.getLong(22));
+			result.setNet_ending_mac(resultSet.getLong(23));
+			result.setDestination_ipv6(resultSet.getString(24));
+			result.setNet_ending_ipv6(resultSet.getString(25));
+			result.setMatching_time(resultSet.getLong(26));
+
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
@@ -240,4 +245,19 @@ public class DataTrans {
 		return result;
 	}
 
+	public static HotPlugLog result2HotPlugLog(ResultSet resultSet) {
+		HotPlugLog result = new HotPlugLog();
+		try {
+			result.setRowkey(resultSet.getString(1));
+			result.setAction(resultSet.getInt(2));
+			result.setAdd_time(resultSet.getLong(3));
+			result.setDevice(resultSet.getString(4));
+			result.setId(resultSet.getInt(5));
+			result.setNote(resultSet.getString(6));
+			result.setService_code(resultSet.getLong(7));
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return result;
+	}
 }

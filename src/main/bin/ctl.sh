@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mainClass=zx.soft.sina.IO.driver.UserDriver
+mainClass=zx.soft.impala.adt.driver.VPNDriver
 
 # resolve links - $0 may be a softlink
 PRG="$0"
