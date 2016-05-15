@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="zx.soft.sina.IO.dao.UserMapper">
 
-	<insert id="insertPlcNetInfo" parameterType="zx.soft.impala.adt.domain.PlcNetInfo"
+	<insert id="insertPlcNetInfo" parameterType="zx.soft.adt.domain.PlcNetInfo"
 		useGeneratedKeys="true" keyProperty="id" flushCache="true"
 		statementType="PREPARED">
 		INSERT INTO `plcNetInfo`
@@ -16,7 +16,7 @@
 	</insert>
 
 	<!-- 插入设备信息 -->
-	<insert id="insertPlcClient" parameterType="zx.soft.impala.adt.domain.PlcClient"
+	<insert id="insertPlcClient" parameterType="zx.soft.adt.domain.PlcClient"
 		useGeneratedKeys="true" keyProperty="id" flushCache="true"
 		statementType="PREPARED">
 		INSERT INTO `plcClient`
@@ -41,7 +41,7 @@
 		);
 	</insert>
 
-	<update id="updatePlcClient" parameterType="zx.soft.impala.adt.domain.PlcClient"
+	<update id="updatePlcClient" parameterType="zx.soft.adt.domain.PlcClient"
 		flushCache="true" statementType="PREPARED">
 		UPDATE plcClient SET
 		Service_code=#{Service_code},Service_name=#{Service_name},Address=#{Address},Zip=#{Zip},Principal=#{Principal},

@@ -11,8 +11,8 @@
         http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd"
 	default-lazy-init="true">
 
-	<context:component-scan base-package="zx.soft.impala.adt.controller" />
-	<context:component-scan base-package="zx.soft.impala.adt.service" />
+	<context:component-scan base-package="zx.soft.adt.controller" />
+	<context:component-scan base-package="zx.soft.adt.service" />
 
 	<!-- mapper -->
 	<bean id="baseMapper" class="org.mybatis.spring.mapper.MapperFactoryBean"
@@ -21,7 +21,7 @@
 	</bean>
 
 	<bean id="userMapper" parent="baseMapper">
-		<property name="mapperInterface" value="zx.soft.impala.adt.dao.UserMapper"></property>
+		<property name="mapperInterface" value="zx.soft.adt.dao.UserMapper"></property>
 	</bean>
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -39,9 +39,9 @@
 		<property name="validationQuery" value="select 1" />
 	</bean>
 
-	<bean id="iOMySQL" class="zx.soft.impala.adt.core.IOMySQL" />
+	<bean id="iOMySQL" class="zx.soft.adt.core.IOMySQL" />
 	<!-- 自定义JSON对象映射 -->
-	<bean id="customObjectMapper" class="zx.soft.impala.adt.util.CustomObjectMapper" />
+	<bean id="customObjectMapper" class="zx.soft.adt.util.CustomObjectMapper" />
 
 	<!-- JSON配置 -->
 	<mvc:annotation-driven>
