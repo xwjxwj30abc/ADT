@@ -251,7 +251,7 @@ public class ImpalaController {
 			p.setOrder_by("add_time");
 		}
 		if (p.getPage_size() == 0) {
-			p.setPage_size(10);
+			p.setPage_size(20);
 		}
 		List<QueryParameters> queryParameters = p.getQueryParameters();
 		queryParameters = this.changeQueryServiceName2ServiceCode(queryParameters);

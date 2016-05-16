@@ -68,9 +68,6 @@ public class MySQLController {
 		if (p.getOrder_by() == "") {
 			p.setOrder_by("Service_code");
 		}
-		if (p.getPage_size() == 0) {
-			p.setPage_size(20);
-		}
 		List<QueryParameters> queryParameters = this.addServiceCodeLimits(p.getQueryParameters());
 		p.setQueryParameters(queryParameters);
 		List<PlcClient> lists = mySQLService.getPlcClientQueryResult(ConstADT.TABLE_PLCCLIENT, p);
