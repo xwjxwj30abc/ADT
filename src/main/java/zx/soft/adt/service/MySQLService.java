@@ -5,6 +5,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import jodd.util.URLDecoder;
+
 import org.springframework.stereotype.Service;
 
 import zx.soft.adt.core.IOMySQL;
@@ -48,7 +50,7 @@ public class MySQLService {
 	}
 
 	public List<Long> getMappingServiceCodeByServiceName(String tableName, String Service_name) {
-		return iOMySQL.getMappingServiceCodeByServiceName(tableName, Service_name);
+		return iOMySQL.getMappingServiceCodeByServiceName(tableName, URLDecoder.decode(Service_name));
 	}
 
 	public Map initGEO(String tablename) {
