@@ -15,7 +15,6 @@ import zx.soft.adt.domain.AccessList;
 import zx.soft.adt.domain.AlertList;
 import zx.soft.adt.domain.HotPlugLog;
 import zx.soft.adt.domain.PlcClient;
-import zx.soft.adt.domain.VPNTraffic;
 import zx.soft.adt.domain.WanIpv4;
 import zx.soft.adt.util.ImpalaConnection;
 import zx.soft.adt.util.MySQLConnection;
@@ -215,21 +214,21 @@ public class DataTrans {
 		return result;
 	}
 
-	public static VPNTraffic resultSet2VPNTraffic(ResultSet resultSet) {
-		VPNTraffic result = new VPNTraffic();
-		try {
-			result.setRowkey(resultSet.getString(1));
-			result.setBegin_time(resultSet.getLong(2));
-			result.setEnd_time(resultSet.getLong(3));
-			result.setId(resultSet.getInt(4));
-			result.setIpv4(resultSet.getString(5));
-			result.setService_code(resultSet.getLong(6));
-			result.setTraffic(resultSet.getLong(7));
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-		}
-		return result;
-	}
+	//	public static VPNTraffic resultSet2VPNTraffic(ResultSet resultSet) {
+	//		VPNTraffic result = new VPNTraffic();
+	//		try {
+	//			result.setRowkey(resultSet.getString(1));
+	//			result.setBegin_time(resultSet.getLong(2));
+	//			result.setEnd_time(resultSet.getLong(3));
+	//			result.setId(resultSet.getInt(4));
+	//			result.setIpv4(resultSet.getString(5));
+	//			result.setService_code(resultSet.getLong(6));
+	//			result.setTraffic(resultSet.getLong(7));
+	//		} catch (Exception e) {
+	//			logger.error(e.getMessage());
+	//		}
+	//		return result;
+	//	}
 
 	public static WanIpv4 resultSet2WanIpv4(ResultSet resultSet) {
 		WanIpv4 result = new WanIpv4();

@@ -21,7 +21,6 @@ import zx.soft.adt.domain.HotPlugLog;
 import zx.soft.adt.domain.Params;
 import zx.soft.adt.domain.QueryParameters;
 import zx.soft.adt.domain.Stat;
-import zx.soft.adt.domain.VPNTraffic;
 import zx.soft.adt.domain.WanIpv4;
 import zx.soft.adt.util.ImpalaConnection;
 import zx.soft.utils.log.LogbackUtil;
@@ -186,7 +185,7 @@ public class ImpalaService {
 		String condition = SqlStatementBuilder.getPartSqlStatement(queryParams);
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT service_code,COUNT(*) AS number FROM ").append(tableName).append(condition)
-		.append(" GROUP BY service_code ORDER BY number DESC");
+				.append(" GROUP BY service_code ORDER BY number DESC");
 		if (limit != 0) {
 			builder.append(" LIMIT ").append(limit);
 		}
@@ -296,7 +295,7 @@ public class ImpalaService {
 		String condition = SqlStatementBuilder.getPartSqlStatement(queryParams);
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT service_code,COUNT(*)  AS NUM FROM ").append(tableName).append(condition)
-		.append(" GROUP BY service_code ORDER BY NUM DESC ");
+				.append(" GROUP BY service_code ORDER BY NUM DESC ");
 		if (limit != 0) {
 			builder.append("LIMIT ").append(limit);
 		}
@@ -326,27 +325,27 @@ public class ImpalaService {
 	}
 
 	//流量统计表
-	public List<VPNTraffic> getVPNTraffic(String tableName, Params p) {
-		String sqlStatement = SqlStatementBuilder.getBasicSqlStatement(tableName, p);
-		logger.info(sqlStatement);
-		List<VPNTraffic> traffics = new ArrayList<>();
-		try (Connection conn = ImpalaConnection.getConnection();
-				Statement statement = conn.createStatement();
-				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
-			if (resultSet != null) {
-				while (resultSet.next()) {
-					VPNTraffic traffic_tmp = DataTrans.resultSet2VPNTraffic(resultSet);
-					long Service_code_tmp = resultSet.getLong(6);
-					String Service_name_tmp = this.getServiceNameByServiceCode(Service_code_tmp);
-					traffic_tmp.setService_name(Service_name_tmp);
-					traffics.add(traffic_tmp);
-				}
-			}
-		} catch (SQLException e) {
-			logger.error(LogbackUtil.expection2Str(e));
-		}
-		return traffics;
-	}
+	//	public List<VPNTraffic> getVPNTraffic(String tableName, Params p) {
+	//		String sqlStatement = SqlStatementBuilder.getBasicSqlStatement(tableName, p);
+	//		logger.info(sqlStatement);
+	//		List<VPNTraffic> traffics = new ArrayList<>();
+	//		try (Connection conn = ImpalaConnection.getConnection();
+	//				Statement statement = conn.createStatement();
+	//				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
+	//			if (resultSet != null) {
+	//				while (resultSet.next()) {
+	//					VPNTraffic traffic_tmp = DataTrans.resultSet2VPNTraffic(resultSet);
+	//					long Service_code_tmp = resultSet.getLong(6);
+	//					String Service_name_tmp = this.getServiceNameByServiceCode(Service_code_tmp);
+	//					traffic_tmp.setService_name(Service_name_tmp);
+	//					traffics.add(traffic_tmp);
+	//				}
+	//			}
+	//		} catch (SQLException e) {
+	//			logger.error(LogbackUtil.expection2Str(e));
+	//		}
+	//		return traffics;
+	//	}
 
 	//设备出口公网地址
 	public List<WanIpv4> getWanIpv4(String tableName, Params p) {
