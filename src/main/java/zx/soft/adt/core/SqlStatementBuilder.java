@@ -12,10 +12,13 @@ import org.slf4j.LoggerFactory;
 
 import zx.soft.adt.domain.AccessList;
 import zx.soft.adt.domain.AlertList;
+import zx.soft.adt.domain.HotPlugLog;
 import zx.soft.adt.domain.Params;
 import zx.soft.adt.domain.PlcClient;
 import zx.soft.adt.domain.PlcNetInfo;
 import zx.soft.adt.domain.QueryParameters;
+import zx.soft.adt.domain.VPNTraffic;
+import zx.soft.adt.domain.WanIpv4;
 
 public class SqlStatementBuilder {
 
@@ -138,7 +141,22 @@ public class SqlStatementBuilder {
 						field = PlcNetInfo.class.getDeclaredField(fieldName);
 					} catch (NoSuchFieldException e3) {
 						logger.info("非PlcNetInfo里面字段");
-						return false;
+						try {
+							field = VPNTraffic.class.getDeclaredField(fieldName);
+						} catch (NoSuchFieldException e4) {
+							logger.info("非VPNTraffic里面字段");
+							try {
+								field = WanIpv4.class.getDeclaredField(fieldName);
+							} catch (NoSuchFieldException e5) {
+								logger.info("非WanIpv4里面字段");
+								try {
+									field = HotPlugLog.class.getDeclaredField(fieldName);
+								} catch (NoSuchFieldException e6) {
+									logger.info("非HotPlugLog里面字段");
+									return false;
+								}
+							}
+						}
 					}
 				}
 			}
