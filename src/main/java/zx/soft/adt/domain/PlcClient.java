@@ -1,7 +1,5 @@
 package zx.soft.adt.domain;
 
-import zx.soft.adt.util.JsonUtils;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -620,11 +618,4 @@ public class PlcClient {
 				+ Certificate_code + ", Org_name=" + Org_name + ", Country=" + Country + "]";
 	}
 
-	public static void main(String[] args) {
-		PlcClient p = new PlcClient();
-		p.setService_code(34010129000002L);
-		p.setService_name("服务名");
-		p.setUser_name("上网用户名");
-		System.out.println(JsonUtils.toJsonWithoutPretty(p));
-	}
 }

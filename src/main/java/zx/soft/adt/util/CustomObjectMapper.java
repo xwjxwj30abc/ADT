@@ -9,8 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * 自定义的ObjectMapper类，用于处理时间格式
  *
- * @author wanggang
- *
  */
 public class CustomObjectMapper extends ObjectMapper {
 

@@ -1,6 +1,5 @@
 package zx.soft.adt.domain;
 
-import zx.soft.adt.util.JsonUtils;
 
 public class PlcNetInfo {
 
@@ -163,10 +162,4 @@ public class PlcNetInfo {
 				+ ", Filter_argument=" + Filter_argument + "]";
 	}
 
-	public static void main(String[] args) {
-		PlcNetInfo p = new PlcNetInfo();
-		p.setRule_id("34010101201504070011");
-		p.setRule_name("guiyi");
-		System.out.println(JsonUtils.toJsonWithoutPretty(p));
-	}
 }

@@ -1,9 +1,7 @@
 package zx.soft.adt.util;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -12,13 +10,14 @@ import org.apache.commons.dbcp.BasicDataSource;
 
 import zx.soft.utils.config.ConfigUtil;
 
+/**
+ * 获取impala连接类
+ * @author fgq
+ *
+ */
 public class ImpalaConnection {
 
 	private static DataSource dataSource;
-
-	public ImpalaConnection() {
-
-	}
 
 	public static Connection getConnection() {
 		Connection con = null;
@@ -51,17 +50,4 @@ public class ImpalaConnection {
 		dataSource = ds;
 	}
 
-	public static void main(String[] args) throws SQLException {
-		String sqlStatement = "DESCRIBE jdadt.accesslist_tmp";
-		try (Connection conn = ImpalaConnection.getConnection();
-				Statement statement = conn.createStatement();
-				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
-			if (resultSet != null) {
-				while (resultSet.next()) {
-					System.out.println(resultSet.getString(1));
-				}
-
-			}
-		}
-	}
 }

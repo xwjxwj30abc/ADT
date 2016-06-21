@@ -32,6 +32,11 @@ public class SqlStatementBuilder {
 		operation.put(2, " BETWEEN ");
 	}
 
+	/**
+	 * 构造查询语句的部分
+	 * @param queryParams
+	 * @return
+	 */
 	public static String getPartSqlStatement(List<QueryParameters> queryParams) {
 		StringBuilder condition = new StringBuilder();
 		if (queryParams.size() > 0) {
@@ -62,7 +67,16 @@ public class SqlStatementBuilder {
 		return condition.toString();
 	}
 
-	//根据参数构造基本查询语句
+	/**
+	 * 根据参数构造基本查询语句
+	 * @param tableName
+	 * @param queryParams
+	 * @param orderBy
+	 * @param order
+	 * @param pageSize
+	 * @param page
+	 * @return
+	 */
 	public static String getBasicSqlStatement(String tableName, List<QueryParameters> queryParams, String orderBy,
 			String order, int pageSize, int page) {
 		StringBuilder builder = new StringBuilder();
@@ -87,7 +101,12 @@ public class SqlStatementBuilder {
 		return builder.toString();
 	}
 
-	//根据Params参数构造基本查询语句
+	/**
+	 * 根据Params参数构造基本查询语句
+	 * @param tableName
+	 * @param p
+	 * @return
+	 */
 	public static String getBasicSqlStatement(String tableName, Params p) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT * FROM ").append(tableName);
@@ -111,7 +130,12 @@ public class SqlStatementBuilder {
 		return builder.toString();
 	}
 
-	//查询满足该条件的数据总数
+	/**
+	 * 查询满足该条件的数据总数
+	 * @param tableName
+	 * @param p
+	 * @return
+	 */
 	public static String getSumSqlStatement(String tableName, Params p) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT COUNT(*) FROM ").append(tableName);
@@ -122,37 +146,41 @@ public class SqlStatementBuilder {
 		return builder.toString();
 	}
 
-	//判断该查询字段是否为String类型
+	/**
+	 * 判断该查询字段是否为String类型
+	 * @param fieldName
+	 * @return
+	 */
 	private static boolean isStringType(String fieldName) {
 		Field field = null;
 		try {
 			field = AlertList.class.getDeclaredField(fieldName);
+			logger.info("AlertList里面字段");
 		} catch (NoSuchFieldException e) {
-			logger.info("非AlertList里面字段");
 			try {
 				field = AccessList.class.getDeclaredField(fieldName);
+				logger.info("AccessList里面字段");
 			} catch (NoSuchFieldException e1) {
-				logger.info("非AccessList里面字段");
 				try {
 					field = PlcClient.class.getDeclaredField(fieldName);
+					logger.info("PlcClient里面字段");
 				} catch (NoSuchFieldException e2) {
-					logger.info("非PlcClient里面字段");
 					try {
 						field = PlcNetInfo.class.getDeclaredField(fieldName);
+						logger.info("PlcNetInfo里面字段");
 					} catch (NoSuchFieldException e3) {
-						logger.info("非PlcNetInfo里面字段");
 						try {
 							field = VPNTraffic.class.getDeclaredField(fieldName);
+							logger.info("VPNTraffic里面字段");
 						} catch (NoSuchFieldException e4) {
-							logger.info("非VPNTraffic里面字段");
 							try {
 								field = WanIpv4.class.getDeclaredField(fieldName);
+								logger.info("WanIpv4里面字段");
 							} catch (NoSuchFieldException e5) {
-								logger.info("非WanIpv4里面字段");
 								try {
 									field = HotPlugLog.class.getDeclaredField(fieldName);
+									logger.info("HotPlugLog里面字段");
 								} catch (NoSuchFieldException e6) {
-									logger.info("非HotPlugLog里面字段");
 									return false;
 								}
 							}

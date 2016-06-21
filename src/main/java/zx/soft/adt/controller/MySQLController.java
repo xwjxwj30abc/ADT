@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import zx.soft.adt.core.ConstADT;
-import zx.soft.adt.core.DataTrans;
 import zx.soft.adt.domain.Params;
 import zx.soft.adt.domain.PlcClient;
 import zx.soft.adt.domain.QueryParameters;
@@ -36,7 +35,7 @@ public class MySQLController {
 		Status st = new Status();
 		if (plcClient != null) {
 			st = mySQLService.insertPlcClient(plcClient);
-			DataTrans.plcClientMAP.put(plcClient.getService_code(), plcClient.getService_name());
+			MySQLService.plcClientMAP.put(plcClient.getService_code(), plcClient.getService_name());
 		} else {
 			st.setErrorCode("2");
 			st.setErrorMessage("plcClient为空");
@@ -47,14 +46,14 @@ public class MySQLController {
 	@RequestMapping(value = "/plcclient/delete/{service_code}", method = RequestMethod.GET)
 	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody Status deletePlcClientToMySQL(@PathVariable("service_code") long Service_code) {
-		DataTrans.plcClientMAP.remove(Service_code);
+		MySQLService.plcClientMAP.remove(Service_code);
 		return mySQLService.deletePlcClient(Service_code);
 	}
 
 	@RequestMapping(value = "/plcclient/update", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON)
 	@ResponseStatus(HttpStatus.OK)
 	public @ResponseBody Status updatePlcClientToMySQL(@RequestBody PlcClient plcClient) {
-		DataTrans.plcClientMAP.put(plcClient.getService_code(), plcClient.getService_name());
+		MySQLService.plcClientMAP.put(plcClient.getService_code(), plcClient.getService_name());
 		return mySQLService.updatePlcClient(plcClient);
 	}
 

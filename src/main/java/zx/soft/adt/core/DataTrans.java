@@ -1,12 +1,7 @@
 package zx.soft.adt.core;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,57 +11,16 @@ import zx.soft.adt.domain.AlertList;
 import zx.soft.adt.domain.HotPlugLog;
 import zx.soft.adt.domain.PlcClient;
 import zx.soft.adt.domain.WanIpv4;
-import zx.soft.adt.util.ImpalaConnection;
-import zx.soft.adt.util.MySQLConnection;
 
 public class DataTrans {
 
 	public static Logger logger = LoggerFactory.getLogger(DataTrans.class);
-	public static Map<Long, String> plcClientMAP = new HashMap<>();
-	public static Map<String, String> plcNetInfoMap = new HashMap<>();
-	static {
-		updatePlcNetInfoMap();
-		updatePlcClientMap();
-	}
 
-	//从impala查询adt.plcnetinfo表,获得规则id和规则名称的对应关系
-	public static void updatePlcNetInfoMap() {
-
-		String sqlStatement = "SELECT rowkey,rule_name FROM " + ConstADT.TABLE_PLCNETINFO;
-		try (Connection conn = ImpalaConnection.getConnection();
-				Statement statement = conn.createStatement();
-				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
-			if (resultSet != null) {
-				while (resultSet.next()) {
-					if (resultSet.getString(1) != null && resultSet.getString(2) != null) {
-						plcNetInfoMap.put(resultSet.getString(1), resultSet.getString(2));
-					}
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
-	//从mysql查询adt.plcClient表,获得service_code和service名称的对应关系
-	public static void updatePlcClientMap() {
-
-		String sqlStatement = "SELECT Service_code,Service_name FROM " + ConstADT.TABLE_PLCCLIENT;
-		try (Connection conn = MySQLConnection.getConnection();
-				Statement statement = conn.createStatement();
-				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
-			if (resultSet != null) {
-				while (resultSet.next()) {
-					if (resultSet.getLong(1) != 0 && resultSet.getString(2) != null) {
-						plcClientMAP.put(resultSet.getLong(1), resultSet.getString(2));
-					}
-				}
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
+	/**
+	 * 将查询结果ResultSet转换为AccessList
+	 * @param resultSet
+	 * @return AccessList
+	 */
 	public static AccessList resultSet2Access(ResultSet resultSet) {
 		AccessList result = new AccessList();
 		try {
@@ -120,6 +74,11 @@ public class DataTrans {
 		return result;
 	}
 
+	/**
+	 * 将查询结果ResultSet转换为AlertList
+	 * @param resultSet
+	 * @return AlertList
+	 */
 	public static AlertList resultSet2AlertList(ResultSet resultSet) {
 		AlertList result = new AlertList();
 		try {
@@ -156,6 +115,11 @@ public class DataTrans {
 		return result;
 	}
 
+	/**
+	 * 将查询结果ResultSet转换为PlcClient
+	 * @param resultSet
+	 * @return　PlcClient
+	 */
 	public static PlcClient resultSet2PlcClient(ResultSet resultSet) {
 		PlcClient result = new PlcClient();
 		try {
@@ -214,22 +178,11 @@ public class DataTrans {
 		return result;
 	}
 
-	//	public static VPNTraffic resultSet2VPNTraffic(ResultSet resultSet) {
-	//		VPNTraffic result = new VPNTraffic();
-	//		try {
-	//			result.setRowkey(resultSet.getString(1));
-	//			result.setBegin_time(resultSet.getLong(2));
-	//			result.setEnd_time(resultSet.getLong(3));
-	//			result.setId(resultSet.getInt(4));
-	//			result.setIpv4(resultSet.getString(5));
-	//			result.setService_code(resultSet.getLong(6));
-	//			result.setTraffic(resultSet.getLong(7));
-	//		} catch (Exception e) {
-	//			logger.error(e.getMessage());
-	//		}
-	//		return result;
-	//	}
-
+	/**
+	 * 将查询结果ResultSet转换为WanIpv4
+	 * @param resultSet
+	 * @return WanIpv4
+	 */
 	public static WanIpv4 resultSet2WanIpv4(ResultSet resultSet) {
 		WanIpv4 result = new WanIpv4();
 		try {
@@ -244,6 +197,11 @@ public class DataTrans {
 		return result;
 	}
 
+	/**
+	 * 将查询结果ResultSet转换为HotPlugLog
+	 * @param resultSet
+	 * @return HotPlugLog
+	 */
 	public static HotPlugLog result2HotPlugLog(ResultSet resultSet) {
 		HotPlugLog result = new HotPlugLog();
 		try {

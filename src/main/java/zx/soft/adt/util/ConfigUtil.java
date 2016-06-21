@@ -15,11 +15,10 @@ public class ConfigUtil {
 		logger.info("Load resource: " + confFileName);
 		try (InputStream in = ConfigUtil.class.getClassLoader().getResourceAsStream(confFileName);) {
 			result.load(in);
-			return result;
 		} catch (Exception e) {
-			logger.error("Exception:{}", LogbackUtil.expection2Str(e));
-			throw new RuntimeException(e);
+			logger.error(e.getMessage());
 		}
+		return result;
 	}
 
 }

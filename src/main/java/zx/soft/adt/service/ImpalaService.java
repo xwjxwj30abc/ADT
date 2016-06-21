@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import zx.soft.adt.core.ConstADT;
 import zx.soft.adt.core.DataTrans;
 import zx.soft.adt.core.SqlStatementBuilder;
 import zx.soft.adt.domain.AccessList;
@@ -29,8 +30,39 @@ import zx.soft.utils.log.LogbackUtil;
 public class ImpalaService {
 
 	public static Logger logger = LoggerFactory.getLogger(ImpalaService.class);
+	public static Map<String, String> plcNetInfoMap = new HashMap<>();
+	static {
+		updatePlcNetInfoMap();
+	}
 
-	//根据行键获取单个对象
+	/**
+	 * 从impala查询adt.plcnetinfo表,获得规则id和规则名称的对应关系
+	 */
+	public static void updatePlcNetInfoMap() {
+
+		String sqlStatement = "SELECT rowkey,rule_name FROM " + ConstADT.TABLE_PLCNETINFO;
+		try (Connection conn = ImpalaConnection.getConnection();
+				Statement statement = conn.createStatement();
+				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
+			if (resultSet != null) {
+				while (resultSet.next()) {
+					if (resultSet.getString(1) != null && resultSet.getString(2) != null) {
+						plcNetInfoMap.put(resultSet.getString(1), resultSet.getString(2));
+					}
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 根据行键获取单个对象
+	 * @param tableName
+	 * @param rowkey
+	 * @param t
+	 * @return
+	 */
 	public <T> Object getSpecObject(String tableName, String rowkey, Class<T> t) {
 		Object object = new Object();
 		String sqlStatement = "SELECT * FROM " + tableName + " WHERE rowkey =\'" + rowkey + "\'";
@@ -73,7 +105,12 @@ public class ImpalaService {
 		return object;
 	}
 
-	//多条件查询上网日志表
+	/**
+	 * 多条件查询上网日志表
+	 * @param tableName
+	 * @param p
+	 * @return
+	 */
 	public List<AccessList> getAccessListQueryResult(String tableName, Params p) {
 		String sqlStatement = SqlStatementBuilder.getBasicSqlStatement(tableName, p);
 		logger.info(sqlStatement);
@@ -103,6 +140,12 @@ public class ImpalaService {
 		return temp;
 	}
 
+	/**
+	 * 多条件查询过滤结果表
+	 * @param tableName
+	 * @param p
+	 * @return
+	 */
 	public List<AlertList> getAlertListQueryResult(String tableName, Params p) {
 		String sqlStatement = SqlStatementBuilder.getBasicSqlStatement(tableName, p);
 		logger.info(sqlStatement);
@@ -132,6 +175,12 @@ public class ImpalaService {
 		return temp;
 	}
 
+	/**
+	 * 多条件查询热插拔日志表
+	 * @param tableName
+	 * @param p
+	 * @return
+	 */
 	public List<HotPlugLog> getHotPlugLogQueryResult(String tableName, Params p) {
 		String sqlStatement = SqlStatementBuilder.getBasicSqlStatement(tableName, p);
 		logger.info(sqlStatement);
@@ -161,7 +210,12 @@ public class ImpalaService {
 		return temp;
 	}
 
-	//获取总数
+	/**
+	 * 获取相应查询条件得到的数据条数
+	 * @param tableName
+	 * @param p
+	 * @return
+	 */
 	public int getSum(String tableName, Params p) {
 		String sqlStatement = SqlStatementBuilder.getSumSqlStatement(tableName, p);
 		logger.info(sqlStatement);
@@ -180,12 +234,18 @@ public class ImpalaService {
 		return s;
 	}
 
-	//对查询的结果根据某字段类型进行分类统计
+	/**
+	 * 对查询的结果根据某字段类型进行分类统计
+	 * @param tableName
+	 * @param queryParams
+	 * @param limit
+	 * @return
+	 */
 	public Map getAccessStatByServiceCode(String tableName, List<QueryParameters> queryParams, int limit) {
 		String condition = SqlStatementBuilder.getPartSqlStatement(queryParams);
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT service_code,COUNT(*) AS number FROM ").append(tableName).append(condition)
-				.append(" GROUP BY service_code ORDER BY number DESC");
+		.append(" GROUP BY service_code ORDER BY number DESC");
 		if (limit != 0) {
 			builder.append(" LIMIT ").append(limit);
 		}
@@ -208,7 +268,12 @@ public class ImpalaService {
 		return map;
 	}
 
-	//根据国家类型group_by，返回具体的访问不同国家的数据记录数
+	/**
+	 * 根据国家类型group_by，返回具体的访问不同国家的数据记录数
+	 * @param tableName
+	 * @param queryParams
+	 * @return
+	 */
 	public List<Stat> getAlertStatByCountryName(String tableName, List<QueryParameters> queryParams) {
 		String condition = SqlStatementBuilder.getPartSqlStatement(queryParams);
 		String sqlStatement = "SELECT  Country_name,Jd,Wd,COUNT(*) AS number FROM " + tableName + condition
@@ -234,7 +299,12 @@ public class ImpalaService {
 		return stats;
 	}
 
-	//用户一段时间上网趋势统计分析
+	/**
+	 * 用户一段时间上网趋势统计分析
+	 * @param tableName
+	 * @param p
+	 * @return
+	 */
 	public Map getAccessTrendency(String tableName, Params p) {
 		String condition = SqlStatementBuilder.getPartSqlStatement(p.getQueryParameters());
 		String sqlStatement = "SELECT unix_timestamp(to_date(from_unixtime(time+28800 )))-28800 AS DAY , COUNT(*) AS NUM FROM "
@@ -255,7 +325,13 @@ public class ImpalaService {
 		return map;
 	}
 
-	//过滤结果表不同规则匹配结果的趋势统计分析，groupBy为“Service_rule”,service_code和rule_id的联合字段
+	/**
+	 * 过滤结果表不同规则匹配结果的趋势统计分析，groupBy为“Service_rule”,service_code和rule_id的联合字段
+	 * @param tableName
+	 * @param queryParams
+	 * @param limit
+	 * @return
+	 */
 	public Map getAlertStatsByServiceRule(String tableName, List<QueryParameters> queryParams, int limit) {
 		String condition = SqlStatementBuilder.getPartSqlStatement(queryParams);
 		StringBuilder builder = new StringBuilder();
@@ -274,10 +350,11 @@ public class ImpalaService {
 				while (resultSet.next()) {
 					String rule_id_tmp = resultSet.getString(1);
 					long Service_code_tmp = resultSet.getLong(2);
-					String rule_name_tmp = DataTrans.plcNetInfoMap.get(String.valueOf(Service_code_tmp) + rule_id_tmp);
+					String rule_name_tmp = ImpalaService.plcNetInfoMap.get(String.valueOf(Service_code_tmp)
+							+ rule_id_tmp);
 					if (rule_name_tmp == null) {
-						DataTrans.updatePlcNetInfoMap();
-						rule_name_tmp = DataTrans.plcNetInfoMap.get(resultSet.getString(1));
+						ImpalaService.updatePlcNetInfoMap();
+						rule_name_tmp = ImpalaService.plcNetInfoMap.get(resultSet.getString(1));
 					}
 					String Service_name_tmp = this.getServiceNameByServiceCode(Service_code_tmp);
 					map.put(Service_name_tmp + "-" + rule_name_tmp, resultSet.getInt(3));
@@ -290,12 +367,18 @@ public class ImpalaService {
 		return map;
 	}
 
-	//统计过滤结果来自哪台设备groupBy="Service_code"
+	/**
+	 * 统计过滤结果来自哪台设备groupBy="Service_code"
+	 * @param tableName
+	 * @param queryParams
+	 * @param limit
+	 * @return
+	 */
 	public Map getAlertStatsByServiceCode(String tableName, List<QueryParameters> queryParams, int limit) {
 		String condition = SqlStatementBuilder.getPartSqlStatement(queryParams);
 		StringBuilder builder = new StringBuilder();
 		builder.append("SELECT service_code,COUNT(*)  AS NUM FROM ").append(tableName).append(condition)
-				.append(" GROUP BY service_code ORDER BY NUM DESC ");
+		.append(" GROUP BY service_code ORDER BY NUM DESC ");
 		if (limit != 0) {
 			builder.append("LIMIT ").append(limit);
 		}
@@ -307,10 +390,10 @@ public class ImpalaService {
 				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
 			if (resultSet != null) {
 				while (resultSet.next()) {
-					String Service_name_tmp = DataTrans.plcClientMAP.get(resultSet.getLong(1));
+					String Service_name_tmp = MySQLService.plcClientMAP.get(resultSet.getLong(1));
 					if (Service_name_tmp == null) {
-						DataTrans.updatePlcClientMap();
-						Service_name_tmp = DataTrans.plcClientMAP.get(resultSet.getLong(1));
+						MySQLService.updatePlcClientMap();
+						Service_name_tmp = MySQLService.plcClientMAP.get(resultSet.getLong(1));
 						if (Service_name_tmp == null) {
 							Service_name_tmp = String.valueOf(resultSet.getLong(1));
 						}
@@ -324,30 +407,12 @@ public class ImpalaService {
 		return map;
 	}
 
-	//流量统计表
-	//	public List<VPNTraffic> getVPNTraffic(String tableName, Params p) {
-	//		String sqlStatement = SqlStatementBuilder.getBasicSqlStatement(tableName, p);
-	//		logger.info(sqlStatement);
-	//		List<VPNTraffic> traffics = new ArrayList<>();
-	//		try (Connection conn = ImpalaConnection.getConnection();
-	//				Statement statement = conn.createStatement();
-	//				ResultSet resultSet = statement.executeQuery(sqlStatement);) {
-	//			if (resultSet != null) {
-	//				while (resultSet.next()) {
-	//					VPNTraffic traffic_tmp = DataTrans.resultSet2VPNTraffic(resultSet);
-	//					long Service_code_tmp = resultSet.getLong(6);
-	//					String Service_name_tmp = this.getServiceNameByServiceCode(Service_code_tmp);
-	//					traffic_tmp.setService_name(Service_name_tmp);
-	//					traffics.add(traffic_tmp);
-	//				}
-	//			}
-	//		} catch (SQLException e) {
-	//			logger.error(LogbackUtil.expection2Str(e));
-	//		}
-	//		return traffics;
-	//	}
-
-	//设备出口公网地址
+	/**
+	 * 多条件查询设备出口公网地址
+	 * @param tableName
+	 * @param p
+	 * @return
+	 */
 	public List<WanIpv4> getWanIpv4(String tableName, Params p) {
 		String sqlStatement = SqlStatementBuilder.getBasicSqlStatement(tableName, p);
 		logger.info(sqlStatement);
@@ -370,7 +435,12 @@ public class ImpalaService {
 		return wanIpv4s;
 	}
 
-	//具体设备总流量统计表
+	/**
+	 * 具体设备总流量统计表
+	 * @param tableName
+	 * @param queryParams
+	 * @return
+	 */
 	public Map getSummaryTrafficByServiceName(String tableName, List<QueryParameters> queryParams) {
 		String condition = SqlStatementBuilder.getPartSqlStatement(queryParams);
 		String sqlStatement = "select unix_timestamp(trunc(from_unixtime(begin_time),\"HH24\")) as times_tmp,sum(traffic) from "
@@ -391,7 +461,12 @@ public class ImpalaService {
 		return map;
 	}
 
-	//新版本流量统计表
+	/**
+	 * 新版本流量统计表
+	 * @param tableName
+	 * @param queryParams
+	 * @return
+	 */
 	public Map getSpecificIPTranffic(String tableName, List<QueryParameters> queryParams) {
 		String condition = SqlStatementBuilder.getPartSqlStatement(queryParams);
 		String sqlStatement = "select ipv4,sum(traffic) as total from " + tableName + condition
@@ -412,12 +487,16 @@ public class ImpalaService {
 		return map;
 	}
 
-	//根据service_code匹配设备名称service_code
+	/**
+	 * 根据service_code匹配设备名称service_code
+	 * @param service_code
+	 * @return
+	 */
 	private String getServiceNameByServiceCode(long service_code) {
-		String Service_name_tmp = DataTrans.plcClientMAP.get(service_code);
+		String Service_name_tmp = MySQLService.plcClientMAP.get(service_code);
 		if (Service_name_tmp == null) {
-			DataTrans.updatePlcClientMap();
-			Service_name_tmp = DataTrans.plcClientMAP.get(service_code);
+			MySQLService.updatePlcClientMap();
+			Service_name_tmp = MySQLService.plcClientMAP.get(service_code);
 			if (Service_name_tmp == null) {
 				Service_name_tmp = "";
 			}
