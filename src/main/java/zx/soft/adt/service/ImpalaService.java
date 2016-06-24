@@ -31,9 +31,6 @@ public class ImpalaService {
 
 	public static Logger logger = LoggerFactory.getLogger(ImpalaService.class);
 	public static Map<String, String> plcNetInfoMap = new HashMap<>();
-	static {
-		updatePlcNetInfoMap();
-	}
 
 	/**
 	 * 从impala查询adt.plcnetinfo表,获得规则id和规则名称的对应关系
