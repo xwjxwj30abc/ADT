@@ -40,11 +40,11 @@ usage() {
 start() {
   JAVA=${JAVA-'java'}
   exec $JAVA $JVMARGS -classpath "$CLASSPATH" $mainClass "$@" &
-  echo $! > main.pid
+  echo $! > adt_main.pid
 }
 
 stop() {
-  kill `cat main.pid` > /dev/null
+  kill `cat adt_main.pid` > /dev/null
 }
 
 case $1 in
